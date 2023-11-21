@@ -21,10 +21,10 @@ param windowsAdminPassword string
 param logAnalyticsWorkspaceName string
 
 @description('Target GitHub account')
-param githubAccount string = 'microsoft'
+param githubAccount string = 'azure'
 
 @description('Target GitHub branch')
-param githubBranch string = 'arc_servers_levelup'
+param githubBranch string = 'main'
 
 @description('Choice to deploy Bastion to connect to the client VM')
 param deployBastion bool = false
@@ -43,7 +43,7 @@ param emailAddress string
 
 param location string = resourceGroup().location
 
-var templateBaseUrl = 'https://raw.githubusercontent.com/${githubAccount}/azure_arc/${githubBranch}/azure_jumpstart_arcbox_servers_levelup/'
+var templateBaseUrl = 'https://raw.githubusercontent.com/${githubAccount}/arc_jumpstart_levelup/${githubBranch}/azure_arc_servers_jumpstart/'
 
 module clientVmDeployment 'clientVm/clientVm.bicep' = {
   name: 'clientVmDeployment'
