@@ -49,14 +49,14 @@
     },
     "githubAccount": {
       "type": "string",
-      "defaultValue": "microsoft",
+      "defaultValue": "azure",
       "metadata": {
         "description": "Target GitHub account"
       }
     },
     "githubBranch": {
       "type": "string",
-      "defaultValue": "arc_servers_levelup",
+      "defaultValue": "main",
       "metadata": {
         "description": "Target GitHub branch"
       }

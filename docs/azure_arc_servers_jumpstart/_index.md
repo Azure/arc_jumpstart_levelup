@@ -61,7 +61,7 @@ code ./AzureArcLevelupNotebook.dib
 
 > **NOTE: If you didn't have Visual Studio Code installed, you will have to reload your session to make sure you can run the commands to install the extensions**
 
->**NOTE: The notebook can be also downloaded from [here](https://github.com/microsoft/azure_arc/blob/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/AzureArcLevelupNotebook.dib) manually**
+>**NOTE: The notebook can be also downloaded from [here](https://github.com/microsoft/arc_jumpstart_levelup/blob/main/docs/azure_arc_servers_jumpstart/levelup/AzureArcLevelupNotebook.dib) manually**
 
 - VSCode will open in restricted mode. To trust this file, click "Manage".
 
