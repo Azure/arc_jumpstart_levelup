@@ -94,7 +94,7 @@ foreach ($app in $appsToInstall) {
 }
 
 Write-Host "Fetching Artifacts for levelup"
-Invoke-WebRequest "https://raw.githubusercontent.com/azure/arc_jumpstart_docs/main/img/arcbox_wallpaper_dark.png" -OutFile $Env:ArcBoxDir\wallpaper.png
+Invoke-WebRequest "https://raw.githubusercontent.com/azure/arc_jumpstart_docs/main/img/wallpaper/arcbox_wallpaper_dark.png" -OutFile $Env:ArcBoxDir\wallpaper.png
 Invoke-WebRequest ($templateBaseUrl + "artifacts/DeploymentStatus.ps1") -OutFile $Env:ArcBoxDir\DeploymentStatus.ps1
 Invoke-WebRequest ($templateBaseUrl + "artifacts/LogInstructions.txt") -OutFile $Env:ArcBoxLogsDir\LogInstructions.txt
 
