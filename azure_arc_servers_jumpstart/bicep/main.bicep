@@ -43,7 +43,7 @@ param emailAddress string
 
 param location string = resourceGroup().location
 
-var templateBaseUrl = 'https://raw.githubusercontent.com/${githubAccount}/arc_jumpstart_levelup/${githubBranch}/azure_arc_servers_jumpstart/'
+var templateBaseUrl = 'https://raw.githubusercontent.com/${githubAccount}/arc_jumpstart_levelup/${githubBranch}/'
 
 module clientVmDeployment 'clientVm/clientVm.bicep' = {
   name: 'clientVmDeployment'
