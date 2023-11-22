@@ -101,7 +101,7 @@
     }
   },
   "variables": {
-    "templateBaseUrl": "[format('https://raw.githubusercontent.com/{0}/azure_arc/{1}/azure_jumpstart_arcbox_servers_levelup/', parameters('githubAccount'), parameters('githubBranch'))]"
+    "templateBaseUrl": "[format('https://raw.githubusercontent.com/{0}/arc_jumpstart_levelup/{1}/azure_arc_servers_jumpstart/', parameters('githubAccount'), parameters('githubBranch'))]"
   },
   "resources": [
     {
