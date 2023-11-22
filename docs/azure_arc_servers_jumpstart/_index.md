@@ -55,13 +55,13 @@ winget install -e --id Microsoft.VisualStudioCode --no-upgrade
 winget install -e --id Microsoft.DotNet.SDK.7 --no-upgrade
 code --install-extension ms-dotnettools.dotnet-interactive-vscode
 code --install-extension ms-vscode.powershell
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/AzureArcLevelupNotebook.dib" -OutFile ./AzureArcLevelupNotebook.dib
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/azure/arc_jumpstart_levelup/docs/azure_arc_servers_jumpstart/AzureArcLevelupNotebook.dib" -OutFile ./AzureArcLevelupNotebook.dib
 code ./AzureArcLevelupNotebook.dib
 ```
 
 > **NOTE: If you didn't have Visual Studio Code installed, you will have to reload your session to make sure you can run the commands to install the extensions**
 
->**NOTE: The notebook can be also downloaded from [here](https://github.com/microsoft/arc_jumpstart_levelup/blob/main/docs/azure_arc_servers_jumpstart/levelup/AzureArcLevelupNotebook.dib) manually**
+>**NOTE: The notebook can be also downloaded from [here](https://github.com/azure/arc_jumpstart_levelup/blob/main/docs/azure_arc_servers_jumpstart/AzureArcLevelupNotebook.dib) manually**
 
 - VSCode will open in restricted mode. To trust this file, click "Manage".
 
@@ -228,7 +228,7 @@ ties in a sandbox environment. Screenshot below shows layout of the lab environm
 
 #### Deployment Option 1: Azure portal
 
-- Click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fazure_arc%2Farc_servers_levelup%2Fazure_jumpstart_arcbox_servers_levelup%2FARM%2Fazuredeploy.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters.
+- Click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fazure%2Farc_jumpstart_levelup%2Fmain%2Fazure_arc_servers_jumpstart%2FARM%2Fazuredeploy.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters.
 
   ![Screenshot showing Azure portal deployment of ArcBox](./portaldeploy.png)
 
@@ -248,7 +248,7 @@ ties in a sandbox environment. Screenshot below shows layout of the lab environm
   $folderPath = <Specify a folder path to clone the repo>
 
   Set-Location -Path $folderPath
-  git clone -b arc_servers_levelup https://github.com/microsoft/azure_arc.git
+  git clone -b arc_servers_levelup https://github.com/azure/arc_jumpstart_levelup.git
   Set-Location -Path "azure_arc\azure_jumpstart_arcbox_servers_levelup\bicep"
   ```
 
@@ -258,7 +258,7 @@ ties in a sandbox environment. Screenshot below shows layout of the lab environm
   az bicep upgrade
   ```
 
-- Edit the [main.parameters.json](https://github.com/microsoft/azure_arc/blob/arc_servers_levelup/azure_jumpstart_arcbox_servers_levelup/bicep/main.parameters.json) template parameters file and supply some values for your environment.
+- Edit the [main.parameters.json](https://github.com/azure/arc_jumpstart_levelup/blob/main/azure_arc_servers_jumpstart/bicep/main.parameters.json) template parameters file and supply some values for your environment.
   - _`spnClientId`_ - Your Azure service principal id
   - _`spnClientSecret`_ - Your Azure service principal secret
   - _`spnTenantId`_ - Your Azure tenant id
@@ -269,7 +269,7 @@ ties in a sandbox environment. Screenshot below shows layout of the lab environm
 
   ![Screenshot showing example parameters](./parameters_bicep.png)
 
-- Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_jumpstart_arcbox/bicep) and run the below command:
+- Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/azure/arc_jumpstart_levelup/tree/main/azure_jumpstart_arcbox/bicep) and run the below command:
 
   ```shell
   az group create --name "<resource-group-name>" --location "<preferred-location>"
