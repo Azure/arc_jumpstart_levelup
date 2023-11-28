@@ -258,14 +258,14 @@ Write-Header "Enabling Guest Integration Service"
 Get-VM | Get-VMIntegrationService | Where-Object { -not($_.Enabled) } | Enable-VMIntegrationService -Verbose
 
 # Start all the VMs
-Write-Header "Starting VMs"\
+Write-Header "Starting VMs"
 Start-VM -Name $Win2k19vmName
 Start-VM -Name $Win2k22vmName
 Start-VM -Name $Ubuntu01vmName
 Start-VM -Name $Ubuntu02vmName
 Start-VM -Name $Win2k12MachineName
 
-Start-Sleep -Seconds 20
+Start-Sleep -seconds 20
 
 # Configure WinRM for 2012 machine
 $2012Machine= Get-VM $Win2k12MachineName

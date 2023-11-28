@@ -49,7 +49,7 @@
     },
     "githubAccount": {
       "type": "string",
-      "defaultValue": "azure",
+      "defaultValue": "Azure",
       "metadata": {
         "description": "Target GitHub account"
       }
