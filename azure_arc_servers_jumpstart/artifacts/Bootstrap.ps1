@@ -14,7 +14,7 @@ param (
     [string]$githubUser,
     [string]$templateBaseUrl,
     [string]$rdpPort,
-    [string]$ssdeploySQL,
+    [string]$sshPort,
     [bool]$deploySQL
 )
 
