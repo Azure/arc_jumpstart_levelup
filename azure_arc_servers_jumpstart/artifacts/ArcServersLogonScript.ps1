@@ -244,7 +244,7 @@ if ((Get-VM -Name $Win2k12MachineName -ErrorAction SilentlyContinue).State -ne "
 if ((Get-VM -Name $Win2k22vmName -ErrorAction SilentlyContinue).State -ne "Running") {
     Remove-VM -Name $Win2k22vmName -Force -ErrorAction SilentlyContinue
     if ($deploySQL -eq $true) {
-        New-VM -Name $Win2k22vmName -MemoryStartupBytes 10GB -BootDevice VHD -VHDPath $SQLvmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
+        New-VM -Name $Win2k22vmName -ComputerName $Win2k22vmName -MemoryStartupBytes 10GB -BootDevice VHD -VHDPath $SQLvmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
     }
     else {
         New-VM -Name $Win2k22vmName -MemoryStartupBytes 10GB -BootDevice VHD -VHDPath $Win2k22vmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
