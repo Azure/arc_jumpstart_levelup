@@ -213,7 +213,7 @@ if (!([System.IO.File]::Exists($win2k19vmvhdPath) -and [System.IO.File]::Exists(
         }
     }#>
 
-    if ($deploySQL) {
+    if ($deploySQL -eq $true) {
         azcopy cp $vhdSourceFolder/$sas $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;${SQLvmName}.vhdx;" --recursive=true --check-length=false --cap-mbps 1200 --log-level=ERROR --check-md5 NoCheck
     }
     else {
@@ -243,7 +243,7 @@ if ((Get-VM -Name $Win2k12MachineName -ErrorAction SilentlyContinue).State -ne "
 
 if ((Get-VM -Name $Win2k22vmName -ErrorAction SilentlyContinue).State -ne "Running") {
     Remove-VM -Name $Win2k22vmName -Force -ErrorAction SilentlyContinue
-    if ($deploySQL) {
+    if ($deploySQL -eq $true) {
         New-VM -Name $Win2k22vmName -MemoryStartupBytes 10GB -BootDevice VHD -VHDPath $SQLvmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
     }
     else {
@@ -269,7 +269,7 @@ if ((Get-VM -Name $Ubuntu02vmName -ErrorAction SilentlyContinue).State -ne "Runn
     Set-VM -Name $Ubuntu02vmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
 }
 
-if ($deploySQL) {
+if ($deploySQL -eq $true) {
     if ((Get-VM -Name $SQLvmName -ErrorAction SilentlyContinue).State -ne "Running") {
         Remove-VM -Name $SQLvmName -Force -ErrorAction SilentlyContinue
         New-VM -Name $SQLvmName -MemoryStartupBytes 10GB -BootDevice VHD -VHDPath $SQLvmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
@@ -288,7 +288,7 @@ Start-VM -Name $Win2k22vmName
 Start-VM -Name $Ubuntu01vmName
 Start-VM -Name $Ubuntu02vmName
 Start-VM -Name $Win2k12MachineName
-if ($deploySQL) {
+if ($deploySQL -eq $true) {
     Start-VM -Name $SQLvmName
 }
 

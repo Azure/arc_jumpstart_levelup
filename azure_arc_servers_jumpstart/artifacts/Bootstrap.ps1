@@ -15,7 +15,7 @@ param (
     [string]$templateBaseUrl,
     [string]$rdpPort,
     [string]$sshPort,
-    [bool]$deploySQL
+    [string]$deploySQL
 )
 
 [System.Environment]::SetEnvironmentVariable('adminUsername', $adminUsername, [System.EnvironmentVariableTarget]::Machine)
