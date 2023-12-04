@@ -296,9 +296,14 @@ Invoke-Command -VMName $Win2k22vmName -ScriptBlock { Get-NetAdapter | Restart-Ne
 Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
 Start-Sleep -Seconds 5
 
+# Renaming 2012 machine
+Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { Rename-Computer -NewName $using:Win2k12MachineName -Restart} -Credential $winCreds
+
 # Getting the Ubuntu nested VM IP address
 $Ubuntu01VmIp = Get-VM -Name $Ubuntu01vmName | Select-Object -ExpandProperty NetworkAdapters | Select-Object -ExpandProperty IPAddresses | Select-Object -Index 0
 $Ubuntu02VmIp = Get-VM -Name $Ubuntu02vmName | Select-Object -ExpandProperty NetworkAdapters | Select-Object -ExpandProperty IPAddresses | Select-Object -Index 0
+
+Start-Sleep -Seconds 10
 
 # Copy installation script to nested Windows VMs
 Write-Output "Transferring installation script to nested Windows VMs..."
