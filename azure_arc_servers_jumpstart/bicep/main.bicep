@@ -43,6 +43,9 @@ param emailAddress string
 
 param location string = resourceGroup().location
 
+@description('Option to deploy Arc-enabled SQL scenarios.')
+param deploySQL bool = false
+
 var templateBaseUrl = 'https://raw.githubusercontent.com/${githubAccount}/arc_jumpstart_levelup/${githubBranch}/azure_arc_servers_jumpstart/'
 
 module clientVmDeployment 'clientVm/clientVm.bicep' = {
@@ -62,6 +65,7 @@ module clientVmDeployment 'clientVm/clientVm.bicep' = {
     location: location
     rdpPort: rdpPort
     sshPort: sshPort
+    deploySQL: deploySQL
   }
 }
 
