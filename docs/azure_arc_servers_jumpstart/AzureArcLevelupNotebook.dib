@@ -31,7 +31,6 @@ After completion of this workshop, you will be able to:
 | LevelUp Module | Duration |
 |---------------|---------------|
 |[**Understand pre-requisites to onboard Windows and Linux servers to Azure Arc**](#levelup-lab-environment) | 40 minutes |
-|**Enroll your Windows Server 2012/R2 or SQL Server 2012 machines for Extended Security Updates through Azure Arc (demo)** | 15 minutes |
 |[**1 - Onboard Windows and Linux servers running using different onboarding methods**](#module-1-on-boarding-to-azure-arc-enabled-servers) | 15 minutes |
 |[**2 - Monitor your Azure Arc-enabled servers using Azure Monitor**](#module-2-monitor-your-azure-arc-enabled-servers-using-azure-monitor) | 45 minutes |
 |[**3 - Secure your Azure Arc-enabled servers using Microsoft Defender for servers**](#module-3-secure-your-azure-arc-enabled-servers-using-microsoft-defender-for-servers) | 15 minutes |
@@ -39,7 +38,6 @@ After completion of this workshop, you will be able to:
 |[**5 - Keep your Azure Arc-enabled servers patched using Azure Update Manager**](#module-5-keep-your-azure-arc-enabled-servers-patched-using-azure-manager) | 15 minutes |
 |[**6 - Monitor changes to your Azure Arc-enabled servers using Change tracking and inventory**](#module-6-monitor-changes-to-your-azure-arc-enabled-servers-using-change-tracking-and-inventory) | 15 minutes |
 |[**7 - SSH into your Azure Arc-enabled servers using SSH access**](#module-7-ssh-into-your-azure-arc-enabled-servers-using-ssh-access) | 10 minutes |
-|**Run scripts in your Arc-enabled Windows server by using Run Commands (demo)** | 5 minutes |
 |[**8 - Run automation runbooks on your Azure Arc-enabled servers using Hybrid runbook workers**](#module-8-run-automation-runbooks-on-your-azure-arc-enabled-servers-using-hybrid-runbook-workers) | 15 minutes |
 |[**9 - Configure your Azure Arc-enabled servers using Azure Automanage machine configuration**](#module-9-configure-your-azure-arc-enabled-servers-using-azure-automanage-machine-configuration) | 30 minutes |
 |[**10 - Manage the Windows operating system of your Arc-enabled servers using Windows Admin Center (Preview)**](#module-10-manage-your-azure-arc-enabled-servers-using-admin-center-preview) | 15 minutes |
