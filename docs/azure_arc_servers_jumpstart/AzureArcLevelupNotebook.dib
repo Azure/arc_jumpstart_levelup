@@ -169,7 +169,7 @@ az provider register --namespace Microsoft.SecurityInsights --wait
 
 #!pwsh
 
-$subscriptionId="3155aa20-6ed8-41c9-9720-ee7f1055346e" # Replace with your subscriptionId
+$subscriptionId="<subscriptionId>" # Replace with your subscriptionId
 $servicePrincipalName="arcboxlabSPN" # Replace with your preferred name
 
 az account set -s $subscriptionId
