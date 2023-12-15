@@ -74,7 +74,7 @@ az login
 
 #!pwsh
 
-$subscriptionId = "3155aa20-6ed8-41c9-9720-ee7f1055346e"  # Replace with your subscriptionId
+$subscriptionId = "<subscriptionId>"  # Replace with your subscriptionId
 az account set -s $subscriptionId
 
 #!markdown
@@ -99,7 +99,7 @@ Connect-AzAccount
 
 #!pwsh
 
-$subscriptionId = "3155aa20-6ed8-41c9-9720-ee7f1055346e" # Replace with your subscriptionId
+$subscriptionId = "<subscriptionId>" # Replace with your subscriptionId
 Set-AzContext -SubscriptionId $subscriptionId
 
 #!markdown
@@ -125,7 +125,7 @@ Set-AzContext -SubscriptionId $subscriptionId
 
 #!pwsh
 
-$location = "eastus" # Replace with your location
+$location = "<your location>" # Replace with your location
 az vm list-usage --location $location --output table
 
 #!markdown
