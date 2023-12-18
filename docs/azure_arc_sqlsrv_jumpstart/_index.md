@@ -64,7 +64,7 @@ Please also refer to the prerequisites section of the Azure Arc Jumpstart scenar
 4. **Azure Arc Git Repository (Optional):** You can deploy this LevelUp lab environment through Azure Portal using the the instructions in this module. Alternatively, you can clone the Azure Arc Git repository using `git clone https://github.com/azure/arc_jumpstart_levelup.git`. For CLI deployment follow instructions in deployment Option 2 under Task 2 in this lab guide.
 
   ```shell
-  git clone https://github.com/azure/arc_jumpstart_levelup.git
+  git clone -b main https://github.com/Azure/arc_jumpstart_levelup.git
   ```
 
   ![Git clone Azure Arc repository](git-clone-lu-arc-sql.png)
@@ -99,7 +99,7 @@ Please also refer to the prerequisites section of the Azure Arc Jumpstart scenar
 
 1. Click on the link below to log in to the Azure portal and launch the ARM template to deploy the Level-Up lab environment.
 
-  [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Farc_jumpstart_levelup%2Fmain%2Fazure_arc_sqlsrv_jumpstart%2FARM%2Fazuredeploy.json)
+    <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fazure%2Farc_jumpstart_levelup%2Fmain%2Fazure_arc_sqlsrv_jumpstart%2FARM%2Fazuredeploy.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a>
 
 2. Fill in the parameter values as shown below and leave other values default, click on Review + create to continue deployment.
 
@@ -128,7 +128,7 @@ Please also refer to the prerequisites section of the Azure Arc Jumpstart scenar
 2. Clone the Azure Arc Jumpstart repository using the command below using either local PowerShell or Azure Cloud Shell.
 
   ```shell
-  git clone -b lu_arc_sql https://github.com/azure/arc_jumpstart_levelup.git
+  git clone -b main https://github.com/Azure/arc_jumpstart_levelup.git
   ```
 
   ![Git clone Azure Arc repository](git-clone-lu-arc-sql.png)
