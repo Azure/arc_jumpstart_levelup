@@ -133,7 +133,7 @@ Please also refer to the prerequisites section of the Azure Arc Jumpstart scenar
 
   ![Git clone Azure Arc repository](git-clone-lu-arc-sql.png)
 
-3. Open **azuredeploy.parameters.json** file located under **C:\ArcSqlLevelup\azure_arc\azure_jumpstart_arcbox_levelup\ARM** folder in a notepad or choice of your editor.
+3. Open **azuredeploy.parameters.json** file located under **C:\ArcSqlLevelup\arc_jumpstart_levelup\azure_arc_sqlsrv_jumpstart\ARM** folder in a notepad or choice of your editor.
 
   ![Parameters file location](azure-arm-parameters.png)
 
@@ -180,7 +180,7 @@ Please also refer to the prerequisites section of the Azure Arc Jumpstart scenar
 6. Deploy the ARM template using the command below. Please make sure you change the file path in case you chose a different folder when cloning the repository.
 
   ```shell
-  az deployment group create --resource-group ArcSql-Levelup --template-file "C:\ArcSqlLevelup\azure_arc\azure_jumpstart_arcbox_levelup\ARM\azuredeploy.json" --parameters "C:\ArcSqlLevelup\azure_arc\azure_jumpstart_arcbox_levelup\ARM\azuredeploy.parameters.json"
+  az deployment group create --resource-group ArcSql-Levelup --template-file "C:\ArcSqlLevelup\arc_jumpstart_levelup\azure_arc_sqlsrv_jumpstart\ARM\azuredeploy.json" --parameters "C:\ArcSqlLevelup\arc_jumpstart_levelup\azure_arc_sqlsrv_jumpstart\ARM\azuredeploy.parameters.json"
   ```
 
   ![Deploy ARM template](azure-arm-group-deploy.png)
