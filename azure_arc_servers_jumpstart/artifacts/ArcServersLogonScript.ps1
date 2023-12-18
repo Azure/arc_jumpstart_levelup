@@ -12,6 +12,7 @@ $spnTenantId = $env:spnTenantId
 $subscriptionId = $env:subscriptionId
 $azureLocation = $env:azureLocation
 $resourceGroup = $env:resourceGroup
+$deploySQL = $env:deploySQL
 
 # Moved VHD storage account details here to keep only in place to prevent duplicates.
 $vhdSourceFolder = "https://jsvhds.blob.core.windows.net/arcbox"
@@ -162,6 +163,9 @@ $Win2k12vmName = "JSWin2K12Base"
 $Win2k12MachineName = "ArcBox-Win2k12"
 $win2k12vmvhdPath = "${Env:ArcBoxVMDir}\${Win2k12vmName}.vhdx"
 
+$SQLvmName = "ArcBox-SQL"
+$SQLvmvhdPath = "$Env:ArcBoxVMDir\${SQLvmName}.vhdx"
+
 # Verify if VHD files already downloaded especially when re-running this script
 if (!([System.IO.File]::Exists($win2k19vmvhdPath) -and [System.IO.File]::Exists($win2k12vmvhdPath) -and [System.IO.File]::Exists($Win2k22vmvhdPath) -and [System.IO.File]::Exists($Ubuntu01vmvhdPath) -and [System.IO.File]::Exists($Ubuntu02vmvhdPath))) {
     <# Action when all if and elseif conditions are false #>
@@ -209,7 +213,12 @@ if (!([System.IO.File]::Exists($win2k19vmvhdPath) -and [System.IO.File]::Exists(
         }
     }#>
 
-    azcopy cp $vhdSourceFolder/$sas $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --cap-mbps 1200 --log-level=ERROR --check-md5 NoCheck
+    if ($deploySQL -eq $true) {
+        azcopy cp $vhdSourceFolder/$sas $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;${SQLvmName}.vhdx;" --recursive=true --check-length=false --cap-mbps 1200 --log-level=ERROR --check-md5 NoCheck
+    }
+    else {
+        azcopy cp $vhdSourceFolder/$sas $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --cap-mbps 1200 --log-level=ERROR --check-md5 NoCheck
+    }
     azcopy cp $vhdSourceFolderESU/$sasESU $Env:ArcBoxVMDir --include-pattern "${Win2k12vmName}.vhdx;" --recursive=true --check-length=false --cap-mbps 1200 --log-level=ERROR --check-md5 NoCheck
 }
 
@@ -219,21 +228,22 @@ Write-Header "Create Hyper-V VMs"
 # Check if VM already exists
 if ((Get-VM -Name $Win2k19vmName -ErrorAction SilentlyContinue).State -ne "Running") {
     Remove-VM -Name $Win2k19vmName -Force -ErrorAction SilentlyContinue
-    New-VM -Name $Win2k19vmName -MemoryStartupBytes 12GB -BootDevice VHD -VHDPath $win2k19vmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
-    Set-VMProcessor -VMName $Win2k19vmName -Count 2
+    New-VM -Name $Win2k19vmName -MemoryStartupBytes 8GB -BootDevice VHD -VHDPath $win2k19vmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
+    Set-VMProcessor -VMName $Win2k19vmName -Count 1
     Set-VM -Name $Win2k19vmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
 }
 
 if ((Get-VM -Name $Win2k12MachineName -ErrorAction SilentlyContinue).State -ne "Running") {
     Remove-VM -Name $Win2k12MachineName -Force -ErrorAction SilentlyContinue
-    New-VM -Name $Win2k12MachineName -MemoryStartupBytes 12GB -BootDevice VHD -VHDPath $win2k12vmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
-    Set-VMProcessor -VMName $Win2k12MachineName -Count 2
+    New-VM -Name $Win2k12MachineName -MemoryStartupBytes 6GB -BootDevice VHD -VHDPath $win2k12vmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
+    Set-VMProcessor -VMName $Win2k12MachineName -Count 1
     Set-VM -Name $Win2k12MachineName -AutomaticStartAction Start -AutomaticStopAction ShutDown
 }
 
+
 if ((Get-VM -Name $Win2k22vmName -ErrorAction SilentlyContinue).State -ne "Running") {
     Remove-VM -Name $Win2k22vmName -Force -ErrorAction SilentlyContinue
-    New-VM -Name $Win2k22vmName -MemoryStartupBytes 12GB -BootDevice VHD -VHDPath $Win2k22vmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
+    New-VM -Name $Win2k22vmName -MemoryStartupBytes 10GB -BootDevice VHD -VHDPath $Win2k22vmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
     Set-VMProcessor -VMName $Win2k22vmName -Count 2
     Set-VM -Name $Win2k22vmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
 }
@@ -248,10 +258,19 @@ if ((Get-VM -Name $Ubuntu01vmName -ErrorAction SilentlyContinue).State -ne "Runn
 
 if ((Get-VM -Name $Ubuntu02vmName -ErrorAction SilentlyContinue).State -ne "Running") {
     Remove-VM -Name $Ubuntu02vmName -Force -ErrorAction SilentlyContinue
-    New-VM -Name $Ubuntu02vmName -MemoryStartupBytes 4GB -BootDevice VHD -VHDPath $Ubuntu02vmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
+    New-VM -Name $Ubuntu02vmName -MemoryStartupBytes 2GB -BootDevice VHD -VHDPath $Ubuntu02vmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
     Set-VMFirmware -VMName $Ubuntu02vmName -EnableSecureBoot On -SecureBootTemplate 'MicrosoftUEFICertificateAuthority'
     Set-VMProcessor -VMName $Ubuntu02vmName -Count 1
     Set-VM -Name $Ubuntu02vmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
+}
+
+if ($deploySQL -eq $true) {
+    if ((Get-VM -Name $SQLvmName -ErrorAction SilentlyContinue).State -ne "Running") {
+        Remove-VM -Name $SQLvmName -Force -ErrorAction SilentlyContinue
+        New-VM -Name $SQLvmName -MemoryStartupBytes 10GB -BootDevice VHD -VHDPath $SQLvmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
+        Set-VMProcessor -VMName $SQLvmName -Count 2
+        Set-VM -Name $SQLvmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
+    }
 }
 
 Write-Header "Enabling Guest Integration Service"
@@ -264,11 +283,14 @@ Start-VM -Name $Win2k22vmName
 Start-VM -Name $Ubuntu01vmName
 Start-VM -Name $Ubuntu02vmName
 Start-VM -Name $Win2k12MachineName
+if ($deploySQL -eq $true) {
+    Start-VM -Name $SQLvmName
+}
 
 Start-Sleep -seconds 20
 
 # Configure WinRM for 2012 machine
-$2012Machine= Get-VM $Win2k12MachineName
+$2012Machine = Get-VM $Win2k12MachineName
 $privateIpAddress = $2012Machine.networkAdapters.ipaddresses[0]
 Enable-PSRemoting
 set-item wsman:\localhost\client\trustedhosts -Concatenate -value $privateIpAddress -Force
@@ -294,6 +316,9 @@ Start-Sleep -Seconds 20
 Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
 Invoke-Command -VMName $Win2k22vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
 Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
+if($deploySQL -eq $true){
+    Invoke-Command -VMName $SQLvmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
+}
 Start-Sleep -Seconds 5
 
 # Renaming 2012 machine
@@ -310,6 +335,9 @@ Write-Output "Transferring installation script to nested Windows VMs..."
 Copy-VMFile $Win2k19vmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
 Copy-VMFile $Win2k22vmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
 Copy-VMFile $Win2k12MachineName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
+if($deploySQL -eq $true){
+    Copy-VMFile $SQLvmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
+}
 
 (Get-Content -path "$agentScript\installArcAgentUbuntu.sh" -Raw) -replace '\$spnClientId', "'$Env:spnClientId'" -replace '\$spnClientSecret', "'$Env:spnClientSecret'" -replace '\$resourceGroup', "'$Env:resourceGroup'" -replace '\$spnTenantId', "'$Env:spnTenantId'" -replace '\$azureLocation', "'$Env:azureLocation'" -replace '\$subscriptionId', "'$Env:subscriptionId'" | Set-Content -Path "$agentScript\installArcAgentModifiedUbuntu.sh"
 
@@ -478,14 +506,14 @@ Add-Type $code
 
 # Send telemtry
 $Url = "https://arcboxleveluptelemtry.azurewebsites.net/api/triggerDeployment?"
-$rowKey = -join ((97..122) | Get-Random -Count 10 | ForEach-Object {[char]$_})
+$rowKey = -join ((97..122) | Get-Random -Count 10 | ForEach-Object { [char]$_ })
 $headers = @{
-    'Content-Type'='application/json'
-    }
+    'Content-Type' = 'application/json'
+}
 $Body = @{
-    Location = $azureLocation
+    Location     = $azureLocation
     PartitionKey = "Location"
-    RowKey = $rowKey
+    RowKey       = $rowKey
 }
 $Body = $Body | ConvertTo-Json
 Invoke-RestMethod -Method 'Post' -Uri $url -Body $body -Headers $headers

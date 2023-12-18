@@ -28,6 +28,9 @@
         },
         "emailAddress": {
             "value": "Your email address"
+        },
+        "deploySQL": {
+            "value": false
         }
     }
 }

@@ -101,7 +101,6 @@ Please also refer to the prerequisites section of the Azure Arc Jumpstart scenar
 
   <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fazure%2Farc_jumpstart_levelup%2Fmain%2Fazure_arc_sqlsrv_jumpstart%2FARM%2Fazuredeploy.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a>
 
-
 2. Fill in the parameter values as shown below and leave other values default, click on Review + create to continue deployment.
 
   ![Fill in parameters](azure-portal-deployment-params.png)
