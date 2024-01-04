@@ -55,7 +55,7 @@ winget install -e --id Microsoft.VisualStudioCode --no-upgrade
 winget install -e --id Microsoft.DotNet.SDK.7 --no-upgrade
 code --install-extension ms-dotnettools.dotnet-interactive-vscode
 code --install-extension ms-vscode.powershell
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/azure/arc_jumpstart_levelup/docs/azure_arc_servers_jumpstart/AzureArcLevelupNotebook.dib" -OutFile ./AzureArcLevelupNotebook.dib
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/AzureArcLevelupNotebook.dib" -OutFile ./AzureArcLevelupNotebook.dib
 code ./AzureArcLevelupNotebook.dib
 ```
 
