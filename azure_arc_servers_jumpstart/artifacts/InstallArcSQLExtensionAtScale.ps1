@@ -7,7 +7,7 @@ param (
     [string]$subscriptionId = $Env:subscriptionId,
     [string]$resourceGroup = $Env:resourceGroup,
     [string]$azureRegion = $Env:azureLocation,
-    [string[]]$remoteSQLServerList = [string[]]("ArcBox-Win2K22"),
+    [string[]]$remoteSQLServerList = [string[]]("ArcBox-SQL"),
     [string]$licenseType = "PAYG",
     [string]$AzureArcDir = "C:\ArcBox"
 )
