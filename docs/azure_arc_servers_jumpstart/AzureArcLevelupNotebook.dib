@@ -28,29 +28,29 @@ After completion of this workshop, you will be able to:
 - Query and inventory your Azure Arc-enabled servers using Azure Resource Graph
 - Enforce governance across your Azure Arc-enabled servers using Azure Policy
 
-| LevelUp Module | Duration | Facilitator |
-|---------------|---------------|---------------|
-|[**Understand pre-requisites to onboard Windows and Linux servers to Azure Arc**](#levelup-lab-environment) | 40 minutes | Seif Bassem |
-|**Enroll your Windows Server 2012/R2 or SQL Server 2012 machines for Extended Security Updates through Azure Arc (demo)** | 15 minutes | Alexander Ortha/Aurnov Chattopadhyay|
-|[**1 - Onboard Windows and Linux servers running using different onboarding methods**](#module-1-on-boarding-to-azure-arc-enabled-servers) | 15 minutes | Basim Majeed |
-|[**2 - Monitor your Azure Arc-enabled servers using Azure Monitor**](#module-2-monitor-your-azure-arc-enabled-servers-using-azure-monitor) | 45 minutes | Basim Majeed |
-|[**3 - Secure your Azure Arc-enabled servers using Microsoft Defender for servers**](#module-3-secure-your-azure-arc-enabled-servers-using-microsoft-defender-for-servers) | 15 minutes | Seif Bassem |
-|[**4 - Gain security insights from your Arc-enabled servers using Microsoft Sentinel**](#module-4--gain-security-insights-from-your-arc-enabled-servers-using-microsoft-sentinel) | 15 minutes | Seif Bassem |
-|[**5 - Keep your Azure Arc-enabled servers patched using Azure Update Manager**](#module-5-keep-your-azure-arc-enabled-servers-patched-using-azure-manager) | 15 minutes | Lloyd Lim |
-|[**6 - Monitor changes to your Azure Arc-enabled servers using Change tracking and inventory**](#module-6-monitor-changes-to-your-azure-arc-enabled-servers-using-change-tracking-and-inventory) | 15 minutes | Lloyd Lim |
-|[**7 - SSH into your Azure Arc-enabled servers using SSH access**](#module-7-ssh-into-your-azure-arc-enabled-servers-using-ssh-access) | 10 minutes | Jan Egil Ring |
-|**Run scripts in your Arc-enabled Windows server by using Run Commands (demo)** | 5 minutes | Jan Egil Ring |
-|[**8 - Run automation runbooks on your Azure Arc-enabled servers using Hybrid runbook workers**](#module-8-run-automation-runbooks-on-your-azure-arc-enabled-servers-using-hybrid-runbook-workers) | 15 minutes | Jan Egil Ring |
-|[**9 - Configure your Azure Arc-enabled servers using Azure Automanage machine configuration**](#module-9-configure-your-azure-arc-enabled-servers-using-azure-automanage-machine-configuration) | 30 minutes | Jan Egil Ring |
-|[**10 - Manage the Windows operating system of your Arc-enabled servers using Windows Admin Center (Preview)**](#module-10-manage-your-azure-arc-enabled-servers-using-admin-center-preview) | 15 minutes | Basim Majeed |
-|[**11 - Query and inventory your Azure Arc-enabled servers using Azure Resource Graph**](#module-11-query-and-inventory-your-azure-arc-enabled-servers-using-azure-resource-graph) | 15 minutes | Basim Majeed |
-|[**12 - Enforce governance across your Azure Arc-enabled servers using Azure Policy**](#module-12-enforce-governance-across-your-azure-arc-enabled-servers-using-azure-policy) | 15 minutes | Basim Majeed |
+| LevelUp Module | Duration |
+|---------------|---------------|
+|[**Understand pre-requisites to onboard Windows and Linux servers to Azure Arc**](#levelup-lab-environment) | 40 minutes|
+|**Enroll your Windows Server 2012/R2 or SQL Server 2012 machines for Extended Security Updates through Azure Arc (demo)** | 15 minutes |
+|[**1 - Onboard Windows and Linux servers running using different onboarding methods**](#module-1-on-boarding-to-azure-arc-enabled-servers) | 15 minutes |
+|[**2 - Monitor your Azure Arc-enabled servers using Azure Monitor**](#module-2-monitor-your-azure-arc-enabled-servers-using-azure-monitor) | 45 minutes |
+|[**3 - Secure your Azure Arc-enabled servers using Microsoft Defender for servers**](#module-3-secure-your-azure-arc-enabled-servers-using-microsoft-defender-for-servers) | 15 minutes |
+|[**4 - Gain security insights from your Arc-enabled servers using Microsoft Sentinel**](#module-4--gain-security-insights-from-your-arc-enabled-servers-using-microsoft-sentinel) | 15 minutes |
+|[**5 - Keep your Azure Arc-enabled servers patched using Azure Update Manager**](#module-5-keep-your-azure-arc-enabled-servers-patched-using-azure-manager) | 15 minutes |
+|[**6 - Monitor changes to your Azure Arc-enabled servers using Change tracking and inventory**](#module-6-monitor-changes-to-your-azure-arc-enabled-servers-using-change-tracking-and-inventory) | 15 minutes |
+|[**7 - SSH into your Azure Arc-enabled servers using SSH access**](#module-7-ssh-into-your-azure-arc-enabled-servers-using-ssh-access) | 10 minutes |
+|**Run scripts in your Arc-enabled Windows server by using Run Commands (demo)** | 5 minutes |
+|[**8 - Run automation runbooks on your Azure Arc-enabled servers using Hybrid runbook workers**](#module-8-run-automation-runbooks-on-your-azure-arc-enabled-servers-using-hybrid-runbook-workers) | 15 minutes |
+|[**9 - Configure your Azure Arc-enabled servers using Azure Automanage machine configuration**](#module-9-configure-your-azure-arc-enabled-servers-using-azure-automanage-machine-configuration) | 30 minutes |
+|[**10 - Manage the Windows operating system of your Arc-enabled servers using Windows Admin Center (Preview)**](#module-10-manage-your-azure-arc-enabled-servers-using-admin-center-preview) | 15 minutes |
+|[**11 - Query and inventory your Azure Arc-enabled servers using Azure Resource Graph**](#module-11-query-and-inventory-your-azure-arc-enabled-servers-using-azure-resource-graph) | 15 minutes |
+|[**12 - Enforce governance across your Azure Arc-enabled servers using Azure Policy**](#module-12-enforce-governance-across-your-azure-arc-enabled-servers-using-azure-policy) | 15 minutes |
 
 ## LevelUp Lab Environment
 
 ArcBox LevelUp edition is a special “flavor” of ArcBox that is intended for users who want to experience Azure Arc-enabled servers' capabilities in a sandbox environment. Screenshot below shows layout of the lab environment.
 
-  ![Screenshot showing ArcBox architecture](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/ArcBox-architecture.png)
+  ![Screenshot showing ArcBox architecture](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/ArcBox-architecture.png)
 
 ### Prerequisites
 
@@ -62,7 +62,7 @@ az --version
 
 #!markdown
 
-   ![Screenshot showing azure cli version](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/azcli_version.png)
+   ![Screenshot showing azure cli version](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/azcli_version.png)
 
 - Login to AZ CLI using the ```az login``` command.
 
@@ -132,7 +132,7 @@ az vm list-usage --location $location --output table
 
 #!markdown
 
-  ![Screenshot showing az vm list-usage](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/azvmlistusage.png)
+  ![Screenshot showing az vm list-usage](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/azvmlistusage.png)
 
 - Register necessary Azure resource providers by running the following commands.
 
@@ -189,13 +189,13 @@ az ad sp create-for-rbac -n $servicePrincipalName --role "Owner" --scopes /subsc
 
 #### Deployment Option 1: Azure portal
 
-- Click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fazure_arc%2Farc_servers_levelup%2Fazure_jumpstart_arcbox_servers_levelup%2FARM%2Fazuredeploy.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters.
+- Click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fazure%2Farc_jumpstart_levelup%2Fmain%2Fazure_arc_servers_jumpstart%2FARM%2Fazuredeploy.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters.
 
-  ![Screenshot showing Azure portal deployment of ArcBox](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portaldeploy.png)
+  ![Screenshot showing Azure portal deployment of ArcBox](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portaldeploy.png)
 
-  ![Screenshot showing Azure portal deployment of ArcBox](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portaldeployinprogress.png)
+  ![Screenshot showing Azure portal deployment of ArcBox](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portaldeployinprogress.png)
 
-  ![Screenshot showing Azure portal deployment of ArcBox](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portaldeploymentcomplete.png)
+  ![Screenshot showing Azure portal deployment of ArcBox](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portaldeploymentcomplete.png)
 
     > **NOTE: The deployment takes around 20 minutes to complete.**
 
@@ -232,7 +232,7 @@ az bicep upgrade
   - _`logAnalyticsWorkspaceName`_ - Unique name for the ArcBox Log Analytics workspace
   - _`emailAddress`_ - Your email address, to configure alerts for the monitoring action group
 
-  ![Screenshot showing example parameters](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/parameters_bicep.png)
+  ![Screenshot showing example parameters](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/parameters_bicep.png)
 
 - Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_jumpstart_arcbox/bicep) and run the below command:
 
@@ -263,23 +263,23 @@ By design, ArcBox does not open port 3389 on the network security group. Therefo
 
 - Open the _ArcBox-NSG_ resource in Azure portal and click "Add" to add a new rule.
 
-  ![Screenshot showing ArcBox-Client NSG with blocked RDP](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/rdp_nsg_blocked.png)
+  ![Screenshot showing ArcBox-Client NSG with blocked RDP](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/rdp_nsg_blocked.png)
 
-  ![Screenshot showing adding a new inbound security rule](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/nsg_add_rule.png)
+  ![Screenshot showing adding a new inbound security rule](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/nsg_add_rule.png)
 
 - Specify the IP address that you will be connecting from and select RDP as the service with "Allow" set as the action. You can retrieve your public IP address by accessing [https://icanhazip.com](https://icanhazip.com) or [https://whatismyip.com](https://whatismyip.com).
 
   <img src="./nsg_add_rdp_rule.png" alt="Screenshot showing adding a new allow RDP inbound security rule" width="400">
 
-  ![Screenshot showing all inbound security rule](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/rdp_nsg_all_rules.png)
+  ![Screenshot showing all inbound security rule](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/rdp_nsg_all_rules.png)
 
-  ![Screenshot showing connecting to the VM using RDP](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/rdp_connect.png)
+  ![Screenshot showing connecting to the VM using RDP](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/rdp_connect.png)
 
 #### Connect using Azure Bastion
 
 - If you have chosen to deploy Azure Bastion in your deployment, use it to connect to the VM.
 
-  ![Screenshot showing connecting to the VM using Bastion](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/bastion_connect.png)
+  ![Screenshot showing connecting to the VM using Bastion](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/bastion_connect.png)
 
   > **NOTE: When using Azure Bastion, the desktop background image is not visible. Therefore some screenshots in this guide may not exactly match your experience if you are connecting to _ArcBox-Client_ with Azure Bastion.**
 
@@ -289,23 +289,23 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 
 - In the Client VM configuration pane, enable just-in-time. This will enable the default settings.
 
-  ![Screenshot showing the Microsoft Defender for cloud portal, allowing RDP on the client VM](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/jit_configure.png)
+  ![Screenshot showing the Microsoft Defender for cloud portal, allowing RDP on the client VM](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/jit_configure.png)
 
-  ![Screenshot showing connecting to the VM using RDP](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/rdp_connect.png)
+  ![Screenshot showing connecting to the VM using RDP](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/rdp_connect.png)
 
-  ![Screenshot showing connecting to the VM using JIT](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/jit_connect_rdp.png)
+  ![Screenshot showing connecting to the VM using JIT](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/jit_connect_rdp.png)
 
 #### The Logon scripts
 
 - Once you log into the _ArcBox-Client_ VM, multiple automated scripts will open and start running. These scripts usually take 10-20 minutes to finish, and once completed, the script windows will close automatically. At this point, the deployment is complete.
 
-  ![Screenshot showing ArcBox-Client](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/automation.png)
+  ![Screenshot showing ArcBox-Client](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/automation.png)
 
 - Deployment is complete! Let's begin exploring the features of Azure Arc-enabled servers with the Level-up modules.
 
-  ![Screenshot showing complete deployment](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/arcbox_complete.png)
+  ![Screenshot showing complete deployment](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/arcbox_complete.png)
 
-  ![Screenshot showing ArcBox resources in Azure portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/rg_arc.png)
+  ![Screenshot showing ArcBox resources in Azure portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/rg_arc.png)
 
 #!markdown
 
@@ -321,15 +321,15 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 
 - Enter "Machines - Azure Arc" in the top search bar in the Azure portal and select it from the displayed services.
 
-    ![Screenshot showing how to display Arc connected servers in portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/Arc_servers_search.png)
+    ![Screenshot showing how to display Arc connected servers in portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/Arc_servers_search.png)
 
 - We should see the machines that are connected to Arc already: Arcbox-Ubuntu-01 and ArcBox-Win2K19.
 
-    ![Screenshot showing existing Arc connected servers](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/First_view_of%20Arc_connected.png)
+    ![Screenshot showing existing Arc connected servers](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/First_view_of%20Arc_connected.png)
 
 - We want to connect the other 2 machines running as VMs in the ArcBox-Client. We can see these (ArcBox-Win2K22 and ArcBox-Ubuntu-02) by running the Hyper-V Manager in the ArcBox-Client (after we have connected to it with RDP as explained earlier in the setup).
 
-    ![Screenshot of 4 machines on Hyper-v](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/choose_Hyper-V.png)
+    ![Screenshot of 4 machines on Hyper-v](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/choose_Hyper-V.png)
 
 #### Task 2: Onboard a Windows machine to Azure Arc
 
@@ -348,11 +348,11 @@ $sp | Format-Table AppId, @{ Name = "Secret"; Expression = { $_.PasswordCredenti
 
 - From the Azure portal go to the "Machines - Azure Arc" page and select "Add/Create" at the upper left, then select "Add a machine".
 
-    ![Screenshot to select add a machine](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/Select_Add_a_machine.png)
+    ![Screenshot to select add a machine](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/Select_Add_a_machine.png)
 
 - In the next screen, go to "Add multiple severs" and click on "Generate script".
 
-    ![Screenshot Add Multiple Servers Script](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/Add_multiple_servers_script.png)
+    ![Screenshot Add Multiple Servers Script](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/Add_multiple_servers_script.png)
 
 - Fill in the Resource Group, Region, Operating System (Windows), keep Connectivity as "Public endpoint" and in the Authentication box select the onboarding service principal that you created in this task. Then download the script to your local machine (or you can copy the content into the clipboard). 
 
@@ -360,11 +360,11 @@ $sp | Format-Table AppId, @{ Name = "Secret"; Expression = { $_.PasswordCredenti
 
 - Fill in the Service Principal secret in the script and run it.
 
-    ![Screenshot run onboard windows script](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/run_windows_onboard_sctipt.png)
+    ![Screenshot run onboard windows script](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/run_windows_onboard_sctipt.png)
 
 - On successful completion a message is displayed to confirm the machine is connected to Azure Arc. We can also verify that our Windows machine is connected in the Azure portal (Machines - Azure Arc).
 
-    ![Screenshot confirm win machine on-boarded](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/confirm_windows_machine_onboarding.png)
+    ![Screenshot confirm win machine on-boarded](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/confirm_windows_machine_onboarding.png)
 
 #### Task 3: Onboard a Linux machine to Azure Arc
 
@@ -393,11 +393,11 @@ Write-Host "Copied!!"
 
 - Go the the ArcBox-Client machine, and from the "Networking" tab on Hyper-v Manager find the IP address of the Linux machine.
 
-    ![Screenshot IP address of second Ubuntu machine](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/IP_address_second_Linux_vm.png)
+    ![Screenshot IP address of second Ubuntu machine](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/IP_address_second_Linux_vm.png)
 
 - SSH into the ArcBox-Ubuntu-02 machine using "Putty" or "Vscode".
 
-    ![Screenshot connect with putty](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/putty.png)
+    ![Screenshot connect with putty](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/putty.png)
 
 - Enter the user name and password (defaults "arcdemo" and "ArcDemo123!!") and log-in to the Linux VM.
 
@@ -429,7 +429,7 @@ Write-Host "Copied!!"
 
 - Wait for the script to finish successfully. A message should confirm that the machine is now Arc-connected. We can also verify that our Windows machine is connected in the Azure portal (Machines - Azure Arc). **If the script returns an error then check that you have added the three firewall (ufw) commands mentioned above.**
 
-    ![Screenshot Linux message confirm connection](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/Linux_%20message_confirm_connection.png)
+    ![Screenshot Linux message confirm connection](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/Linux_%20message_confirm_connection.png)
 
 ### Module 2: Monitor your Azure Arc-enabled servers using Azure Monitor
 
@@ -447,23 +447,23 @@ Azure Policy lets you set and enforce requirements for all new resources you cre
 
 - In the Azure portal, search for _Policy_.
 
-    ![Screenshot showing searching for Policy in the azure portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_policy_search.png)
+    ![Screenshot showing searching for Policy in the azure portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_policy_search.png)
 
 - Click on "Definitions" and search for the _(ArcBox) Deploy Azure Monitor on Arc-enabled Windows machines_ policy.
 
-    ![Screenshot showing searching for the arcbox policies](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/policy_arcbox.png)
+    ![Screenshot showing searching for the arcbox policies](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/policy_arcbox.png)
 
 - Click "Assign Initiative".
 
-    ![Screenshot showing assigning the policy](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/policy_monitor_windows_assign.png)
+    ![Screenshot showing assigning the policy](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/policy_monitor_windows_assign.png)
 
 - Select the right scope (management group, subscription and resource group) for the resource group where you deployed _ArcBox_.
 
-    ![Screenshot showing assigning the policy to the right scope](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/policy_monitor_windows_scope.png)
+    ![Screenshot showing assigning the policy to the right scope](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/policy_monitor_windows_scope.png)
 
 - After validating the scope, click "Next" twice to navigate to the parameters tab.
 
-    ![Screenshot showing assigning the policy initiative to the right scope](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/policy_monitor_windows_dcr_blank.png)
+    ![Screenshot showing assigning the policy initiative to the right scope](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/policy_monitor_windows_dcr_blank.png)
 
 - To get the "Data Collection Rule" resource Id,  run the following CLI command
 
@@ -481,45 +481,45 @@ az resource show --name "arcbox-ama-vmi-perfAndda-dcr" `
 
 - You can also find the "Data Collection Rule" resource Id from the Azure portal. Search for the _arcbox-ama-vmi-perfAndda-dcr_ data collection rule.
 
-    ![Screenshot showing searching for data collection rules](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/dcr_search_portal.png)
+    ![Screenshot showing searching for data collection rules](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/dcr_search_portal.png)
 
-    ![Screenshot showing getting the data collection rules resource Id](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/dcr_vm_insights.png)
+    ![Screenshot showing getting the data collection rules resource Id](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/dcr_vm_insights.png)
 
-    ![Screenshot showing getting the data collection rules resource Id](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/dcr_json_view.png)
+    ![Screenshot showing getting the data collection rules resource Id](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/dcr_json_view.png)
 
-    ![Screenshot showing getting the data collection rules resource Id](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/dcr_resource_id.png)
+    ![Screenshot showing getting the data collection rules resource Id](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/dcr_resource_id.png)
 
-    ![Screenshot showing adding the data collection rules resource Id](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/policy_monitor_windows_create.png)
+    ![Screenshot showing adding the data collection rules resource Id](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/policy_monitor_windows_create.png)
 
     > **NOTE:The policy will take 5-15 minutes to assess the current resources.**
 
 - After the policy has reported compliance, create a remediation task to remediate existing machines.
 
-    ![Screenshot showing the ama policy not compliant](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/policy_monitor_windows_non_compliant.png)
+    ![Screenshot showing the ama policy not compliant](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/policy_monitor_windows_non_compliant.png)
 
-    ![Screenshot showing creating the remediation task](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/policy_monitor_windows_create_remediation.png)
+    ![Screenshot showing creating the remediation task](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/policy_monitor_windows_create_remediation.png)
 
-    ![Screenshot showing creating the remediation task](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/policy_monitor_windows_remediate.png)
+    ![Screenshot showing creating the remediation task](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/policy_monitor_windows_remediate.png)
 
 > **NOTE: When creating the remediation task, make sure to select the same region where you deployed ArcBox**
 
 - Create one remediation task per policy definition in the initiative.
 
-    ![Screenshot showing creating the remediation task](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/policy_monitor_windows_create_remediation_multiple.png)
+    ![Screenshot showing creating the remediation task](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/policy_monitor_windows_create_remediation_multiple.png)
 
 - After all remediation tasks have completed. You should see the Azure Monitor agent extension and the dependency agent extension deployed to the Arc-enabled machines.
 
-    ![Screenshot showing the remediation tasks successful](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/policy_monitor_windows_remediate_tasks.png)
+    ![Screenshot showing the remediation tasks successful](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/policy_monitor_windows_remediate_tasks.png)
 
-    ![Screenshot showing the monitoring agents installed](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/machine_windows_ama_agents.png)
+    ![Screenshot showing the monitoring agents installed](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/machine_windows_ama_agents.png)
 
 - (Optional) Repeat the same steps in _Task 2_ to assign the Linux policy for data collection _(ArcBox) Deploy Azure Monitor on Arc-enabled Linux machines._
 
 - After configuring the agents and VM insights using Azure Policy, it will take 10-25 minutes for the insights data to start showing up.
 
-   ![Screenshot showing VM insights on the Windows Arc-enabled machine](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/machine_vm_insights.png)
+   ![Screenshot showing VM insights on the Windows Arc-enabled machine](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/machine_vm_insights.png)
 
-   ![Screenshot showing VM insights on the Linux Arc-enabled machine](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/machine_vm_insights_linux.png)
+   ![Screenshot showing VM insights on the Linux Arc-enabled machine](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/machine_vm_insights_linux.png)
 
 #### Task 2: Configure data collection for logs and metrics
 
@@ -527,49 +527,49 @@ As part of the ArcBox automation, some alerts and workbooks have been created to
 
 - In the Azure portal, search for _Data Collection rules_.
 
-    ![Screenshot showing searching for data collection rules](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/dcr_search_portal.png)
+    ![Screenshot showing searching for data collection rules](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/dcr_search_portal.png)
 
 - Create a new data collection rule.
 
-    ![Screenshot showing creating a new data collection rule](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/alerts_dcr_create.png)
+    ![Screenshot showing creating a new data collection rule](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/alerts_dcr_create.png)
 
 - Provide a name and select the same resource group where ArcBox is deployed. Make sure to select Windows as the operating system.
 
-    ![Screenshot showing creating a new data collection rule](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/alerts_dcr_basics.png)
+    ![Screenshot showing creating a new data collection rule](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/alerts_dcr_basics.png)
 
 - In the "Resources" tab, select the right resource group and the Arc-enabled servers onboarded.
 
-    ![Screenshot showing adding resources to the data collection rule](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/alerts_dcr_resources.png)
+    ![Screenshot showing adding resources to the data collection rule](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/alerts_dcr_resources.png)
 
 - Add a new "Performance Counters" data source, and make sure to select all the custom counters.
 
-    ![Screenshot showing adding performance counters to the data collection rule](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/alerts_dcr_counters.png)
+    ![Screenshot showing adding performance counters to the data collection rule](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/alerts_dcr_counters.png)
 
 - Add a new "Azure Monitor Logs" destination and select the log analytics workspace deployed in the ArcBox resource group and save.
 
-    ![Screenshot showing adding performance counters to the data collection rule](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/alerts_dcr_counters_destination.png)
+    ![Screenshot showing adding performance counters to the data collection rule](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/alerts_dcr_counters_destination.png)
 
 - Add a new "Windows Event logs" data source.
 
-    ![Screenshot showing adding log data source to the data collection rule](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/alerts_dcr_windows_logs_source.png)
+    ![Screenshot showing adding log data source to the data collection rule](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/alerts_dcr_windows_logs_source.png)
 
 - Select _Critial_, _Error_, _Warning_ events in the Application and System logs and add the data source.
 
-    ![Screenshot showing adding log data source to the data collection rule](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/alerts_dcr_windows_logs_types.png)
+    ![Screenshot showing adding log data source to the data collection rule](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/alerts_dcr_windows_logs_types.png)
 
 - Save and create the data collection rule.
 
 - Repeat the previous steps to create another Linux data collection rule.
 
-    ![Screenshot showing creating a new linux data collection rule](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/alerts_dcr_linux_basics.png)
+    ![Screenshot showing creating a new linux data collection rule](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/alerts_dcr_linux_basics.png)
 
-    ![Screenshot showing adding resources to the data collection rule](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/alerts_dcr_resources_linux.png)
+    ![Screenshot showing adding resources to the data collection rule](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/alerts_dcr_resources_linux.png)
 
-    ![Screenshot showing adding logs to the data collection rule](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/alerts_dcr_logs_linux.png)
+    ![Screenshot showing adding logs to the data collection rule](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/alerts_dcr_logs_linux.png)
 
 - After waiting for 5-10 minutes for the data collection rule to start collecting data, restart the servers in the Hyper-V manager on the _ArcBox-Client_ VM to trigger some new events.
 
-    ![Screenshot showing restarting the vms in the hyper-v manager](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/alerts_hyperv_restart.png)
+    ![Screenshot showing restarting the vms in the hyper-v manager](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/alerts_hyperv_restart.png)
 
 #### Task 3: View alerts and visualizations
 
@@ -577,21 +577,21 @@ As part of the ArcBox automation, some alerts and workbooks have been created to
 
 - In Azure Monitor, click on _Alerts_. and select _Alert rules_
 
-    ![Screenshot showing opening the alerts page](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/alerts_rules_open.png)
+    ![Screenshot showing opening the alerts page](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/alerts_rules_open.png)
 
 - Explore the alert rules crated for you.
 
-    ![Screenshot showing opening one alert around processor time](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/alerts_rules_rules.png)
+    ![Screenshot showing opening one alert around processor time](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/alerts_rules_rules.png)
 
 - Go back to Azure Monitor and click on _Workbooks_. There are three workbooks deployed for you.
 
-    ![Screenshot showing deployed workbooks](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/alerts_workbooks_list.png)
+    ![Screenshot showing deployed workbooks](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/alerts_workbooks_list.png)
 
-    ![Screenshot showing alerts workbook](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/alerts_workbooks_alerts.png)
+    ![Screenshot showing alerts workbook](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/alerts_workbooks_alerts.png)
 
-    ![Screenshot showing performance workbook](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/alerts_workbooks_perf.png)
+    ![Screenshot showing performance workbook](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/alerts_workbooks_perf.png)
 
-    ![Screenshot showing events workbook](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/alerts_workbooks_events.png)
+    ![Screenshot showing events workbook](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/alerts_workbooks_events.png)
 
 #!markdown
 
@@ -609,27 +609,27 @@ In this module, you will learn how to enable and leverage Microsoft Defender for
 
 - From the Azure home page, search for defender and select Microsoft Defender for Cloud.
 
-    ![Screenshot showing searching for Defender for Cloud in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/defenderForCloud_portal_search.png)
+    ![Screenshot showing searching for Defender for Cloud in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/defenderForCloud_portal_search.png)
 
 - If you already have Defender plans setup at your subscription level, you may find that Defender is already turned on for your Arc-enabled servers. However, if Defender is not enabled, select _Environment settings_ from the Management section on the left blade.
 
-    ![Screenshot showing selecting the right subscription to enableDefender for Cloud in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/defenderForCloud_portal_env_settings.png)
+    ![Screenshot showing selecting the right subscription to enableDefender for Cloud in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/defenderForCloud_portal_env_settings.png)
 
 - Expand the Tenant Root Group, and then select your subscription.
 
 - Enable the plan for servers, you can select either _Plan 1_ or _Plan 2_ for this exercise
 
-    ![Screenshot showing enabling Defender for servers plan in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/defenderForCloud_portal_servers_enable.png)
+    ![Screenshot showing enabling Defender for servers plan in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/defenderForCloud_portal_servers_enable.png)
 
 - Click on the settings option in the _Monitoring coverage_ and enable the following capabilities:
   - Vulnerability assessment for machines
   - Endpoint protection
 
-    ![Screenshot showing configuring Defender for servers plan 1 in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/defenderForCloud_portal_servers_settings.png)
+    ![Screenshot showing configuring Defender for servers plan 1 in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/defenderForCloud_portal_servers_settings.png)
 
 - Click Save.
 
-    ![Screenshot showing configuring Defender for servers plan 1 in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/defenderForCloud_portal_save.png)
+    ![Screenshot showing configuring Defender for servers plan 1 in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/defenderForCloud_portal_save.png)
 
 #### Task 3: Detect threats on your servers using alerts
 
@@ -637,7 +637,7 @@ In this module, you will learn how to enable and leverage Microsoft Defender for
 - Go to Start and type _PowerShell ISE_.
 - Right-select and select Run as administrator.
 
-    ![Screenshot showing opening cmd as administator](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/powershellISE_runas.png)
+    ![Screenshot showing opening cmd as administator](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/powershellISE_runas.png)
 
 - Run the following command:
 
@@ -664,21 +664,21 @@ Write-Host "Copied!!"
 
 #!markdown
 
-  ![Screenshot showing running the Defender alert trigger script in ISE](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/run_defender_alert_trigger.png)
+  ![Screenshot showing running the Defender alert trigger script in ISE](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/run_defender_alert_trigger.png)
 
 - Navigate to the Security tab of the _Win2k22_ Arc-enabled server in the portal
 
-    ![Screenshot showing the generated alert](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/defenderForCloud_portal_alert.png)
+    ![Screenshot showing the generated alert](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/defenderForCloud_portal_alert.png)
 
   > **NOTE: You should already see an alert for the Win2k19 Arc-enabled server**
 
 - You can also see the alerts from the _Defender for Cloud_ portal, in the _Security alerts_ pane.
 
-    ![Screenshot showing the generated alert](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/defenderForCloud_portal_alert_mdfc.png)
+    ![Screenshot showing the generated alert](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/defenderForCloud_portal_alert_mdfc.png)
 
   > **NOTE: If you don't see the alerts, make sure to select the Information severity in the filters**
 
-    ![Screenshot showing the generated alert filters](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/defenderForCloud_portal_alert_filter.png)
+    ![Screenshot showing the generated alert filters](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/defenderForCloud_portal_alert_filter.png)
 
 #### Task 4: Enable vulnerability assessment
 
@@ -688,23 +688,23 @@ Write-Host "Copied!!"
 
 - You should find the recommendation _Machines should have vulnerability findings resolved_ if the vulnerability assessment has been enabled automatically on the subscription.
 
-    ![Screenshot showing defender recommendations](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/defenderForCloud_portal_recommendation_vulnerabilities.png)
+    ![Screenshot showing defender recommendations](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/defenderForCloud_portal_recommendation_vulnerabilities.png)
 
-    ![Screenshot showing defender recommendations](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/defenderForCloud_portal_vulnerabilities_list.png)
+    ![Screenshot showing defender recommendations](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/defenderForCloud_portal_vulnerabilities_list.png)
 
 - If you do not see this recommendation, click on the _Machines should have a vulnerability assessment solution installed_
 
-    ![Screenshot showing defender recommendations](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/defenderForCloud_portal_recommendations.png)
+    ![Screenshot showing defender recommendations](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/defenderForCloud_portal_recommendations.png)
 
 - Click on the "Machines should have a vulnerability assessment solution" recommendation and click "fix"
 
-    ![Screenshot showing fixing the recommendation](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/defenderForCloud_portal_recommendation_fix.png)
+    ![Screenshot showing fixing the recommendation](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/defenderForCloud_portal_recommendation_fix.png)
 
-    ![Screenshot showing fixing the recommendation](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/defenderForCloud_portal_enable_vulnrability.png)
+    ![Screenshot showing fixing the recommendation](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/defenderForCloud_portal_enable_vulnrability.png)
 
-    ![Screenshot showing fixing the recommendation](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/defenderForCloud_portal_recommendation_fix_resource.png)
+    ![Screenshot showing fixing the recommendation](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/defenderForCloud_portal_recommendation_fix_resource.png)
 
-    ![Screenshot showing fixing the recommendation](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/defenderForCloud_portal_recommendation_fix_success.png)
+    ![Screenshot showing fixing the recommendation](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/defenderForCloud_portal_recommendation_fix_success.png)
 
 > **NOTE: The same steps can be applied to the Linux Arc-enabled machines**
 
@@ -718,37 +718,37 @@ In this module you will configure Windows security events collection using Senti
 
 - In the Azure Portal, search for _Sentinel_
 
-    ![Screenshot showing searching for Sentinel on the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_search_sentinel.png)
+    ![Screenshot showing searching for Sentinel on the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_search_sentinel.png)
 
 - Click on "Content Hub" and search for "Windows Security Events" and install it.
 
-    ![Screenshot showing searching for windows security events](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/sentinel_content_hub.png)
+    ![Screenshot showing searching for windows security events](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/sentinel_content_hub.png)
 
 - After installation, click on "Manage" to configure the collector.
 
-    ![Screenshot managing the data collection](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/sentinel_manage_data_collector.png)
+    ![Screenshot managing the data collection](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/sentinel_manage_data_collector.png)
 
 - Select the data connector and make sure you've selected the _Windows Security Events via AMA_ and click "open connector page".
 
-    ![Screenshot selecting the AMA data collection](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/sentinel_data_collector_ama.png)
+    ![Screenshot selecting the AMA data collection](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/sentinel_data_collector_ama.png)
 
 - Create a new data collection rule.
 
-    ![Screenshot showing creating a new data collection rule](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/sentinel_create_new_dcr.png)
+    ![Screenshot showing creating a new data collection rule](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/sentinel_create_new_dcr.png)
 
 - Provide a name for the data collection rule and select the same resource group where you've deployed this level-up lab.
 
-    ![Screenshot selecting the data collection rule name](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/sentinel_dcr_creation.png)
+    ![Screenshot selecting the data collection rule name](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/sentinel_dcr_creation.png)
 
 - Select one or multiple Windows Arc-enabled machines.
 
-    ![Screenshot selecting the arc machines](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/sentinel_dcr_select_server.png)
+    ![Screenshot selecting the arc machines](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/sentinel_dcr_select_server.png)
 
 - Select the "Common" event type and create the data collection rule.
 
-    ![Screenshot selecting the common event type](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/sentinel_security_events_common.png)
+    ![Screenshot selecting the common event type](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/sentinel_security_events_common.png)
 
-    ![Screenshot selecting the AMA data collection created](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/sentinel_security_events_created.png)
+    ![Screenshot selecting the AMA data collection created](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/sentinel_security_events_created.png)
 
 #### Task 2: Simulating and viewing security events
 
@@ -758,19 +758,19 @@ In this module you will configure Windows security events collection using Senti
 
 - Right-click one of the Windows machines and connect to it.
 
-    ![Screenshot showing connecting to the nested vm on hyper-v](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/hyperv_connect_vm.png)
+    ![Screenshot showing connecting to the nested vm on hyper-v](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/hyperv_connect_vm.png)
 
 - Simulate some failed login attempts by trying to login multiple times using an incorrect password.
 
-    ![Screenshot showing failed login attemps on the nested vm](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/hyperv_failed_login.png)
+    ![Screenshot showing failed login attemps on the nested vm](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/hyperv_failed_login.png)
 
 - After waiting for about 10-15 minutes for data to start getting ingested into the log analytics workspace, navigate to "Workbooks" and select the "Identity & Access" workbook.
 
-    ![Screenshot selecting the Identity and access workbook](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/sentinel_open_workbook.png)
+    ![Screenshot selecting the Identity and access workbook](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/sentinel_open_workbook.png)
 
 - Once data is being ingested, you will start seeing the failed login attempts in the workbook.
 
-    ![Screenshot selecting the Identity and access workbook](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/sentinel_failed_login.png)
+    ![Screenshot selecting the Identity and access workbook](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/sentinel_failed_login.png)
 
 #!markdown
 
@@ -790,58 +790,58 @@ This new service is currently in preview and has no powershell scripting option 
 
 Note that all Azure VMs and Arc Server VMs are already visible in this Azure Update Manager service.
 
-   ![Screenshot showing initial view of all VMs](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/updatemgmt-allvms.png)
+   ![Screenshot showing initial view of all VMs](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/updatemgmt-allvms.png)
 
 #### Refresh the VMs
 
 - Once the VMs have been onboarded, clicking on the refresh button will refresh the current status of selected VMs.
 This can also be set as an automatic recurring task for at scale refresh - once every 24 hours. This automatic refresh interval cannot be changed.
 
-   ![Screenshot showing automatic refresh configuration](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/updatemgmt-updatesettings.png)
+   ![Screenshot showing automatic refresh configuration](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/updatemgmt-updatesettings.png)
 
 #### Setup Maintenance Configuration
 
 - Setup a list of maintenance configurations for each specific group of VMs in your environment. For countries in Asia and Europe, it is a good idea to use second Tuesday + 1 day to coincode with Patch Tuesday. Do not use "Second Wednesday of the month".
 
-   ![Screenshot showing how to add a maintenance config](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/updatemgmt-maintenanceconfig.png)
+   ![Screenshot showing how to add a maintenance config](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/updatemgmt-maintenanceconfig.png)
 
 - Then choose how machines are added to this maintenance configuration (by OS, location, resource group)
 
-   ![Screenshot showing the dynamic scopes for update groups](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/updatemgmt-dynamicscopes.png)
+   ![Screenshot showing the dynamic scopes for update groups](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/updatemgmt-dynamicscopes.png)
 
 >**Note: If you want to enable dynamic scopes, you will need to enable the "Dynamic Scoping" preview feature in the subscription
 
-   ![Screenshot showing the dynamic scopes for update groups](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/updatemgmt-previewdynamicscope.png)
+   ![Screenshot showing the dynamic scopes for update groups](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/updatemgmt-previewdynamicscope.png)
 
 - Or choose machines specifically instead of dynamically
 
-   ![Screenshot showing which machines to be selected for config](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/updatemgmt-specificmachineselection.png)
+   ![Screenshot showing which machines to be selected for config](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/updatemgmt-specificmachineselection.png)
 
 - Then choose what type of updates will be installed by this config
 
-   ![Screenshot showing which updates are going to be installed](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/updatemgmt-specificupdates.png)
+   ![Screenshot showing which updates are going to be installed](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/updatemgmt-specificupdates.png)
 
 #### Forcing one-time updates
 
 - Instead of using maintenance configs with specific recurring cycles, you can also setup one-time updates (immediately!). Start by forcing an immediate refresh.
 
-   ![Screenshot showing onetime refresh](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/updatemgmt-onetimerefresh.png)
+   ![Screenshot showing onetime refresh](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/updatemgmt-onetimerefresh.png)
 
 - Then specify which machines
 
-   ![Screenshot showing what updates for each machines](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/updatemgmt-installonetimeupdates.png)
+   ![Screenshot showing what updates for each machines](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/updatemgmt-installonetimeupdates.png)
 
 - Choose which types of updates
 
-   ![Screenshot showing which types of updates to install](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/updatemgmt-showwhichupdates.png)
+   ![Screenshot showing which types of updates to install](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/updatemgmt-showwhichupdates.png)
 
 - Look at the update options
 
-   ![Screenshot showing changes to be made in the onboard script](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/updatemgmt-installoptions.png)
+   ![Screenshot showing changes to be made in the onboard script](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/updatemgmt-installoptions.png)
 
 - Then wait for a few hours and a few reboots - this can take repeated forcing for machines that have not been updated for a long time
 
-   ![Screenshot showing final state](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/updatemgmgt-allupdatescompleted.png)
+   ![Screenshot showing final state](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/updatemgmgt-allupdatescompleted.png)
 
 #### Reporting
 
@@ -849,15 +849,15 @@ Under the Monitoring part of the Update Manager, there is a default workbook, wh
 
 - View of currently connected machines, split by Azure and Azure Arc VMs, and Windows and Linux numbers.
 
-   ![Screenshot showing overall machine Status](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/updatemgmt-reporting1.png)
+   ![Screenshot showing overall machine Status](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/updatemgmt-reporting1.png)
 
 - View of manual vs periodic assessments and manual vs automatically updated.
 
-   ![Screenshot showing overall machine Status](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/updatemgmt-repoting2.png)
+   ![Screenshot showing overall machine Status](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/updatemgmt-repoting2.png)
 
 - View of updates by classification
 
-   ![Screenshot showing overall machine Status](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/updatemgmt-reporting3.png)
+   ![Screenshot showing overall machine Status](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/updatemgmt-reporting3.png)
 
 #### Module recap
 
@@ -881,7 +881,7 @@ The following are required for this module to function:
 
 Currently, the policies to enable Change tracking and inventory with AMA are in preview. For a seamless policy experience, begin by enabling the _Microsoft.Compute/AutomaticExtensionUpgradePreview_ feature flag for your specific subscription. To register for this feature flag, go to Azure portal > Subscriptions > Select specific subscription name. In the Preview features, select Automatic Extension Upgrade Preview and then select Register.
 
-   ![Screenshot showing how to enable preview change tracking](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/changetracking-enable.png)
+   ![Screenshot showing how to enable preview change tracking](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/changetracking-enable.png)
 
 #### Current Limitations
 
@@ -903,13 +903,13 @@ Follow the link [here](https://learn.microsoft.com/azure/automation/change-track
 
 Verify that Change Tracking is enabled by going to the portal and selecting the windows server e.g. ArcBox-Win2K19 from Arc Machines. Select "Settings" from the "Change tracking" page:
 
-   ![Screenshot showing Change Tracking](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/CT_1_verify-.png)
+   ![Screenshot showing Change Tracking](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/CT_1_verify-.png)
 
 #### Task 2: Track changes in Windows services
 
 - From the "Change tracking" settings select "Windows Services" and change the "Collection Frequency" to 10 minutes.
 
-   ![Screenshot CT Windows Services settings](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/CT_2_WinServices.png)
+   ![Screenshot CT Windows Services settings](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/CT_2_WinServices.png)
 
 - Try stopping the "Print Spooler" service on the Arc machine ArcBox-Win2k19 using an administrative powershell session (or from the Services desktop application).
 
@@ -928,7 +928,7 @@ Write-Host "Copied!!"
 - The service changes will eventually show up in the "Change tracking" page for the server ArcBox-Win2K19.
 (By default Windows services status are updated every 30 minutes but you changed that to 10 minutes earlier to speed up the result for this task).
 
-   ![Screenshot CT Spooler stopped](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/CT_3_WinServices-spooler.png)
+   ![Screenshot CT Spooler stopped](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/CT_3_WinServices-spooler.png)
 
 - You can restart the spooler service on the server if you wish and change tracking will show the outcome in the portal after few minutes.
 
@@ -948,27 +948,27 @@ Write-Host "Copied!!"
 
 - Navigate to one of the Arc-enabled Windows machines and select "Change tracking" then select "Settings" then select "Windows Files". You should see the "Add windows file setting" screen on the right hand side. Configure these settings to track the changes to the file "c:\windows\system32\drivers\etc\hosts" and to upload the file content. 
 
-     ![Screenshot showing Edit windows file Settings](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/CT_4_File-Settings.png)
+     ![Screenshot showing Edit windows file Settings](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/CT_4_File-Settings.png)
 
 - Now set the file location where changed files will be uploaded. You should have a storage account deployed in the resource group of this level-up.
 
-     ![Screenshot showing Storage Account Settings](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/CT_5_File-Location.png)
+     ![Screenshot showing Storage Account Settings](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/CT_5_File-Location.png)
 
 - Navigate to the storage account. Click on "Containers" and you should see a container created automatically for you by Azure Change Tracking.
 
-     ![Screenshot storage container for CT](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/CT_6_CT-Storage-Container.png)
+     ![Screenshot storage container for CT](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/CT_6_CT-Storage-Container.png)
 
   - Click on the "changetrackingblob" container, and in the next page select "Access Control (IAM)", then on "Add role assignment"
 
-     ![Screenshot blob IAM](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/CT_7_CT-Storage-Container-Access.png)
+     ![Screenshot blob IAM](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/CT_7_CT-Storage-Container-Access.png)
 
   - Select the Storage Blob Data Contributor role
 
-     ![Screenshot blob contributor](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/CT_8_CT-BlobDataContributor.png)
+     ![Screenshot blob contributor](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/CT_8_CT-BlobDataContributor.png)
 
   - Assign the role to the Windows Arc enabled machines managed identity.
 
-     ![Screenshot assign VM data contributor role](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/CT_9_CT-BlobDataContributor-VM.png)
+     ![Screenshot assign VM data contributor role](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/CT_9_CT-BlobDataContributor-VM.png)
 
 
 - Modify the hosts file on the "ArcBox-Win2K19" machine (c:\Windows\System32\Drivers\etc\hosts).
@@ -1158,9 +1158,9 @@ It is possible to pre-configure this setting on the Arc-enabled servers by follo
 
 For this exercise, type `yes` and press Enter to proceed.
 
-   ![Screenshot showing usage of SSH via Azure CLI](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/ssh_via_az_cli_01.png)
+   ![Screenshot showing usage of SSH via Azure CLI](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/ssh_via_az_cli_01.png)
 
-   ![Screenshot showing usage of SSH via Azure CLI](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/ssh_via_az_cli_02.png)
+   ![Screenshot showing usage of SSH via Azure CLI](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/ssh_via_az_cli_02.png)
 
 Following the previous method, connect to _ArcBox-Win2K22_ via SSH.
 
@@ -1203,9 +1203,9 @@ Write-Host "Copied!!"
 
 #!markdown
 
-   ![Screenshot showing usage of SSH via Azure CLI](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/ssh_via_az_cli_03.png)
+   ![Screenshot showing usage of SSH via Azure CLI](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/ssh_via_az_cli_03.png)
 
-   ![Screenshot showing usage of SSH via Azure CLI](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/ssh_via_az_cli_04.png)
+   ![Screenshot showing usage of SSH via Azure CLI](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/ssh_via_az_cli_04.png)
 
 In addition to SSH, you can also connect to the Azure Arc-enabled servers, Windows Server virtual machines using **Remote Desktop** tunneled via SSH.
 
@@ -1248,7 +1248,7 @@ Write-Host "Copied!!"
 
 #!markdown
 
-  ![Screenshot showing usage of Remote Desktop tunnelled via SSH](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/rdp_via_az_cli.png)
+  ![Screenshot showing usage of Remote Desktop tunnelled via SSH](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/rdp_via_az_cli.png)
 
 #### Task 4 - Optional: Azure AD/Entra ID based SSH Login
 
@@ -1341,11 +1341,11 @@ In this module we will onboard two Azure Arc-enabled servers as Hybrid runbook w
 
 - In the Azure Portal, search for _automation_ and navigate to _Automation accounts_
 
-    ![Screenshot showing searching for Automation on the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_search_automation.png)
+    ![Screenshot showing searching for Automation on the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_search_automation.png)
 
 - Click on "Create":
 
-    ![Screenshot showing creation of Automation account on the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_create_automation.png)
+    ![Screenshot showing creation of Automation account on the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_create_automation.png)
 
 - Select the subscription and resource group where you have deployed ArcBox.
 
@@ -1355,25 +1355,25 @@ In this module we will onboard two Azure Arc-enabled servers as Hybrid runbook w
 
 - Click Next
 
-    ![Screenshot showing creation of Automation account on the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_create_automation_2.png)
+    ![Screenshot showing creation of Automation account on the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_create_automation_2.png)
 
 - Leave the default settings for _Managed Identities_ in place and click Next:
 
-    ![Screenshot showing creation of Automation account on the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_create_automation_3.png)
+    ![Screenshot showing creation of Automation account on the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_create_automation_3.png)
 
 - Leave the default settings for _Connectivity configuration_ in place and click Next:
 
-    ![Screenshot showing creation of Automation account on the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_create_automation_4.png)
+    ![Screenshot showing creation of Automation account on the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_create_automation_4.png)
 
 - Optionally, add any tags you may want to add to the resource
 
 - Click Next:
 
-    ![Screenshot showing creation of Automation account on the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_create_automation_5.png)
+    ![Screenshot showing creation of Automation account on the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_create_automation_5.png)
 
 - Click Create:
 
-    ![Screenshot showing creation of Automation account on the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_create_automation_6.png)
+    ![Screenshot showing creation of Automation account on the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_create_automation_6.png)
 
 ##### Option 2: Azure PowerShell
 
@@ -1401,7 +1401,7 @@ New-AzAutomationAccount @AutomationAccountParams
 
 The output should look similar to this:
 
-   ![Screenshot showing creation of Automation account using Azure PowerShell](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/powershell_create_automation.png)
+   ![Screenshot showing creation of Automation account using Azure PowerShell](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/powershell_create_automation.png)
 
 #### Task 2 - Add Hybrid Runbook Workers
 
@@ -1409,17 +1409,17 @@ The output should look similar to this:
 
 - In the Azure Portal, search for _automation_ and navigate to _Automation accounts_
 
-   ![Screenshot showing searching for Automation on the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_search_automation.png)
+   ![Screenshot showing searching for Automation on the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_search_automation.png)
 
 - Navigate to the _ArcBox-Automation_ account you created previously
 
 - Select _Hybrid worker groups_:
 
-   ![Screenshot showing Automation account in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_show_automation.png)
+   ![Screenshot showing Automation account in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_show_automation.png)
 
 - Click _Create hybrid worker group_:
 
-   ![Screenshot showing Automation account Hybrid Worker Groups in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_automation_hybrid_worker_group_1.png)
+   ![Screenshot showing Automation account Hybrid Worker Groups in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_automation_hybrid_worker_group_1.png)
 
 - Type _windows-workers_ as the name of the new Hybrid worker group
 
@@ -1427,33 +1427,33 @@ The output should look similar to this:
 
 - Click Next
 
-   ![Screenshot showing Automation account Hybrid Worker Groups in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_automation_hybrid_worker_group_2.png)
+   ![Screenshot showing Automation account Hybrid Worker Groups in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_automation_hybrid_worker_group_2.png)
 
 - Click _Add machines_:
 
-   ![Screenshot showing Automation account Hybrid Worker Groups in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_automation_hybrid_worker_group_3.png)
+   ![Screenshot showing Automation account Hybrid Worker Groups in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_automation_hybrid_worker_group_3.png)
 
 - Select _ArcBox-Win2K22_ and click _Add_:
 
-   ![Screenshot showing Automation account Hybrid Worker Groups creation in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_automation_hybrid_worker_group_4.png)
+   ![Screenshot showing Automation account Hybrid Worker Groups creation in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_automation_hybrid_worker_group_4.png)
 
 - Click _Review + Create_:
 
-   ![Screenshot showing Automation account Hybrid Worker Groups creation in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_automation_hybrid_worker_group_5.png)
+   ![Screenshot showing Automation account Hybrid Worker Groups creation in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_automation_hybrid_worker_group_5.png)
 
 - Click _Create_:
 
-   ![Screenshot showing Automation account Hybrid Worker Groups creation in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_automation_hybrid_worker_group_6.png)
+   ![Screenshot showing Automation account Hybrid Worker Groups creation in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_automation_hybrid_worker_group_6.png)
 
 - Wait for the following activities to be finished:
 
-   ![Screenshot showing Automation account Hybrid Worker Groups creation in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_automation_hybrid_worker_group_7.png)
+   ![Screenshot showing Automation account Hybrid Worker Groups creation in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_automation_hybrid_worker_group_7.png)
 
 - Repeat the above steps to create an additional Hybrid worker group called _linux-workers_ where you select to onboard the machine _ArcBox-Ubuntu01_ to the group.
 
 - After completing this task you should have the following Hybrid worker groups:
 
-   ![Screenshot showing Automation account Hybrid Worker Groups creation in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_automation_hybrid_worker_group_8.png)
+   ![Screenshot showing Automation account Hybrid Worker Groups creation in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_automation_hybrid_worker_group_8.png)
 
 ##### Option 2: Azure PowerShell
 
@@ -1532,12 +1532,12 @@ New-AzConnectedMachineExtension -ResourceGroupName $ArcResource.ResourceGroupNam
 
 - In the Azure Portal, search for _automation_ and navigate to _Automation accounts_
 
-    ![Screenshot showing searching for Automation on the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_search_automation.png)
+    ![Screenshot showing searching for Automation on the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_search_automation.png)
 
 - Navigate to the _ArcBox-Automation_ account you created previously
 - Select _Runbooks_ and click _Create a runbook_
 
-    ![Screenshot showing Automation account runbooks overview in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_show_automation_runbooks.png)
+    ![Screenshot showing Automation account runbooks overview in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_show_automation_runbooks.png)
 
 - Enter the following values
   - Name: Start-DiskClean
@@ -1546,11 +1546,11 @@ New-AzConnectedMachineExtension -ResourceGroupName $ArcResource.ResourceGroupNam
   - Description: Invoke disk cleanup
 - Click _Create_
 
-    ![Screenshot showing Automation account runbook creation in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_create_automation_runbooks_1.png)
+    ![Screenshot showing Automation account runbook creation in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_create_automation_runbooks_1.png)
 
 - After provisioning, the runbook editor will open the newly created runbook:
 
-    ![Screenshot showing Automation account runbook editing in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_create_automation_runbooks_2.png)
+    ![Screenshot showing Automation account runbook editing in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_create_automation_runbooks_2.png)
 
 - Paste the following script into the editor pane:
 
@@ -1616,23 +1616,23 @@ Write-Host "Copied!!"
 
 - Click Publish
 
-    ![Screenshot showing Automation account runbook editing in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_create_automation_runbooks_3.png)
+    ![Screenshot showing Automation account runbook editing in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_create_automation_runbooks_3.png)
 
 - Click _Start_
 
 >**Note: You may need to click _Refresh_ for the _Start_ button to become active**
 
-   ![Screenshot showing Automation account runbook editing in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_start_automation_runbooks_1.png)
+   ![Screenshot showing Automation account runbook editing in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_start_automation_runbooks_1.png)
 
 - Select _Hybrid Worker_ and select _linux-workers_ under _Choose Hybrid Worker group_
 
 - Click _OK_
 
-    ![Screenshot showing Automation account runbook editing in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_start_automation_runbooks_2.png)
+    ![Screenshot showing Automation account runbook editing in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_start_automation_runbooks_2.png)
 
 - Click on the _Output_ tab and wait for the job to finish. You should notice that the amount of free space is lower after the cleanup action has been triggered
 
-    ![Screenshot showing Automation account runbook editing in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_start_automation_runbooks_3.png)
+    ![Screenshot showing Automation account runbook editing in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_start_automation_runbooks_3.png)
 
 The provided runbook is a starting point for cleaning a single directory. Additional logic and directories may be added as required for specific scenarios. For example, it may also be added logic to connect to other machines in order to perform cleanup actions on those.
 
@@ -1640,19 +1640,19 @@ Next, you will be running the same runbook on a Windows machine.
 
 - Navigate back to the runbook overview page for _Start-DiskClean_ and click _Start_
 
-![Screenshot showing Automation account runbook editing in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_start_automation_runbooks_1.png)
+![Screenshot showing Automation account runbook editing in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_start_automation_runbooks_1.png)
 
 - Select _Hybrid Worker_ and select _windows-workers_ under _Choose Hybrid Worker group_
 
 - Click _OK_
 
-    ![Screenshot showing Automation account runbook editing in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_start_automation_runbooks_4.png)
+    ![Screenshot showing Automation account runbook editing in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_start_automation_runbooks_4.png)
 
 - Click on the _Output_ tab and wait for the job to finish
   - The cleanup action may run for a few minutes, so feel free to continue and revisit the job output later
   - When completed, you should notice that the amount of free space is lower after the cleanup action has been triggered
 
-    ![Screenshot showing Automation account runbook editing in the Azure Portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_start_automation_runbooks_5.png)
+    ![Screenshot showing Automation account runbook editing in the Azure Portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_start_automation_runbooks_5.png)
 
 #!markdown
 
@@ -1674,7 +1674,7 @@ We will be using the ArcBox Client virtual machine for the configuration authori
 
 > **NOTE: To run each additional code snippet you paste in VSCode, highlight the code you need to run and press F8**
 
-  ![Screenshot showing VSCode code execution](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/vscode_code_execution.png)
+  ![Screenshot showing VSCode code execution](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/vscode_code_execution.png)
 
 ##### Custom configuration for Windows
 
@@ -1982,7 +1982,7 @@ Write-Host "Copied!!"
 
 - Filter for *(AzureArcJumpstart) [Windows] Custom configuration*
 
-    ![Screenshot of Azure Portal showing Azure Policy compliance](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_policy_compliance.png)
+    ![Screenshot of Azure Portal showing Azure Policy compliance](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_policy_compliance.png)
 
 > **NOTE: It may take 15-20 minutes for the policy remediation to be completed.**
 
@@ -1992,11 +1992,11 @@ Write-Host "Copied!!"
 
 - If the status for _ArcBox-Win2K22/AzureArcLevelUp_Windows_ is not _Compliant_, wait a few more minutes and click *Refresh*
 
-    ![Screenshot of Azure Portal showing Azure Machine Configuration compliance](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_machine_config_compliance.png)
+    ![Screenshot of Azure Portal showing Azure Machine Configuration compliance](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_machine_config_compliance.png)
 
 - Click on _ArcBox-Win2K22/AzureArcLevelUp_Windows_ to get a per-resource view of the compliance state in the assigned configuration
 
-    ![Screenshot of Azure Portal showing Azure Machine Configuration compliance detailed view](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/portal_machine_config_configs.png)
+    ![Screenshot of Azure Portal showing Azure Machine Configuration compliance detailed view](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/portal_machine_config_configs.png)
 
 ##### Verify that the operating system level settings are in place
 
@@ -2027,7 +2027,7 @@ Write-Host "Copied!!"
 
 #!markdown
 
-  ![Screenshot of VScode showing Azure Machine Configuration validation on Windows](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/vscode_win_machine_config_validation.png)
+  ![Screenshot of VScode showing Azure Machine Configuration validation on Windows](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/vscode_win_machine_config_validation.png)
 
 #!markdown
 
@@ -2047,15 +2047,15 @@ Pre-requisite: Azure permissions
 
     - Enter "Machines - Azure Arc" in the top search bar in the Azure portal and select it from the displayed services.
 
-        ![Screenshot showing how to display Arc connected servers in portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/Arc_servers_search.png)
+        ![Screenshot showing how to display Arc connected servers in portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/Arc_servers_search.png)
 
     - Click on your Azure Arc-enabled **Windows** servers.
 
-        ![Screenshot showing existing Arc connected servers](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/click_on_any_arc_enabled_server.png)
+        ![Screenshot showing existing Arc connected servers](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/click_on_any_arc_enabled_server.png)
 
     - From the selected Windows machine click "Access control (IAM)" then add the role "Admin Center Administrator Login" to your access.
 
-        ![Screenshot of required role for Admin Center](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/Admin_centre_Add_Role_1.png)
+        ![Screenshot of required role for Admin Center](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/Admin_centre_Add_Role_1.png)
 
     - Follow similar steps to assign yourself Reader permissions at the Arc-enabled server resource.
 
@@ -2065,34 +2065,34 @@ Pre-requisite: Azure permissions
 - Under the Settings group, select Windows Admin Center, then click "Set up".
 - Specify the port on which you wish to install Windows Admin Center, and then select Install.
 
-    ![Screenshot deploy Admin Centre Extension](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/Admin_center_install.png)
+    ![Screenshot deploy Admin Centre Extension](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/Admin_center_install.png)
 
 - If you get the following message after the installation is complete then you need to go back to the previous step and set up the permissions as explained in Pre-requisite.
 
-    ![Screenshot permissions missing for Admin Centre](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/Admin_Centre_install_message_1.png)
+    ![Screenshot permissions missing for Admin Centre](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/Admin_Centre_install_message_1.png)
 
 #### Task 3: Connect and explore Windows Admin Center (preview)
 
 - Once the installation is complete then you can connect to the Windows Admin Center.
 
-    ![Screenshot connecting to Admin Center](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/Admin_Center_Connect.png)
+    ![Screenshot connecting to Admin Center](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/Admin_Center_Connect.png)
 
 - Start exploring the capabilities offered by the Windows Admin Center to manage your Arc-enabled Windows machine.
 
-    ![Screenshot Admin Center overview](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/Admin_Centre_Overview.png)
+    ![Screenshot Admin Center overview](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/Admin_Centre_Overview.png)
 
 - Let us use the Windows Admin Center to add a local user, a new group and assign the new user to the new group.
     - From the left menu select "Local users & groups". Then from the "Users" tab click "New user". Enter the user details and click on "Submit". Verify that the user has been added.
 
-        ![Screenshot adding local user](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/Admin_center_local_users_1.png)
+        ![Screenshot adding local user](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/Admin_center_local_users_1.png)
 
     - Now select the "Groups" tab and click on "New Group". Enter the group details and click on "Submit". Verify that the group has been added.
 
-        ![Screenshot adding local group](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/Admin_center_local_groups_1.png)
+        ![Screenshot adding local group](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/Admin_center_local_groups_1.png)
 
     - Back to the "Users" tab, select the new user you have added, then click "Manage membership". Add the selected user to the new group and save.
 
-        ![Screenshot Group membership](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/Admin_centre_group_membership_1.png)
+        ![Screenshot Group membership](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/Admin_centre_group_membership_1.png)
 
 #!markdown
 
@@ -2108,15 +2108,15 @@ In this first step, you will assign Azure resource tags to some of your Azure Ar
 
 - Enter "Machines - Azure Arc" in the top search bar in the Azure portal and select it from the displayed services.
 
-    ![Screenshot showing how to display Arc connected servers in portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/Arc_servers_search.png)
+    ![Screenshot showing how to display Arc connected servers in portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/Arc_servers_search.png)
 
 - Click on any of your Azure Arc-enabled servers.
 
-    ![Screenshot showing existing Arc connected servers](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/click_on_any_arc_enabled_server.png)
+    ![Screenshot showing existing Arc connected servers](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/click_on_any_arc_enabled_server.png)
 
 - Click on "Tags". Add a new tag with Name="Scenario” and Value="azure_arc_servers_inventory”. Click Apply when ready.
 
-    ![Screenshot showing adding tag to a server](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/tagging_servers.png)
+    ![Screenshot showing adding tag to a server](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/tagging_servers.png)
 
 - Repeat the same process in other Azure Arc-enabled servers if you wish. This new tag will be used later when working with Resource Graph Explorer queries.
 
@@ -2124,11 +2124,11 @@ In this first step, you will assign Azure resource tags to some of your Azure Ar
 
 - Now we will explore our hybrid server inventory using a number of Azure Graph Queries. Enter "Resource Graph Explorer" in the top search bar in the Azure portal and select it.
 
-    ![Screenshot of Graph Explorer in portal](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/search_graph_explorer.png)
+    ![Screenshot of Graph Explorer in portal](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/search_graph_explorer.png)
 
 - The scope of the Resource Graph Explorer can be set as seen below
 
-    ![Screenshot of Graph Explorer Scope](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/Scope_of_Graph_Query.png)
+    ![Screenshot of Graph Explorer Scope](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/Scope_of_Graph_Query.png)
 
 #### Task 3: Run a query to show all Azure Arc-enabled servers in your subscription
 
@@ -2146,7 +2146,7 @@ Write-Host "Copied!!"
 
 #!markdown
 
-  ![Screenshot of query to list arc servers](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/query_arc_machines.png)
+  ![Screenshot of query to list arc servers](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/query_arc_machines.png)
 
 - Scroll to the right on the results pane and click "See Details" to see all the Azure Arc-enabled server metadata. Note for example the list of detected properties, we will be using these in the next task.
 
@@ -2200,7 +2200,7 @@ Write-Host "Copied!!"
 
 - The Graph Explorer allows you to get a graphical view of your results by selecting the "charts" option.
 
-    ![Screenshot of the logicalCores server summary](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/chart_for_vcpu_summay.png)
+    ![Screenshot of the logicalCores server summary](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/chart_for_vcpu_summay.png)
 
 #### Task 5: Use the resource tags in your Graph Query.
 
@@ -2248,7 +2248,7 @@ Write-Host "Copied!!"
 
 - If you have used the portal to run the query then you should see something like the following
 
-    ![Screenshot of extensions query](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/Extensions_query.png)
+    ![Screenshot of extensions query](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/Extensions_query.png)
 
 #### Task 7: Query other properties
 
@@ -2272,7 +2272,7 @@ Write-Host "Copied!!"
 
 - Running the same query in the portal should result in something like the following
 
-    ![Screenshot of extra properties](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/extra_properties.png)
+    ![Screenshot of extra properties](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/extra_properties.png)
 
 ### Module 12: Enforce governance across your Azure Arc-enabled servers using Azure Policy
 
@@ -2287,27 +2287,27 @@ In this module you will use Azure Policy to Audit Arc-enabled Linux servers that
 - In the Azure Portal search for the "Policy" resource and navigate to it.
 - Click on "Compliance" in the left mene then click "Assign policy".
 
-    ![Screenshot Navigate to policy assignment](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/navigate_to_Policy_initiatives.png)
+    ![Screenshot Navigate to policy assignment](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/navigate_to_Policy_initiatives.png)
 
 - Set the scope of the policy assignment to the subscription and the resource group as shown below
 
-    ![Screenshot set Scope of policy](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/choose_sub_RG.png)
+    ![Screenshot set Scope of policy](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/choose_sub_RG.png)
 
 - Click on the ellipsis next to "Policy definition". This opens the "Available Definitions" panel, where you can start searching for "Audit Linux machines that have the specific applications installed" policy which belongs to the "Guest Configuration" category. Select this policy as shown below.
 
-    ![Screen shot select audit policy](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/find_Linux_policy.png)
+    ![Screen shot select audit policy](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/find_Linux_policy.png)
 
 - Modify the "Assignment name" so that it would be easy to identify our policy in the compliance list later as shown below, then click "Next" twice to reach the "Parameters" tab.
 
-    ![Screenshot change assignment name](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/change_assignment_name.png)
+    ![Screenshot change assignment name](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/change_assignment_name.png)
 
 - On the "Parameters" Screen, set the "Include Arc connected servers" to "true" and then set the name/s of the applications you want to audit the Linux servers for. If you have more than one application then include them in a semicolon separated list enclosed in single quotes e.g. 'App1; App2; App3'.
 
-    ![Screenshot Arc_Nano](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/Arc_Nano.png)
+    ![Screenshot Arc_Nano](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/Arc_Nano.png)
 
 - Move to the "Non-compliance message" tab to add a message of your choice.
 
-    ![Screenshot non-compliance message](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/Non_compliance_message.png)
+    ![Screenshot non-compliance message](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/Non_compliance_message.png)
 
 - Next move to the "Review + create" tab and click "Create" to assign the policy.
 
@@ -2357,15 +2357,15 @@ Write-Host "Copied!!"
 
 - The creation of the assignment and for it to take effect and get evaluated might take some time. You can keep refreshing the "Compliance" list until you can see an indication that there is at least one resource which is non-compliant with the policy we created (this depends on how many Arc-connected Linux servers with the specified applications we have). **If this does not happen in a reasonable time then go to task 3 where there is another view that might faster to show the compliance indication**. We can also attempt to force a policy scan (see note at end of this task) which **might** improve the speed to populate the compliance dashboard. 
 
-    ![Screenshot of policies and their compliances with the new policy](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/Compliance_dashboard.png)
+    ![Screenshot of policies and their compliances with the new policy](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/Compliance_dashboard.png)
 
 - Click on the policy from the name column and this will take you to a more detailed view of the specific policy compliance as shown below. You can then click on "details" which will open another panel on the right hand side. **If the "details" link is not ready yet then you will need to wait for it, or try task 3 for another way of looking at the compliance of specific servers, which might be faster to populate.**
 
-    ![Screenshot detailed compliance](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/detailed_compliance.png)
+    ![Screenshot detailed compliance](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/detailed_compliance.png)
 
 - Click on the link below "Last evaluated resource ...". This will open the "Guest Assignment" screen showing exactly why that specific server is not compliant with the policy.
 
-    ![Screenshot Guest Assignment from details](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/Guest_assignment_from_details.png)
+    ![Screenshot Guest Assignment from details](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/Guest_assignment_from_details.png)
 
 - The steps above helps you identify non-compliant resources and then you can act on resolving the non-compliance reasons.
 
@@ -2390,10 +2390,10 @@ Write-Host "Copied!!"
 
 - As mentioned in Task 2, the policy compliance dashboard can sometimes take a long time before it is updated with the accurate compliance details. We can use a direct route to view the "Guest Assignments" for each resource by searching for "Guest Assignments" from the Azure portal and selecting it.
 
-    ![Screenshot search for guest assignments](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/search_for_guest_assignments.png)
+    ![Screenshot search for guest assignments](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/search_for_guest_assignments.png)
 
 - You can now look at the compliance of the individual resources and identify the ones that are affected by our policy assignment.
 
-    ![Screenshot Guest Assignment details](https://raw.githubusercontent.com/microsoft/azure_arc/arc_servers_levelup/docs/azure_arc_jumpstart/azure_arc_servers/levelup/Guest_Assignment_Details.png)
+    ![Screenshot Guest Assignment details](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/Guest_Assignment_Details.png)
 
 - Click on the identified policy/resource combination and this will take you to the screen that we saw earlier at the end of Task 2, showing the details of the compliance/non-compliance.
