@@ -248,7 +248,7 @@ ties in a sandbox environment. Screenshot below shows layout of the lab environm
   $folderPath = <Specify a folder path to clone the repo>
 
   Set-Location -Path $folderPath
-  git clone -b arc_servers_levelup https://github.com/azure/arc_jumpstart_levelup.git
+  git clone https://github.com/azure/arc_jumpstart_levelup.git
   Set-Location -Path "azure_arc\azure_jumpstart_arcbox_servers_levelup\bicep"
   ```
 
