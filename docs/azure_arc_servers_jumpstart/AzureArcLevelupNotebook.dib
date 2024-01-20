@@ -85,7 +85,7 @@ az account set -s $subscriptionId
 
 #!pwsh
 
-Get-Module -Name Az.Accounts -listavailable
+Get-Module -Name Az.Accounts -ListAvailable | Select-Object -First 1 -Property Name,Version
 
 #!markdown
 
@@ -208,10 +208,9 @@ az ad sp create-for-rbac -n $servicePrincipalName --role "Owner" --scopes /subsc
 #!pwsh
 
 $folderPath = <Specify a folder path to clone the repo> # Replace with your preferred folder path to store the ArcBox deployment files
-
 Set-Location -Path $folderPath
-git clone -b arc_servers_levelup https://github.com/microsoft/azure_arc.git
-Set-Location -Path "azure_arc\azure_jumpstart_arcbox_servers_levelup\bicep"
+git clone https://github.com/Azure/arc_jumpstart_levelup.git
+Set-Location -Path "arc_jumpstart_levelup\azure_arc_servers_jumpstart\bicep"
 
 #!markdown
 
@@ -223,7 +222,7 @@ az bicep upgrade
 
 #!markdown
 
-- Edit the [main.parameters.json](https://github.com/microsoft/azure_arc/blob/arc_servers_levelup/azure_jumpstart_arcbox_servers_levelup/bicep/main.parameters.json) template parameters file and supply some values for your environment.
+- Edit the [main.parameters.json](https://github.com/Azure/arc_jumpstart_levelup/blob/main/azure_arc_servers_jumpstart/bicep/main.parameters.json) template parameters file and supply some values for your environment.
   - _`spnClientId`_ - Your Azure service principal id
   - _`spnClientSecret`_ - Your Azure service principal secret
   - _`spnTenantId`_ - Your Azure tenant id
@@ -234,7 +233,7 @@ az bicep upgrade
 
   ![Screenshot showing example parameters](https://raw.githubusercontent.com/Azure/arc_jumpstart_levelup/main/docs/azure_arc_servers_jumpstart/parameters_bicep.png)
 
-- Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_jumpstart_arcbox/bicep) and run the below command:
+- Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/Azure/arc_jumpstart_levelup/tree/main/azure_arc_servers_jumpstart/bicep) and run the below command:
 
 #!pwsh
 
