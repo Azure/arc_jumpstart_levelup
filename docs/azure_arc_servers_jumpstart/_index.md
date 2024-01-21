@@ -48,7 +48,7 @@ There are two ways to get access to the lab modules and guidance.
 1. You can use this GitHub repository.
 2. You can download the LevelUp Notebook which is an interactive guide that you can open using VSCode to walk you through each module of this levelup.
 
-To download the notebook, please run the following commands from a Powershell or Windows Terminal window to [install VScode](https://code.visualstudio.com/download) if not already installed, [install Dot Net SDK 7](https://dotnet.microsoft.com/en-us/download/dotnet/7.0), install the [notebook extension to VSCode](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.dotnet-interactive-vscode) and the PowerSehll [extension](https://code.visualstudio.com/docs/languages/powershell):
+To download the notebook, please run the following commands from a Powershell or Windows Terminal window to [install VScode](https://code.visualstudio.com/download) if not already installed, [install Dot Net SDK 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0), install the [notebook extension to VSCode](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.dotnet-interactive-vscode) and the PowerSehll [extension](https://code.visualstudio.com/docs/languages/powershell):
 
 ```shell
 winget install -e --id Microsoft.VisualStudioCode --no-upgrade
@@ -96,7 +96,7 @@ ties in a sandbox environment. Screenshot below shows layout of the lab environm
   az login
   ```
 
-- [Install or update Azure PowerShell](https://learn.microsoft.com/powershell/azure/install-azps-windows?view=azps-10.3.0&tabs=windowspowershell&pivots=windows-psgallery). Use the below command to check if its installed.
+- [Install or update Azure PowerShell](https://learn.microsoft.com/powershell/azure/install-azps-windows). Use the below command to check if its installed.
 
   ```shell
   Get-Module -Name Az.Accounts -listavailable
@@ -258,7 +258,7 @@ ties in a sandbox environment. Screenshot below shows layout of the lab environm
   az bicep upgrade
   ```
 
-- Edit the [main.parameters.json](https://github.com/azure/arc_jumpstart_levelup/blob/main/azure_arc_servers_jumpstart/bicep/main.parameters.json) template parameters file and supply some values for your environment.
+- Edit the [main.parameters.json](https://github.com/Azure/arc_jumpstart_levelup/blob/main/azure_arc_servers_jumpstart/bicep/main.parameters.json) template parameters file and supply some values for your environment.
   - _`spnClientId`_ - Your Azure service principal id
   - _`spnClientSecret`_ - Your Azure service principal secret
   - _`spnTenantId`_ - Your Azure tenant id
@@ -269,7 +269,7 @@ ties in a sandbox environment. Screenshot below shows layout of the lab environm
 
   ![Screenshot showing example parameters](./parameters_bicep.png)
 
-- Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/azure/arc_jumpstart_levelup/tree/main/azure_jumpstart_arcbox/bicep) and run the below command:
+- Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/Azure/arc_jumpstart_levelup/blob/main/azure_arc_servers_jumpstart/bicep) and run the below command:
 
   ```shell
   az group create --name "<resource-group-name>" --location "<preferred-location>"
@@ -916,7 +916,7 @@ Verify that Change Tracking is enabled by going to the portal and selecting the 
 
 #### Task 3: Track File Changes
 
-- Navigate to one of the Arc-enabled Windows machines and select "Change tracking" then select "Settings" then select "Windows Files". You should see the "Add windows file setting" screen on the right hand side. Configure these settings to track the changes to the file "c:\windows\system32\drivers\etc\hosts" and to upload the file content. 
+- Navigate to one of the Arc-enabled Windows machines and select "Change tracking" then select "Settings" then select "Windows Files". You should see the "Add windows file setting" screen on the right hand side. Configure these settings to track the changes to the file "c:\windows\system32\drivers\etc\hosts" and to upload the file content.
 
 
   ![Screenshot showing Edit windows file Settings](./CT_4_File-Settings.png)
@@ -938,7 +938,7 @@ Verify that Change Tracking is enabled by going to the portal and selecting the 
   ![Screenshot blob contributor](./CT_8_CT-BlobDataContributor.png)
 
   - Assign the role to the Windows Arc enabled machines managed identity.
-  
+
   ![Screenshot assign VM data contributor role](./CT_9_CT-BlobDataContributor-VM.png)
 
 
