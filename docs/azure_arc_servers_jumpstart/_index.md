@@ -1518,13 +1518,14 @@ We will be using the ArcBox Client virtual machine for the configuration authori
 - Install the needed PowerShell modules.
 
   ```PowerShell
-  Install-Module -Name Az.Accounts -Force -RequiredVersion 2.12.1
-  Install-Module -Name Az.PolicyInsights -Force -RequiredVersion 1.5.1
-  Install-Module -Name Az.Resources -Force -RequiredVersion 6.5.2
-  Install-Module -Name Az.Storage -Force -RequiredVersion 5.4.0
-  Install-Module -Name GuestConfiguration -Force -RequiredVersion 4.4.0
-  Install-Module -Name PSDesiredStateConfiguration -Force -RequiredVersion 2.0.5
-  Install-Module -Name PSDscResources -Force -RequiredVersion 2.12.0.0
+Install-Module -Name Az.Accounts -Force -RequiredVersion 2.15.1
+Install-Module -Name Az.PolicyInsights -Force -RequiredVersion 1.6.4
+Install-Module -Name Az.Resources -Force -RequiredVersion 6.15.1
+Install-Module -Name Az.Storage -Force -RequiredVersion 6.1.1
+Install-Module -Name MSI -Force -RequiredVersion 3.3.4
+Install-Module -Name GuestConfiguration -Force -RequiredVersion 4.5.0
+Install-Module PSDesiredStateConfiguration -Force -RequiredVersion 2.0.7
+Install-Module PSDscResources -Force -RequiredVersion 2.12.0.0
   ```
 
 - Run _Get-InstalledModule_ to validate that the modules have installed successfully.
@@ -1558,7 +1559,7 @@ Due to using MOF-based DSC resources for the Windows demo-configuration, we are 
 - Create the custom configuration
 
   ```PowerShell
-  Import-Module PSDesiredStateConfiguration -RequiredVersion 2.0.5
+  Import-Module PSDesiredStateConfiguration -RequiredVersion 2.0.7
 
   Configuration AzureArcLevelUp_Windows
   {
