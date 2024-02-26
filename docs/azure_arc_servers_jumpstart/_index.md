@@ -641,7 +641,7 @@ In this module, you will learn how to enable and leverage Microsoft Defender for
 - Run the following command:
 
   ```shell
-  $remoteScriptFile = "$agentScript\testDefenderForServers.ps1"
+  $remoteScriptFile = "$agentScript\testDefenderForServers.cmd"
   $Win2k22vmName = "ArcBox-Win2K22"
   $nestedWindowsUsername = "Administrator"
   $nestedWindowsPassword = "ArcDemo123!!"
