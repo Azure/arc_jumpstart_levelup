@@ -124,6 +124,7 @@ Invoke-WebRequest ($templateBaseUrl + "artifacts/installArcAgentUbuntu.sh") -Out
 Invoke-WebRequest ($templateBaseUrl + "artifacts/testDefenderForServers.cmd") -OutFile $Env:ArcBoxDir\testDefenderForServers.cmd
 Invoke-WebRequest ($templateBaseUrl + "artifacts/InstallArcSQLExtensionAtScale.ps1") -OutFile $Env:ArcBoxDir\InstallArcSQLExtensionAtScale.ps1
 Invoke-WebRequest ($templateBaseUrl + "artifacts/testDefenderForSQL.ps1") -OutFile $Env:ArcBoxDir\agentScript\testDefenderForSQL.ps1
+Invoke-WebRequest ($templateBaseUrl + "artifacts/SqlAdvancedThreatProtectionShell.psm1") -OutFile $Env:ArcBoxDir\agentScript\SqlAdvancedThreatProtectionShell.psm1
 Invoke-WebRequest "https://github.com/PowerShell/PowerShell/releases/download/v7.3.6/PowerShell-7.3.6-win-x64.msi" -OutFile $Env:ArcBoxDir\PowerShell-7.3.6-win-x64.msi
 
 # Disable Microsoft Edge sidebar
