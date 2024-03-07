@@ -1789,7 +1789,7 @@ Configuration AzureArcLevelUp_Windows
         MsiPackage PS7
         {
             ProductId = '{3E1D544C-E761-430F-B278-43E9FBFF0E4F}'
-            Path = 'https://github.com/PowerShell/PowerShell/releases/download/v7.3.6/PowerShell-7.3.6-win-x64.msi'
+            Path = 'https://github.com/PowerShell/PowerShell/releases/download/v7.4.1/PowerShell-7.4.1-win-x64.msi'
             Ensure = 'Present'
         }
         User ArcBoxUser
