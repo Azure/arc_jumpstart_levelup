@@ -159,9 +159,6 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
 resource vmDisk 'Microsoft.Compute/disks@2023-04-02' = {
   location: location
   name: '${vmName}-VMsDisk'
-  zones: [
-    '1'
-  ]
   sku: {
     name: vmsDiskSku
   }
@@ -169,7 +166,6 @@ resource vmDisk 'Microsoft.Compute/disks@2023-04-02' = {
     creationData: {
       createOption: 'Empty'
     }
-    burstingEnabled: true
     diskSizeGB: 400
   }
 }
