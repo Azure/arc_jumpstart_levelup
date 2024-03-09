@@ -166,7 +166,7 @@ resource vmDisk 'Microsoft.Compute/disks@2023-04-02' = {
     creationData: {
       createOption: 'Empty'
     }
-    diskSizeGB: 512
+    diskSizeGB: 550
     burstingEnabled: true
   }
 }
