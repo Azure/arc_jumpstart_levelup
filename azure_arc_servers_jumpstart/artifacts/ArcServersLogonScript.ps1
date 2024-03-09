@@ -1,6 +1,6 @@
 $Env:ArcBoxDir = "C:\ArcBox"
 $Env:ArcBoxLogsDir = "$Env:ArcBoxDir\Logs"
-$Env:ArcBoxVMDir = "$Env:ArcBoxDir\Virtual Machines"
+$Env:ArcBoxVMDir = "F:\Virtual Machines"
 $Env:ArcBoxIconDir = "$Env:ArcBoxDir\Icons"
 $agentScript = "$Env:ArcBoxDir\agentScript"
 
