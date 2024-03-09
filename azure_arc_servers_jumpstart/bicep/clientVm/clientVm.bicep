@@ -61,7 +61,7 @@ param sshPort string = '22'
 param deploySQL bool = false
 
 @description('The SKU of the VMs disk')
-param vmsDiskSku string = 'PremiumV2_LRS'
+param vmsDiskSku string = 'Premium_LRS'
 
 var bastionName = 'ArcBox-Bastion'
 var publicIpAddressName = deployBastion == false ? '${vmName}-PIP' : '${bastionName}-PIP'
@@ -167,6 +167,7 @@ resource vmDisk 'Microsoft.Compute/disks@2023-04-02' = {
       createOption: 'Empty'
     }
     diskSizeGB: 400
+    burstingEnabled: true
   }
 }
 
