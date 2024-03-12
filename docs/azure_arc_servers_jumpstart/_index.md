@@ -1,4 +1,4 @@
-![image](https://github.com/Azure/arc_jumpstart_levelup/assets/38246040/dc51c75d-6652-4031-9536-a1c1c87faed7)# Azure Arc-enabled servers LevelUp Training
+# Azure Arc-enabled servers LevelUp Training
 
 ## Goals
 
