@@ -72,7 +72,7 @@ Set-VMHost -EnableEnhancedSessionMode $true
 
 Write-Header "Fetching Nested VMs"
 $sourceFolder = 'https://jumpstartlevelup.blob.core.windows.net/luarcsqlsrv'
-$sas = "?sp=rl&st=2023-02-10T00:00:00Z&se=2024-02-10T08:00:00Z&spr=https&sv=2021-06-08&sr=c&sig=MOG4q%2BzXkiPAFZguYxyLgQxKmSu2W3AZFZKbWwBJBfg%3D"
+$sas = "?sp=rl&st=2024-04-10T14:26:31Z&se=2026-04-10T22:26:31Z&spr=https&sv=2022-11-02&sr=c&sig=PxO22S67AM90yIcTzpsgxvm611dxeVI7SVnIPoUG5%2Fk%3D"
 Write-Output "Downloading nested VMs VHDX files. This can take some time, hold tight..."
 azcopy cp $sourceFolder/*$sas $Env:ArcBoxVMDir --recursive=true --include-pattern 'JSLU-Win-SQL-01.vhdx;JSLU-Win-SQL-02.vhdx;JSLU-Win-SQL-03.vhdx' --check-length=false --log-level=ERROR
 
