@@ -315,9 +315,9 @@ Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { powershell -File $Usi
 
 # Test Defender for Servers
 Write-Header "Simulating threats to generate alerts from Defender for Cloud"
-$remoteScriptFile = "$agentScript\testDefenderForServers.cmd"
-Copy-VMFile $Win2k19vmName -SourcePath "$Env:ArcBoxDir\testDefenderForServers.cmd" -DestinationPath $remoteScriptFile -CreateFullPath -FileSource Host -Force
-Copy-VMFile $Win2k22vmName -SourcePath "$Env:ArcBoxDir\testDefenderForServers.cmd" -DestinationPath $remoteScriptFile -CreateFullPath -FileSource Host -Force
+$remoteScriptFile = "$Env:ArcBoxDir\testDefenderForServers.cmd"
+Copy-VMFile $Win2k19vmName -SourcePath "$agentScript\testDefenderForServers.cmd" -DestinationPath $remoteScriptFile -CreateFullPath -FileSource Host -Force
+Copy-VMFile $Win2k22vmName -SourcePath "$agentScript\testDefenderForServers.cmd" -DestinationPath $remoteScriptFile -CreateFullPath -FileSource Host -Force
 
 $cmdExePath = "C:\Windows\System32\cmd.exe"
 $cmdArguments = "/C `"$remoteScriptFile`""
