@@ -297,6 +297,14 @@ if($deploySQL -eq $true){
 
 (Get-Content -path "$agentScript\installArcAgentUbuntu.sh" -Raw) -replace '\$spnClientId', "'$Env:spnClientId'" -replace '\$spnClientSecret', "'$Env:spnClientSecret'" -replace '\$resourceGroup', "'$Env:resourceGroup'" -replace '\$spnTenantId', "'$Env:spnTenantId'" -replace '\$azureLocation', "'$Env:azureLocation'" -replace '\$subscriptionId', "'$Env:subscriptionId'" | Set-Content -Path "$agentScript\installArcAgentModifiedUbuntu.sh"
 
+# Download and restore AdventureWorks Database to SQLvm
+if($deploySQL -eq $true){
+Write-Host "Restoring AdventureWorks database"
+Copy-VMFile $SQLvmName -SourcePath "$Env:ArcBoxDir\AdventureWorksLT2019.bak" -DestinationPath "$Env:ArcBoxDir\AdventureWorksLT2019.bak" -CreateFullPath -FileSource Host -Force
+Start-Sleep -Seconds 3
+Invoke-Command -VMName $SQLvmName -ScriptBlock {Restore-SqlDatabase -ServerInstance $Env:COMPUTERNAME -Database "AdventureWorksLT2019" -BackupFile C:\ArcBox\AdventureWorksLT2019.bak -PassThru -Verbose} -Credential $winCreds
+}
+
 # Copy installation script to nested Linux VMs
 Write-Output "Transferring installation script to nested Linux VMs..."
 Set-SCPItem -ComputerName $Ubuntu01VmIp -Credential $linCreds -Destination "/home/$nestedLinuxUsername" -Path "$agentScript\installArcAgentModifiedUbuntu.sh" -Force

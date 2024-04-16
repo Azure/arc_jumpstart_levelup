@@ -126,6 +126,7 @@ Invoke-WebRequest ($templateBaseUrl + "artifacts/InstallArcSQLExtensionAtScale.p
 Invoke-WebRequest ($templateBaseUrl + "artifacts/testDefenderForSQL.ps1") -OutFile $Env:ArcBoxDir\agentScript\testDefenderForSQL.ps1
 Invoke-WebRequest ($templateBaseUrl + "artifacts/SqlAdvancedThreatProtectionShell.psm1") -OutFile $Env:ArcBoxDir\agentScript\SqlAdvancedThreatProtectionShell.psm1
 Invoke-WebRequest "https://github.com/PowerShell/PowerShell/releases/download/v7.4.1/PowerShell-7.4.1-win-x64.msi" -OutFile $Env:ArcBoxDir\PowerShell-7.4.1-win-x64.msi
+Invoke-WebRequest ($templateBaseUrl + "artifacts/AdventureWorksLT2019.bak") -OutFile "$Env:ArcBoxDir\AdventureWorksLT2019.bak"
 
 # Disable Microsoft Edge sidebar
 $RegistryPath = 'HKLM:\SOFTWARE\Policies\Microsoft\Edge'
