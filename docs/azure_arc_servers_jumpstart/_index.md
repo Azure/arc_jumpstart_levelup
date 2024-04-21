@@ -1517,7 +1517,7 @@ We will be using the ArcBox Client virtual machine for the configuration authori
 
 - Install the needed PowerShell modules.
 
-  ```PowerShell
+```PowerShell
 Install-Module -Name Az.Accounts -Force -RequiredVersion 2.15.1
 Install-Module -Name Az.PolicyInsights -Force -RequiredVersion 1.6.4
 Install-Module -Name Az.Resources -Force -RequiredVersion 6.15.1
@@ -1526,7 +1526,7 @@ Install-Module -Name MSI -Force -RequiredVersion 3.3.4
 Install-Module -Name GuestConfiguration -Force -RequiredVersion 4.5.0
 Install-Module PSDesiredStateConfiguration -Force -RequiredVersion 2.0.7
 Install-Module PSDscResources -Force -RequiredVersion 2.12.0.0
-  ```
+```
 
 - Run _Get-InstalledModule_ to validate that the modules have installed successfully.
 
@@ -1576,7 +1576,7 @@ Due to using MOF-based DSC resources for the Windows demo-configuration, we are 
       {
           MsiPackage PS7
           {
-              ProductId = '{3E1D544C-E761-430F-B278-43E9FBFF0E4F}'
+              ProductId = '{B06D1894-3827-4E0C-A092-7DC50BE8B210}'
               Path = 'https://github.com/PowerShell/PowerShell/releases/download/v7.4.1/PowerShell-7.4.1-win-x64.msi'
               Ensure = 'Present'
           }
