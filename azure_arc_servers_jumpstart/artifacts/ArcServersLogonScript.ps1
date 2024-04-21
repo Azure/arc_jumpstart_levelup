@@ -241,7 +241,7 @@ if ($deploySQL -eq $true) {
     Start-VM -Name $SQLvmName
 }
 
-Start-Sleep -seconds 20
+Start-Sleep -seconds 40
 
 # Configure WinRM for 2012 machine
 $2012Machine = Get-VM $Win2k12MachineName
