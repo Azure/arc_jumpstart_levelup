@@ -119,7 +119,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
         managedDisk: {
           storageAccountType: osDiskType
         }
-        diskSizeGB: 1024
+        diskSizeGB: 256
       }
       imageReference: {
         publisher: 'MicrosoftWindowsServer'
@@ -166,7 +166,7 @@ resource vmDisk 'Microsoft.Compute/disks@2023-04-02' = {
     creationData: {
       createOption: 'Empty'
     }
-    diskSizeGB: 550
+    diskSizeGB: 1024
     burstingEnabled: true
   }
 }
