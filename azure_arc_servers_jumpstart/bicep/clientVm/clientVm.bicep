@@ -60,6 +60,9 @@ param sshPort string = '22'
 @description('Option to deploy Arc-enabled SQL scenarios.')
 param deploySQL bool = false
 
+@description('The SKU of the VMs disk')
+param vmsDiskSku string = 'Premium_LRS'
+
 var bastionName = 'ArcBox-Bastion'
 var publicIpAddressName = deployBastion == false ? '${vmName}-PIP' : '${bastionName}-PIP'
 var networkInterfaceName = '${vmName}-NIC'
@@ -116,7 +119,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
         managedDisk: {
           storageAccountType: osDiskType
         }
-        diskSizeGB: 1024
+        diskSizeGB: 256
       }
       imageReference: {
         publisher: 'MicrosoftWindowsServer'
@@ -124,6 +127,15 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
         sku: windowsOSVersion
         version: 'latest'
       }
+      dataDisks: [
+        {
+          createOption: 'Attach'
+          lun: 0
+          managedDisk: {
+            id: vmDisk.id
+          }
+        }
+      ]
     }
     networkProfile: {
       networkInterfaces: [
@@ -141,6 +153,21 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
         enableAutomaticUpdates: false
       }
     }
+  }
+}
+
+resource vmDisk 'Microsoft.Compute/disks@2023-04-02' = {
+  location: location
+  name: '${vmName}-VMsDisk'
+  sku: {
+    name: vmsDiskSku
+  }
+  properties: {
+    creationData: {
+      createOption: 'Empty'
+    }
+    diskSizeGB: 1024
+    burstingEnabled: true
   }
 }
 
