@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.170.59819",
-      "templateHash": "7375225392098275911"
+      "templateHash": "18013952058343046591"
     }
   },
   "parameters": {
@@ -174,7 +174,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.26.170.59819",
-              "templateHash": "11555133540499806159"
+              "templateHash": "17446925573703323983"
             }
           },
           "parameters": {
@@ -303,6 +303,13 @@
               "metadata": {
                 "description": "Option to deploy Arc-enabled SQL scenarios."
               }
+            },
+            "vmsDiskSku": {
+              "type": "string",
+              "defaultValue": "Premium_LRS",
+              "metadata": {
+                "description": "The SKU of the VMs disk"
+              }
             }
           },
           "variables": {
@@ -371,14 +378,23 @@
                     "managedDisk": {
                       "storageAccountType": "[variables('osDiskType')]"
                     },
-                    "diskSizeGB": 1024
+                    "diskSizeGB": 256
                   },
                   "imageReference": {
                     "publisher": "MicrosoftWindowsServer",
                     "offer": "WindowsServer",
                     "sku": "[parameters('windowsOSVersion')]",
                     "version": "latest"
-                  }
+                  },
+                  "dataDisks": [
+                    {
+                      "createOption": "Attach",
+                      "lun": 0,
+                      "managedDisk": {
+                        "id": "[resourceId('Microsoft.Compute/disks', format('{0}-VMsDisk', parameters('vmName')))]"
+                      }
+                    }
+                  ]
                 },
                 "networkProfile": {
                   "networkInterfaces": [
@@ -398,8 +414,25 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))]"
+                "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaceName'))]",
+                "[resourceId('Microsoft.Compute/disks', format('{0}-VMsDisk', parameters('vmName')))]"
               ]
+            },
+            {
+              "type": "Microsoft.Compute/disks",
+              "apiVersion": "2023-04-02",
+              "name": "[format('{0}-VMsDisk', parameters('vmName'))]",
+              "location": "[parameters('location')]",
+              "sku": {
+                "name": "[parameters('vmsDiskSku')]"
+              },
+              "properties": {
+                "creationData": {
+                  "createOption": "Empty"
+                },
+                "diskSizeGB": 1024,
+                "burstingEnabled": true
+              }
             },
             {
               "type": "Microsoft.Compute/virtualMachines/extensions",
