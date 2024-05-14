@@ -87,9 +87,17 @@ Write-Host "Creating VM Credentials"
 $nestedWindowsUsername = "Administrator"
 $nestedWindowsPassword = "ArcDemo123!!"
 
+# Hard-coded username and password for the nested 2012 VM
+$nestedWindows2k12Username = "Administrator"
+$nestedWindows2k12Password = "JS123!!"
+
 # Create Windows credential object
 $secWindowsPassword = ConvertTo-SecureString $nestedWindowsPassword -AsPlainText -Force
 $winCreds = New-Object System.Management.Automation.PSCredential ($nestedWindowsUsername, $secWindowsPassword)
+
+# Create Windows credential object for 2012
+$secWindows2k12Password = ConvertTo-SecureString $nestedWindows2k12Password -AsPlainText -Force
+$win2k12Creds = New-Object System.Management.Automation.PSCredential ($nestedWindows2k12Username, $secWindows2k12Password)
 
 # Creating Hyper-V Manager desktop shortcut
 Write-Host "Creating Hyper-V Shortcut"
@@ -269,14 +277,14 @@ Write-Header "Restarting Network Adapters"
 Start-Sleep -Seconds 20
 Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
 Invoke-Command -VMName $Win2k22vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
-Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
+Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $win2k12Creds
 if($deploySQL -eq $true){
     Invoke-Command -VMName $SQLvmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
 }
 Start-Sleep -Seconds 5
 
 # Renaming 2012 machine
-Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { Rename-Computer -NewName $using:Win2k12MachineName -Restart} -Credential $winCreds
+Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { Rename-Computer -NewName $using:Win2k12MachineName -Restart} -Credential $win2k12Creds
 
 # Getting the Ubuntu nested VM IP address
 $Ubuntu01VmIp = Get-VM -Name $Ubuntu01vmName | Select-Object -ExpandProperty NetworkAdapters | Select-Object -ExpandProperty IPAddresses | Select-Object -Index 0
@@ -317,7 +325,7 @@ Write-Header "Onboarding Arc-enabled servers"
 $Ubuntu02vmvhdPath = "${Env:ArcBoxVMDir}\${Ubuntu02vmName}.vhdx"
 Write-Output "Onboarding the nested Windows VMs as Azure Arc-enabled servers"
 Invoke-Command -VMName $Win2k19vmName -ScriptBlock { powershell -File $Using:nestedVMArcBoxDir\installArcAgent.ps1 -spnClientId $Using:spnClientId, -spnClientSecret $Using:spnClientSecret, -spnTenantId $Using:spnTenantId, -subscriptionId $Using:subscriptionId, -resourceGroup $Using:resourceGroup, -azureLocation $Using:azureLocation } -Credential $winCreds
-Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { powershell -File $Using:nestedVMArcBoxDir\installArcAgent.ps1 -spnClientId $Using:spnClientId, -spnClientSecret $Using:spnClientSecret, -spnTenantId $Using:spnTenantId, -subscriptionId $Using:subscriptionId, -resourceGroup $Using:resourceGroup, -azureLocation $Using:azureLocation } -Credential $winCreds
+Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { powershell -File $Using:nestedVMArcBoxDir\installArcAgent.ps1 -spnClientId $Using:spnClientId, -spnClientSecret $Using:spnClientSecret, -spnTenantId $Using:spnTenantId, -subscriptionId $Using:subscriptionId, -resourceGroup $Using:resourceGroup, -azureLocation $Using:azureLocation } -Credential $win2k12Creds
 
 #Invoke-Command -VMName $Win2k22vmName -ScriptBlock { powershell -File $Using:nestedVMArcBoxDir\installArcAgent.ps1 -spnClientId $Using:spnClientId, -spnClientSecret $Using:spnClientSecret, -spnTenantId $Using:spnTenantId, -subscriptionId $Using:subscriptionId, -resourceGroup $Using:resourceGroup, -azureLocation $Using:azureLocation } -Credential $winCreds
 
