@@ -16,10 +16,10 @@ $deploySQL = $env:deploySQL
 
 # Moved VHD storage account details here to keep only in place to prevent duplicates.
 $vhdSourceFolder = "https://jsvhds.blob.core.windows.net/arcbox"
-$sas = "*?si=ArcBox-RL&spr=https&sv=2022-11-02&sr=c&sig=vg8VRjM00Ya%2FGa5izAq3b0axMpR4ylsLsQ8ap3BhrnA%3D"
+#$sas = "*?si=ArcBox-RL&spr=https&sv=2022-11-02&sr=c&sig=vg8VRjM00Ya%2FGa5izAq3b0axMpR4ylsLsQ8ap3BhrnA%3D"
 
 $vhdSourceFolderESU = "https://jsvhds.blob.core.windows.net/scenarios/prod"
-$sasESU = "*?si=JS-RL&spr=https&sv=2022-11-02&sr=c&sig=fIIeEliw5nG78oR6TBCvM70VMz9WXhpF41wdDoOlE8U%3D"
+#$sasESU = "*?si=JS-RL&spr=https&sv=2022-11-02&sr=c&sig=fIIeEliw5nG78oR6TBCvM70VMz9WXhpF41wdDoOlE8U%3D"
 
 # Archive exising log file and crate new one
 $logFilePath = "$Env:ArcBoxLogsDir\ArcServersLogonScript.log"
@@ -176,12 +176,12 @@ if (!([System.IO.File]::Exists($win2k19vmvhdPath) -and [System.IO.File]::Exists(
     Write-Output "Downloading nested VMs VHDX files. This can take some time, hold tight..."
 
     if ($deploySQL -eq $true) {
-        azcopy cp $vhdSourceFolder/$sas $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;${SQLvmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR --check-md5 NoCheck
+        azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;${SQLvmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR --check-md5 NoCheck
     }
     else {
-        azcopy cp $vhdSourceFolder/$sas $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR --check-md5 NoCheck
+        azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR --check-md5 NoCheck
     }
-    azcopy cp $vhdSourceFolderESU/$sasESU $Env:ArcBoxVMDir --include-pattern "${Win2k12vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR --check-md5 NoCheck
+    azcopy cp $vhdSourceFolderESU $Env:ArcBoxVMDir --include-pattern "${Win2k12vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR --check-md5 NoCheck
 }
 
 # Create the nested VMs if not already created
