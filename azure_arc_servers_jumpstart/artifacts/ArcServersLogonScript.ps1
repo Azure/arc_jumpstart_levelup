@@ -15,11 +15,8 @@ $resourceGroup = $env:resourceGroup
 $deploySQL = $env:deploySQL
 
 # Moved VHD storage account details here to keep only in place to prevent duplicates.
-$vhdSourceFolder = "https://jsvhds.blob.core.windows.net/arcbox"
-#$sas = "*?si=ArcBox-RL&spr=https&sv=2022-11-02&sr=c&sig=vg8VRjM00Ya%2FGa5izAq3b0axMpR4ylsLsQ8ap3BhrnA%3D"
-
-$vhdSourceFolderESU = "https://jsvhds.blob.core.windows.net/scenarios/prod"
-#$sasESU = "*?si=JS-RL&spr=https&sv=2022-11-02&sr=c&sig=fIIeEliw5nG78oR6TBCvM70VMz9WXhpF41wdDoOlE8U%3D"
+$vhdSourceFolder = "https://jsvhds.blob.core.windows.net/arcbox/*"
+$vhdSourceFolderESU = "https://jsvhds.blob.core.windows.net/scenarios/prod/*"
 
 # Archive exising log file and crate new one
 $logFilePath = "$Env:ArcBoxLogsDir\ArcServersLogonScript.log"
