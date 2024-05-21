@@ -43,7 +43,7 @@ param location string = resourceGroup().location
 @description('Your email address to configure alerts.')
 param emailAddress string
 
-var templateBaseUrl = 'https://raw.githubusercontent.com/${githubAccount}/arc_jumpstart_levelup/${githubBranch}/azure_arc_servers_jumpstart'
+var templateBaseUrl = 'https://raw.githubusercontent.com/${githubAccount}/arc_jumpstart_levelup/${githubBranch}/azure_arc_servers_jumpstart/'
 
 module clientVmDeployment 'clientVm/clientVm.bicep' = {
   name: 'clientVmDeployment'
