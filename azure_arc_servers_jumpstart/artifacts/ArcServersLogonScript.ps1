@@ -137,12 +137,15 @@ if ($Env:flavor -ne "DevOps") {
 
     Write-Header "Az PowerShell Login"
     Connect-AzAccount -Identity -Tenant $spnTenantId -Subscription $subscriptionId
+    $accessToken = (Get-AzAccessToken).Token
 
-    # Register Azure providers
+    <# Register Azure providers - move to prerequisites script
     Write-Header "Registering Providers"
     @("Microsoft.HybridCompute","Microsoft.HybridConnectivity","Microsoft.GuestConfiguration","Microsoft.AzureArcData") | ForEach-Object -Parallel {
         az provider register --namespace $PSItem --wait --only-show-errors
     }
+    #>
+
     if ($deploySQL -eq $true) {
 
     # Enable defender for cloud for SQL Server
@@ -207,7 +210,6 @@ if ($Env:flavor -ne "DevOps") {
 
     # Onboarding the nested VMs as Azure Arc-enabled servers
     Write-Output "Onboarding the nested Windows VMs as Azure Arc-enabled servers"
-    $accessToken = (Get-AzAccessToken).Token
     Invoke-Command -VMName $SQLvmName -ScriptBlock { powershell -File $Using:nestedVMArcBoxDir\installArcAgent.ps1 -accessToken $using:accessToken, -spnTenantId $Using:spnTenantId, -subscriptionId $Using:subscriptionId, -resourceGroup $Using:resourceGroup, -azureLocation $Using:azureLocation } -Credential $winCreds
 
     # Install Log Analytics extension to support Defender for SQL
