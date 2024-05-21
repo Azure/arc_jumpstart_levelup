@@ -38,10 +38,7 @@ param azdataUsername string = 'arcdemo'
 @secure()
 param azdataPassword string
 param acceptEula string = 'yes'
-param registryUsername string = 'registryUser'
 
-@secure()
-param registryPassword string
 param arcDcName string = 'arcdatactrl'
 param mssqlmiName string = 'arcsqlmidemo'
 
@@ -181,7 +178,7 @@ resource vmBootstrap 'Microsoft.Compute/virtualMachines/extensions@2022-03-01' =
       fileUris: [
         uri(templateBaseUrl, 'artifacts/Bootstrap.ps1')
       ]
-      commandToExecute: 'powershell.exe -ExecutionPolicy Bypass -File Bootstrap.ps1 -adminUsername ${windowsAdminUsername} -adminPassword ${windowsAdminPassword} -spnTenantId ${spnTenantId} -spnAuthority ${spnAuthority} -subscriptionId ${subscription().subscriptionId} -resourceGroup ${resourceGroup().name} -azdataUsername ${azdataUsername} -azdataPassword ${azdataPassword} -acceptEula ${acceptEula} -registryUsername ${registryUsername} -registryPassword ${registryPassword} -arcDcName ${arcDcName} -azureLocation ${location} -mssqlmiName ${mssqlmiName} -POSTGRES_NAME ${postgresName} -POSTGRES_WORKER_NODE_COUNT ${postgresWorkerNodeCount} -POSTGRES_DATASIZE ${postgresDatasize} -POSTGRES_SERVICE_TYPE ${postgresServiceType} -stagingStorageAccountName ${stagingStorageAccountName} -workspaceName ${workspaceName} -templateBaseUrl ${templateBaseUrl} -flavor ${flavor} -githubUser ${githubUser} -vmAutologon ${vmAutologon} -rdpPort ${rdpPort}'
+      commandToExecute: 'powershell.exe -ExecutionPolicy Bypass -File Bootstrap.ps1 -adminUsername ${windowsAdminUsername} -adminPassword ${windowsAdminPassword} -spnTenantId ${spnTenantId} -spnAuthority ${spnAuthority} -subscriptionId ${subscription().subscriptionId} -resourceGroup ${resourceGroup().name} -azdataUsername ${azdataUsername} -azdataPassword ${azdataPassword} -acceptEula ${acceptEula} -arcDcName ${arcDcName} -azureLocation ${location} -mssqlmiName ${mssqlmiName} -POSTGRES_NAME ${postgresName} -POSTGRES_WORKER_NODE_COUNT ${postgresWorkerNodeCount} -POSTGRES_DATASIZE ${postgresDatasize} -POSTGRES_SERVICE_TYPE ${postgresServiceType} -stagingStorageAccountName ${stagingStorageAccountName} -workspaceName ${workspaceName} -templateBaseUrl ${templateBaseUrl} -flavor ${flavor} -githubUser ${githubUser} -vmAutologon ${vmAutologon} -rdpPort ${rdpPort}'
     }
   }
 }
