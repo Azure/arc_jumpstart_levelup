@@ -1,10 +1,3 @@
-@description('Azure service principal client id')
-param spnClientId string
-
-@description('Azure service principal client secret')
-@secure()
-param spnClientSecret string
-
 @description('Azure AD tenant id for your service principal')
 param spnTenantId string
 
@@ -17,14 +10,26 @@ param windowsAdminUsername string
 @secure()
 param windowsAdminPassword string
 
+@description('Enable automatic logon into ArcBox Virtual Machine')
+param vmAutologon bool = true
+
+@description('Override default RDP port using this parameter. Default is 3389. No changes will be made to the client VM.')
+param rdpPort string = '3389'
+
 @description('Name for your log analytics workspace')
 param logAnalyticsWorkspaceName string
 
+@description('The flavor of ArcBox you want to deploy.')
+@allowed([
+  'ITPro'
+])
+param flavor string = 'ITPro'
+
 @description('Target GitHub account')
-param githubAccount string = 'Azure'
+param githubAccount string = 'azure'
 
 @description('Target GitHub branch')
-param githubBranch string = 'main'
+param githubBranch string = 'psconfeu'
 
 @description('Choice to deploy Bastion to connect to the client VM')
 param deployBastion bool = false
@@ -32,40 +37,34 @@ param deployBastion bool = false
 @description('User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps')
 param githubUser string = 'microsoft'
 
-@description('Override default RDP port 3389 using this parameter. Default is 3389. No changes will be made to the client VM.')
-param rdpPort string = '3389'
+@description('Random GUID for cluster names')
+param guid string = substring(newGuid(),0,4)
 
-@description('Override default SSH port 22 using this parameter. Default is 22. No changes will be made to the client VM.')
-param sshPort string = '22'
+@description('Azure location to deploy all resources')
+param location string = resourceGroup().location
 
 @description('Your email address to configure alerts.')
 param emailAddress string
 
-param location string = resourceGroup().location
-
-@description('Option to deploy Arc-enabled SQL scenarios.')
-param deploySQL bool = false
-
-var templateBaseUrl = 'https://raw.githubusercontent.com/${githubAccount}/arc_jumpstart_levelup/${githubBranch}/azure_arc_servers_jumpstart/'
+var templateBaseUrl = 'https://raw.githubusercontent.com/${githubAccount}/arc_jumpstart_levelup/${githubBranch}/azure_arc_servers_jumpstart'
 
 module clientVmDeployment 'clientVm/clientVm.bicep' = {
   name: 'clientVmDeployment'
   params: {
     windowsAdminUsername: windowsAdminUsername
     windowsAdminPassword: windowsAdminPassword
-    spnClientId: spnClientId
-    spnClientSecret: spnClientSecret
+    azdataPassword: windowsAdminPassword
     spnTenantId: spnTenantId
     workspaceName: logAnalyticsWorkspaceName
     stagingStorageAccountName: stagingStorageAccountDeployment.outputs.storageAccountName
     templateBaseUrl: templateBaseUrl
+    flavor: flavor
     subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
     deployBastion: deployBastion
     githubUser: githubUser
     location: location
+    vmAutologon: vmAutologon
     rdpPort: rdpPort
-    sshPort: sshPort
-    deploySQL: deploySQL
   }
 }
 
@@ -80,10 +79,12 @@ module mgmtArtifactsAndPolicyDeployment 'mgmt/mgmtArtifacts.bicep' = {
   name: 'mgmtArtifactsAndPolicyDeployment'
   params: {
     workspaceName: logAnalyticsWorkspaceName
+    flavor: flavor
     deployBastion: deployBastion
     location: location
   }
 }
+
 
 module monitoringResources 'mgmt/monitoringResources.bicep' = {
   name: 'monitoringResources'
@@ -115,3 +116,4 @@ module dataCollectionRules 'mgmt/mgmtDataCollectionRules.bicep' = {
     workspaceResourceId: mgmtArtifactsAndPolicyDeployment.outputs.workspaceId
   }
 }
+
