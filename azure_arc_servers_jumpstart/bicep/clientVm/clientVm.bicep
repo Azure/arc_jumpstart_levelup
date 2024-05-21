@@ -4,6 +4,12 @@ param vmName string = 'ArcBox-Client'
 @description('Username for the Virtual Machine')
 param windowsAdminUsername string = 'arcdemo'
 
+@description('Enable automatic logon into ArcBox Virtual Machine')
+param vmAutologon bool = false
+
+@description('Override default RDP port using this parameter. Default is 3389. No changes will be made to the client VM.')
+param rdpPort string = '3389'
+
 @description('Password for Windows account. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long')
 @minLength(12)
 @maxLength(123)
@@ -23,18 +29,30 @@ param resourceTags object = {
   Project: 'jumpstart_arcbox'
 }
 
-@description('Client id of the service principal')
-param spnClientId string
-
-@description('Client secret of the service principal')
-@secure()
-param spnClientSecret string
 param spnAuthority string = environment().authentication.loginEndpoint
 
 @description('Tenant id of the service principal')
 param spnTenantId string
+param azdataUsername string = 'arcdemo'
 
+@secure()
+param azdataPassword string
 param acceptEula string = 'yes'
+
+param arcDcName string = 'arcdatactrl'
+param mssqlmiName string = 'arcsqlmidemo'
+
+@description('Name of PostgreSQL server group')
+param postgresName string = 'arcpg'
+
+@description('Number of PostgreSQL worker nodes')
+param postgresWorkerNodeCount int = 3
+
+@description('Size of data volumes in MB')
+param postgresDatasize int = 1024
+
+@description('Choose how PostgreSQL service is accessed through Kubernetes networking interface')
+param postgresServiceType string = 'LoadBalancer'
 
 @description('Name for the staging storage account using to hold kubeconfig. This value is passed into the template as an output from mgmtStagingStorage.json')
 param stagingStorageAccountName string
@@ -45,23 +63,17 @@ param workspaceName string
 @description('The base URL used for accessing artifacts and automation artifacts.')
 param templateBaseUrl string
 
+@description('The flavor of ArcBox you want to deploy. Valid values are: \'Full\', \'ITPro\'')
+@allowed([
+  'ITPro'
+])
+param flavor string = 'ITPro'
+
 @description('Choice to deploy Bastion to connect to the client VM')
 param deployBastion bool = false
 
 @description('User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps')
 param githubUser string
-
-@description('Override default RDP port 3389 using this parameter. Default is 3389. No changes will be made to the client VM.')
-param rdpPort string = '3389'
-
-@description('Override default SSH port 22 using this parameter. Default is 22. No changes will be made to the client VM.')
-param sshPort string = '22'
-
-@description('Option to deploy Arc-enabled SQL scenarios.')
-param deploySQL bool = false
-
-@description('The SKU of the VMs disk')
-param vmsDiskSku string = 'Premium_LRS'
 
 var bastionName = 'ArcBox-Bastion'
 var publicIpAddressName = deployBastion == false ? '${vmName}-PIP' : '${bastionName}-PIP'
@@ -107,9 +119,12 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
   name: vmName
   location: location
   tags: resourceTags
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     hardwareProfile: {
-      vmSize: 'Standard_E8s_v5'
+      vmSize: flavor == 'DevOps' ? 'Standard_B4ms' : flavor == 'DataOps' ? 'Standard_D8s_v4' : 'Standard_D16s_v4'
     }
     storageProfile: {
       osDisk: {
@@ -119,7 +134,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
         managedDisk: {
           storageAccountType: osDiskType
         }
-        diskSizeGB: 256
+        diskSizeGB: 1024
       }
       imageReference: {
         publisher: 'MicrosoftWindowsServer'
@@ -127,15 +142,6 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
         sku: windowsOSVersion
         version: 'latest'
       }
-      dataDisks: [
-        {
-          createOption: 'Attach'
-          lun: 0
-          managedDisk: {
-            id: vmDisk.id
-          }
-        }
-      ]
     }
     networkProfile: {
       networkInterfaces: [
@@ -156,27 +162,12 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
   }
 }
 
-resource vmDisk 'Microsoft.Compute/disks@2023-04-02' = {
-  location: location
-  name: '${vmName}-VMsDisk'
-  sku: {
-    name: vmsDiskSku
-  }
-  properties: {
-    creationData: {
-      createOption: 'Empty'
-    }
-    diskSizeGB: 1024
-    burstingEnabled: true
-  }
-}
-
 resource vmBootstrap 'Microsoft.Compute/virtualMachines/extensions@2022-03-01' = {
   parent: vm
   name: 'Bootstrap'
   location: location
   tags: {
-    displayName: 'config-choco'
+    displayName: 'config-bootstrap'
   }
   properties: {
     publisher: 'Microsoft.Compute'
@@ -187,8 +178,38 @@ resource vmBootstrap 'Microsoft.Compute/virtualMachines/extensions@2022-03-01' =
       fileUris: [
         uri(templateBaseUrl, 'artifacts/Bootstrap.ps1')
       ]
-      commandToExecute: 'powershell.exe -ExecutionPolicy Bypass -File Bootstrap.ps1 -adminUsername ${windowsAdminUsername} -adminPassword ${windowsAdminPassword} -spnClientId ${spnClientId} -spnClientSecret ${spnClientSecret} -spnTenantId ${spnTenantId} -spnAuthority ${spnAuthority} -subscriptionId ${subscription().subscriptionId} -resourceGroup ${resourceGroup().name} -acceptEula ${acceptEula} -azureLocation ${location} -stagingStorageAccountName ${stagingStorageAccountName} -workspaceName ${workspaceName} -templateBaseUrl ${templateBaseUrl} -githubUser ${githubUser} -rdpPort ${rdpPort} -sshPort ${sshPort} -deploySQL ${deploySQL}'
+      commandToExecute: 'powershell.exe -ExecutionPolicy Bypass -File Bootstrap.ps1 -adminUsername ${windowsAdminUsername} -adminPassword ${windowsAdminPassword} -spnTenantId ${spnTenantId} -spnAuthority ${spnAuthority} -subscriptionId ${subscription().subscriptionId} -resourceGroup ${resourceGroup().name} -azdataUsername ${azdataUsername} -azdataPassword ${azdataPassword} -acceptEula ${acceptEula} -arcDcName ${arcDcName} -azureLocation ${location} -mssqlmiName ${mssqlmiName} -POSTGRES_NAME ${postgresName} -POSTGRES_WORKER_NODE_COUNT ${postgresWorkerNodeCount} -POSTGRES_DATASIZE ${postgresDatasize} -POSTGRES_SERVICE_TYPE ${postgresServiceType} -stagingStorageAccountName ${stagingStorageAccountName} -workspaceName ${workspaceName} -templateBaseUrl ${templateBaseUrl} -flavor ${flavor} -githubUser ${githubUser} -vmAutologon ${vmAutologon} -rdpPort ${rdpPort}'
     }
+  }
+}
+
+// Add role assignment for the VM: Azure Key Vault Secret Officer role
+resource vmRoleAssignment_KeyVaultSecretOfficer 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(vm.id, 'Microsoft.Authorization/roleAssignments', 'SecretOfficer')
+  scope: resourceGroup()
+  properties: {
+    principalId: vm.identity.principalId
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6')
+  }
+}
+
+// Add role assignment for the VM: Azure Key Vault Certificates Officer role
+resource vmRoleAssignment_KeyVaultCertificatesOfficer 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(vm.id, 'Microsoft.Authorization/roleAssignments', 'CertificatesOfficer')
+  scope: resourceGroup()
+  properties: {
+    principalId: vm.identity.principalId
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', 'a4417e6f-fecd-4de8-b567-7b0420556985')
+  }
+}
+
+// Add role assignment for the VM: Owner role
+resource vmRoleAssignment_Owner 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(vm.id, 'Microsoft.Authorization/roleAssignments', 'Owner')
+  scope: resourceGroup()
+  properties: {
+    principalId: vm.identity.principalId
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
   }
 }
 
