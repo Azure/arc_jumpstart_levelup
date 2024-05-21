@@ -192,6 +192,7 @@ Invoke-WebRequest ($templateBaseUrl + "artifacts/tests/Invoke-Test.ps1") -OutFil
 Invoke-WebRequest ($templateBaseUrl + "artifacts/WinGet.ps1") -OutFile $Env:ArcBoxDir\WinGet.ps1
 Invoke-WebRequest ($templateBaseUrl + "../tests/GHActionDeploy.ps1") -OutFile "$Env:ArcBoxDir\GHActionDeploy.ps1"
 Invoke-WebRequest ($templateBaseUrl + "../tests/OpenSSHDeploy.ps1") -OutFile "$Env:ArcBoxDir\OpenSSHDeploy.ps1"
+Invoke-WebRequest ($templateBaseUrl + "artifacts/LevelUp.ps1") -OutFile $Env:ArcBoxDir\LevelUp.ps1
 
 # Workbook template
 if ($flavor -eq "ITPro") {

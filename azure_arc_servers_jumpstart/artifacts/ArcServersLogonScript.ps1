@@ -143,6 +143,7 @@ if ($Env:flavor -ne "DevOps") {
     @("Microsoft.HybridCompute","Microsoft.HybridConnectivity","Microsoft.GuestConfiguration","Microsoft.AzureArcData") | ForEach-Object -Parallel {
         az provider register --namespace $PSItem --wait --only-show-errors
     }
+    if ($deploySQL -eq $true) {
 
     # Enable defender for cloud for SQL Server
     # Verify existing plan and update accordingly
@@ -314,6 +315,8 @@ if ($Env:flavor -ne "DevOps") {
     Copy-VMFile $SQLvmName -SourcePath "$Env:ArcBoxDir\testDefenderForSQL.ps1" -DestinationPath $remoteScriptFileFile -CreateFullPath -FileSource Host -Force
     Invoke-Command -VMName $SQLvmName -ScriptBlock { powershell -File $Using:remoteScriptFileFile } -Credential $winCreds
 
+}
+
     if (($Env:flavor -eq "Full") -or ($Env:flavor -eq "ITPro")) {
         Write-Header "Fetching Nested VMs"
 
@@ -380,13 +383,12 @@ if ($Env:flavor -ne "DevOps") {
         # Copy installation script to nested Linux VMs
         Write-Output "Transferring installation script to nested Linux VMs..."
         Set-SCPItem -ComputerName $Ubuntu01VmIp -Credential $linCreds -Destination "/home/$nestedLinuxUsername" -Path "$agentScript\installArcAgentModifiedUbuntu.sh" -Force
-        Set-SCPItem -ComputerName $Ubuntu02VmIp -Credential $linCreds -Destination "/home/$nestedLinuxUsername" -Path "$agentScript\installArcAgentModifiedUbuntu.sh" -Force
 
         Write-Header "Onboarding Arc-enabled servers"
 
         # Onboarding the nested VMs as Azure Arc-enabled servers
-        Write-Output "Onboarding the nested Windows VMs as Azure Arc-enabled servers"
-        $Win2k19vmName,$Win2k22vmName | ForEach-Object -Parallel {
+        Write-Output "Onboarding nested Windows VMs as Azure Arc-enabled servers"
+        $Win2k19vmName | ForEach-Object -Parallel {
 
             $nestedVMArcBoxDir = $Using:nestedVMArcBoxDir
             $spnClientId  =  $Using:spnClientId
@@ -405,14 +407,10 @@ if ($Env:flavor -ne "DevOps") {
         $Command = "sudo sh /home/$nestedLinuxUsername/installArcAgentModifiedUbuntu.sh"
         $(Invoke-SSHCommand -SSHSession $ubuntuSession -Command $Command -Timeout 600 -WarningAction SilentlyContinue).Output
 
-        $ubuntuSession = New-SSHSession -ComputerName $Ubuntu02VmIp -Credential $linCreds -Force -WarningAction SilentlyContinue
-        $Command = "sudo sh /home/$nestedLinuxUsername/installArcAgentModifiedUbuntu.sh"
-        $(Invoke-SSHCommand -SSHSession $ubuntuSession -Command $Command -Timeout 600 -WarningAction SilentlyContinue).Output
-
     }
 
     Write-Header "Enabling SSH access to Arc-enabled servers"
-    $VMs = @("ArcBox-SQL", "ArcBox-Ubuntu-01", "ArcBox-Ubuntu-02", "ArcBox-Win2K19", "ArcBox-Win2K22")
+    $VMs = @("ArcBox-Ubuntu-01", "ArcBox-Win2K19")
     $VMs | ForEach-Object -Parallel {
 
 
@@ -445,6 +443,11 @@ if ($Env:flavor -ne "DevOps") {
         Unregister-ScheduledTask -TaskName "ArcServersLogonScript" -Confirm:$false
     }
 }
+
+# Install LevelUp software
+Write-Header "Install additional tools and software on the ArcBox VMs for LevelUp workshops"
+
+& "$Env:ArcBoxDir\LevelUp.ps1"
 
 #Changing to Jumpstart ArcBox wallpaper
 
