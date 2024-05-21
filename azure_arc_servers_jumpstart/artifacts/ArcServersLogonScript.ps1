@@ -413,6 +413,10 @@ if ($Env:flavor -ne "DevOps") {
     $VMs | ForEach-Object -Parallel {
 
 
+        $spnTenantId  =  $Using:spnTenantId
+        $subscriptionId  =  $Using:subscriptionId
+        $resourceGroup  =  $Using:resourceGroup
+
         $null = Connect-AzAccount -Identity -Tenant $spntenantId -Subscription $subscriptionId -Scope Process -WarningAction SilentlyContinue
 
         $vm = $PSItem
