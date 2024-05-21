@@ -37,9 +37,6 @@ param deployBastion bool = false
 @description('User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps')
 param githubUser string = 'microsoft'
 
-@description('Random GUID for cluster names')
-param guid string = substring(newGuid(),0,4)
-
 @description('Azure location to deploy all resources')
 param location string = resourceGroup().location
 
