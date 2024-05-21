@@ -132,7 +132,7 @@ if ($Env:flavor -ne "DevOps") {
 
     # Required for CLI commands
     Write-Header "Az CLI Login"
-    az login --identity --tenant $spnTenantId
+    az login --identity
     az account set -s $subscriptionId
 
     Write-Header "Az PowerShell Login"
