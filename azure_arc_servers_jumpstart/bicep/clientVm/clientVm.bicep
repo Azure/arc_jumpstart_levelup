@@ -41,7 +41,7 @@ param acceptEula string = 'yes'
 param registryUsername string = 'registryUser'
 
 @secure()
-param registryPassword string = 'registrySecret'
+param registryPassword string
 param arcDcName string = 'arcdatactrl'
 param mssqlmiName string = 'arcsqlmidemo'
 
@@ -77,19 +77,6 @@ param deployBastion bool = false
 
 @description('User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps')
 param githubUser string
-
-@description('The name of the K3s cluster')
-param k3sArcClusterName string = 'ArcBox-K3s'
-
-@description('The name of the AKS cluster')
-param aksArcClusterName string = 'ArcBox-AKS-Data'
-
-@description('The name of the AKS DR cluster')
-param aksdrArcClusterName string = 'ArcBox-AKS-DR-Data'
-
-@description('Domain name for the jumpstart environment')
-param addsDomainName string = 'jumpstart.local'
-
 
 var bastionName = 'ArcBox-Bastion'
 var publicIpAddressName = deployBastion == false ? '${vmName}-PIP' : '${bastionName}-PIP'
@@ -215,7 +202,7 @@ resource vmRoleAssignment_KeyVaultCertificatesOfficer 'Microsoft.Authorization/r
   scope: resourceGroup()
   properties: {
     principalId: vm.identity.principalId
-    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', 'f8a3ddcd-f2b4-4a3e-8f1a-7c6c0b6e8b6')
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', 'a4417e6f-fecd-4de8-b567-7b0420556985')
   }
 }
 
