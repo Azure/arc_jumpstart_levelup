@@ -399,7 +399,7 @@ if ($Env:flavor -ne "DevOps") {
             $resourceGroup  =  $Using:resourceGroup
             $azureLocation  =  $Using:azureLocation
 
-            Invoke-Command -VMName $PSItem -ScriptBlock { powershell -File $Using:nestedVMArcBoxDir\installArcAgent.ps1, -spnTenantId $Using:spnTenantId, -accessToken $accessToken -subscriptionId $Using:subscriptionId, -resourceGroup $Using:resourceGroup, -azureLocation $Using:azureLocation } -Credential $using:winCreds
+            Invoke-Command -VMName $PSItem -ScriptBlock { powershell -File $Using:nestedVMArcBoxDir\installArcAgent.ps1, -spnTenantId $Using:spnTenantId, -accessToken $using:accessToken -subscriptionId $Using:subscriptionId, -resourceGroup $Using:resourceGroup, -azureLocation $Using:azureLocation } -Credential $using:winCreds
 
          }
 
