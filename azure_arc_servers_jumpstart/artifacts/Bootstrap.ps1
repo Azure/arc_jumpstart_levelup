@@ -133,7 +133,7 @@ Install-PSResource -Name Posh-SSH -Scope AllUsers -Quiet -AcceptLicense -TrustRe
 # Add Key Vault Secrets
 Connect-AzAccount -Identity
 
-$KeyVault = Get-AzKeyVault -ResourceGroupName $env:resourceGroup
+$KeyVault = Get-AzKeyVault -ResourceGroupName $resourceGroup
 
 # Set Key Vault Name as an environment variable (used by DevOps flavor)
 [System.Environment]::SetEnvironmentVariable('keyVaultName', $KeyVault.VaultName, [System.EnvironmentVariableTarget]::Machine)
