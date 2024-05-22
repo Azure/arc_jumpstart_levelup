@@ -136,7 +136,8 @@ if ($Env:flavor -ne "DevOps") {
     az account set -s $subscriptionId
 
     Write-Header "Az PowerShell Login"
-    Connect-AzAccount -Identity -Tenant $spnTenantId -Subscription $subscriptionId
+    $null = Connect-AzAccount -Identity -Tenant $spnTenantId -Subscription $subscriptionId
+    $null = Select-AzSubscription -SubscriptionId $subscriptionId
     $accessToken = (Get-AzAccessToken).Token
 
     <# Register Azure providers - move to prerequisites script
@@ -401,7 +402,7 @@ if ($Env:flavor -ne "DevOps") {
 
             Invoke-Command -VMName $PSItem -ScriptBlock { powershell -File $Using:nestedVMArcBoxDir\installArcAgent.ps1, -spnTenantId $Using:spnTenantId, -accessToken $using:accessToken -subscriptionId $Using:subscriptionId, -resourceGroup $Using:resourceGroup, -azureLocation $Using:azureLocation } -Credential $using:winCreds
 
-         }
+        }
 
         Write-Output "Onboarding the nested Linux VMs as an Azure Arc-enabled servers"
         $ubuntuSession = New-SSHSession -ComputerName $Ubuntu01VmIp -Credential $linCreds -Force -WarningAction SilentlyContinue
@@ -420,6 +421,7 @@ if ($Env:flavor -ne "DevOps") {
         $resourceGroup  =  $Using:resourceGroup
 
         $null = Connect-AzAccount -Identity -Tenant $spntenantId -Subscription $subscriptionId -Scope Process -WarningAction SilentlyContinue
+        $null = Select-AzSubscription -SubscriptionId $subscriptionId
 
         $vm = $PSItem
         $connectedMachine = Get-AzConnectedMachine -Name $vm -ResourceGroupName $resourceGroup -SubscriptionId $subscriptionId
