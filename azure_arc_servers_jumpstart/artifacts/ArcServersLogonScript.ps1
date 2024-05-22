@@ -347,7 +347,8 @@ if ($Env:flavor -ne "DevOps") {
             else {
                 # Other ArcBox flavors does not have an azcopy network throughput capping
                 Write-Output "Downloading nested VMs VHDX files. This can take some time, hold tight..."
-                azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR
+                azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR
+                #azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR
             }
         }
 
@@ -367,7 +368,7 @@ if ($Env:flavor -ne "DevOps") {
         # Restarting Windows VM Network Adapters
         Write-Header "Restarting Network Adapters"
         Start-Sleep -Seconds 20
-        Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
+        #Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
         Invoke-Command -VMName $Win2k22vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
         Start-Sleep -Seconds 5
 
@@ -377,11 +378,9 @@ if ($Env:flavor -ne "DevOps") {
 
         # Copy installation script to nested Windows VMs
         Write-Output "Transferring installation script to nested Windows VMs..."
-        Copy-VMFile $Win2k19vmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
+        #Copy-VMFile $Win2k19vmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
         Copy-VMFile $Win2k22vmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
 
-        # Refresh access token
-        $accessToken = (Get-AzAccessToken).Token
         # Create appropriate onboard script to SQL VM depending on whether or not the Service Principal has permission to peroperly onboard it to Azure Arc
         (Get-Content -path "$agentScript\installArcAgentUbuntu.sh" -Raw) -replace '\$accessToken', "'$accessToken'" -replace '\$resourceGroup', "'$resourceGroup'" -replace '\$spnTenantId', "'$Env:spnTenantId'" -replace '\$azureLocation', "'$Env:azureLocation'" -replace '\$subscriptionId', "'$subscriptionId'" | Set-Content -Path "$agentScript\installArcAgentModifiedUbuntu.sh"
 
@@ -392,7 +391,7 @@ if ($Env:flavor -ne "DevOps") {
         Write-Header "Onboarding Arc-enabled servers"
         # Onboarding the nested VMs as Azure Arc-enabled servers
         Write-Output "Onboarding nested Windows VMs as Azure Arc-enabled servers"
-        $Win2k19vmName | ForEach-Object -Parallel {
+    <#$Win2k19vmName | ForEach-Object -Parallel {
 
             $nestedVMArcBoxDir = $Using:nestedVMArcBoxDir
             $accessToken = $using:accessToken
@@ -403,7 +402,7 @@ if ($Env:flavor -ne "DevOps") {
 
             Invoke-Command -VMName $PSItem -ScriptBlock { powershell -File $Using:nestedVMArcBoxDir\installArcAgent.ps1, -spnTenantId $Using:spnTenantId, -accessToken $using:accessToken -subscriptionId $Using:subscriptionId, -resourceGroup $Using:resourceGroup, -azureLocation $Using:azureLocation } -Credential $using:winCreds
 
-        }
+        }#>
 
         Write-Output "Onboarding the nested Linux VMs as an Azure Arc-enabled servers"
         $ubuntuSession = New-SSHSession -ComputerName $Ubuntu01VmIp -Credential $linCreds -Force -WarningAction SilentlyContinue
@@ -413,7 +412,8 @@ if ($Env:flavor -ne "DevOps") {
     }
 
     Write-Header "Enabling SSH access to Arc-enabled servers"
-    $VMs = @("ArcBox-Ubuntu-01", "ArcBox-Win2K19")
+    $VMs = @("ArcBox-Ubuntu-01")
+    #$VMs = @("ArcBox-Ubuntu-01", "ArcBox-Win2K19")
     $VMs | ForEach-Object -Parallel {
 
 
