@@ -1,6 +1,6 @@
 $Env:ArcBoxDir = "C:\ArcBox"
 $Env:ArcBoxLogsDir = "$Env:ArcBoxDir\Logs"
-$Env:ArcBoxVMDir = "$Env:ArcBoxDir\Virtual Machines"
+$Env:ArcBoxVMDir = "F:\Virtual Machines"
 $Env:ArcBoxIconDir = "$Env:ArcBoxDir\Icons"
 $Env:ArcBoxTestsDir = "$Env:ArcBoxDir\Tests"
 $agentScript = "$Env:ArcBoxDir\agentScript"
@@ -136,7 +136,8 @@ if ($Env:flavor -ne "DevOps") {
     az account set -s $subscriptionId
 
     Write-Header "Az PowerShell Login"
-    Connect-AzAccount -Identity -Tenant $spnTenantId -Subscription $subscriptionId
+    $null = Connect-AzAccount -Identity -Tenant $spnTenantId -Subscription $subscriptionId
+    $null = Select-AzSubscription -SubscriptionId $subscriptionId
     $accessToken = (Get-AzAccessToken).Token
 
     <# Register Azure providers - move to prerequisites script
@@ -187,7 +188,7 @@ if ($Env:flavor -ne "DevOps") {
         $Env:AZCOPY_BUFFER_GB = 4
         # Other ArcBox flavors does not have an azcopy network throughput capping
         Write-Output "Downloading nested VMs VHDX file for SQL. This can take some time, hold tight..."
-        azcopy cp $vhdSourceFolder --include-pattern "${SQLvmName}.vhdx" $Env:ArcBoxVMDir --check-length=false --cap-mbps 1200 --log-level=ERROR
+        azcopy cp $vhdSourceFolder --include-pattern "${SQLvmName}.vhdx" $Env:ArcBoxVMDir --check-length=false --log-level=ERROR
     }
 
     # Create the nested VMs if not already created
@@ -341,12 +342,13 @@ if ($Env:flavor -ne "DevOps") {
             if ($Env:flavor -eq "Full") {
                 # The "Full" ArcBox flavor has an azcopy network throughput capping
                 Write-Output "Downloading nested VMs VHDX files. This can take some time, hold tight..."
-                azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --cap-mbps 1200 --log-level=ERROR
+                azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR
             }
             else {
                 # Other ArcBox flavors does not have an azcopy network throughput capping
                 Write-Output "Downloading nested VMs VHDX files. This can take some time, hold tight..."
-                azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR
+                azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR
+                #azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR
             }
         }
 
@@ -366,7 +368,7 @@ if ($Env:flavor -ne "DevOps") {
         # Restarting Windows VM Network Adapters
         Write-Header "Restarting Network Adapters"
         Start-Sleep -Seconds 20
-        Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
+        #Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
         Invoke-Command -VMName $Win2k22vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
         Start-Sleep -Seconds 5
 
@@ -376,7 +378,7 @@ if ($Env:flavor -ne "DevOps") {
 
         # Copy installation script to nested Windows VMs
         Write-Output "Transferring installation script to nested Windows VMs..."
-        Copy-VMFile $Win2k19vmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
+        #Copy-VMFile $Win2k19vmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
         Copy-VMFile $Win2k22vmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
 
         # Create appropriate onboard script to SQL VM depending on whether or not the Service Principal has permission to peroperly onboard it to Azure Arc
@@ -387,10 +389,9 @@ if ($Env:flavor -ne "DevOps") {
         Set-SCPItem -ComputerName $Ubuntu01VmIp -Credential $linCreds -Destination "/home/$nestedLinuxUsername" -Path "$agentScript\installArcAgentModifiedUbuntu.sh" -Force
 
         Write-Header "Onboarding Arc-enabled servers"
-
         # Onboarding the nested VMs as Azure Arc-enabled servers
         Write-Output "Onboarding nested Windows VMs as Azure Arc-enabled servers"
-        $Win2k19vmName | ForEach-Object -Parallel {
+    <#$Win2k19vmName | ForEach-Object -Parallel {
 
             $nestedVMArcBoxDir = $Using:nestedVMArcBoxDir
             $accessToken = $using:accessToken
@@ -401,7 +402,7 @@ if ($Env:flavor -ne "DevOps") {
 
             Invoke-Command -VMName $PSItem -ScriptBlock { powershell -File $Using:nestedVMArcBoxDir\installArcAgent.ps1, -spnTenantId $Using:spnTenantId, -accessToken $using:accessToken -subscriptionId $Using:subscriptionId, -resourceGroup $Using:resourceGroup, -azureLocation $Using:azureLocation } -Credential $using:winCreds
 
-         }
+        }#>
 
         Write-Output "Onboarding the nested Linux VMs as an Azure Arc-enabled servers"
         $ubuntuSession = New-SSHSession -ComputerName $Ubuntu01VmIp -Credential $linCreds -Force -WarningAction SilentlyContinue
@@ -411,7 +412,8 @@ if ($Env:flavor -ne "DevOps") {
     }
 
     Write-Header "Enabling SSH access to Arc-enabled servers"
-    $VMs = @("ArcBox-Ubuntu-01", "ArcBox-Win2K19")
+    $VMs = @("ArcBox-Ubuntu-01")
+    #$VMs = @("ArcBox-Ubuntu-01", "ArcBox-Win2K19")
     $VMs | ForEach-Object -Parallel {
 
 
@@ -420,6 +422,7 @@ if ($Env:flavor -ne "DevOps") {
         $resourceGroup  =  $Using:resourceGroup
 
         $null = Connect-AzAccount -Identity -Tenant $spntenantId -Subscription $subscriptionId -Scope Process -WarningAction SilentlyContinue
+        $null = Select-AzSubscription -SubscriptionId $subscriptionId
 
         $vm = $PSItem
         $connectedMachine = Get-AzConnectedMachine -Name $vm -ResourceGroupName $resourceGroup -SubscriptionId $subscriptionId

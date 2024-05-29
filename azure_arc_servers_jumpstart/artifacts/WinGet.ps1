@@ -23,7 +23,8 @@ $winget = Join-Path -Path $env:LOCALAPPDATA -ChildPath Microsoft\WindowsApps\win
 & $winget install Microsoft.WindowsTerminal --version 1.18.3181.0 -s winget
 
 # Apply WinGet Configuration files
-& $winget configure --file C:\ArcBox\DSC\common.dsc.yml --accept-configuration-agreements --disable-interactivity
+#& $winget configure --file C:\ArcBox\DSC\common.dsc.yml --accept-configuration-agreements --disable-interactivity
+& $winget configure --file C:\ArcBox\DSC\common.psconf.dsc.yml --accept-configuration-agreements --disable-interactivity
 
 switch ($env:flavor) {
     'DevOps' { & $winget configure --file C:\ArcBox\DSC\devops.dsc.yml --accept-configuration-agreements --disable-interactivity }

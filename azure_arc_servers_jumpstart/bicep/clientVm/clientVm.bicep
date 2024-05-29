@@ -75,6 +75,9 @@ param deployBastion bool = false
 @description('User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps')
 param githubUser string
 
+@description('The SKU of the VMs disk')
+param vmsDiskSku string = 'Premium_LRS'
+
 var bastionName = 'ArcBox-Bastion'
 var publicIpAddressName = deployBastion == false ? '${vmName}-PIP' : '${bastionName}-PIP'
 var networkInterfaceName = '${vmName}-NIC'
@@ -115,6 +118,21 @@ resource publicIpAddress 'Microsoft.Network/publicIpAddresses@2022-01-01' = if (
   }
 }
 
+resource vmDisk 'Microsoft.Compute/disks@2023-04-02' = {
+  location: location
+  name: '${vmName}-VMsDisk'
+  sku: {
+    name: vmsDiskSku
+  }
+  properties: {
+    creationData: {
+      createOption: 'Empty'
+    }
+    diskSizeGB: 1024
+    burstingEnabled: true
+  }
+}
+
 resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
   name: vmName
   location: location
@@ -124,7 +142,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
   }
   properties: {
     hardwareProfile: {
-      vmSize: flavor == 'DevOps' ? 'Standard_B4ms' : flavor == 'DataOps' ? 'Standard_D8s_v4' : 'Standard_D16s_v4'
+      vmSize: flavor == 'DevOps' ? 'Standard_B4ms' : flavor == 'DataOps' ? 'Standard_D8s_v4' : 'Standard_D16s_v5'
     }
     storageProfile: {
       osDisk: {
@@ -142,6 +160,15 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
         sku: windowsOSVersion
         version: 'latest'
       }
+      dataDisks: [
+        {
+          createOption: 'Attach'
+          lun: 0
+          managedDisk: {
+            id: vmDisk.id
+          }
+        }
+      ]
     }
     networkProfile: {
       networkInterfaces: [

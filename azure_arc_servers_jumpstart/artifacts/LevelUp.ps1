@@ -22,9 +22,9 @@ Write-Header "Installing PowerShell 7 on the ArcBox-Win2K22 machine"
 Copy-VMFile $Win2k22vmName -SourcePath $PS7windowsInstallerFilePath -DestinationPath "$Env:ArcBoxDir\PowerShell-7-win-x64.msi" -CreateFullPath -FileSource Host -Force
 Invoke-Command -VMName $Win2k22vmName -ScriptBlock { Start-Process msiexec.exe -ArgumentList "/I C:\ArcBox\PowerShell-7-win-x64.msi /quiet" } -Credential $winCreds
 
-Write-Header "Installing PowerShell 7 on the ArcBox-Win2K19 machine"
-Copy-VMFile $Win2k19vmName -SourcePath $PS7windowsInstallerFilePath -DestinationPath "$Env:ArcBoxDir\PowerShell-7-win-x64.msi" -CreateFullPath -FileSource Host -Force
-Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Start-Process msiexec.exe -ArgumentList "/I C:\ArcBox\PowerShell-7-win-x64.msi /quiet" } -Credential $winCreds
+#Write-Header "Installing PowerShell 7 on the ArcBox-Win2K19 machine"
+#Copy-VMFile $Win2k19vmName -SourcePath $PS7windowsInstallerFilePath -DestinationPath "$Env:ArcBoxDir\PowerShell-7-win-x64.msi" -CreateFullPath -FileSource Host -Force
+#Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Start-Process msiexec.exe -ArgumentList "/I C:\ArcBox\PowerShell-7-win-x64.msi /quiet" } -Credential $winCreds
 
 Write-Header "Installing PowerShell 7 on the nested ArcBox-Ubuntu-01 VM"
 $ubuntuSession = New-SSHSession -ComputerName $Ubuntu01VmIp -Credential $linCreds -Force -WarningAction SilentlyContinue

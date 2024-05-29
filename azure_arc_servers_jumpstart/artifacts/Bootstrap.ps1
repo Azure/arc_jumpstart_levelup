@@ -63,12 +63,21 @@ param (
 
 [System.Environment]::SetEnvironmentVariable('ArcBoxDir', "C:\ArcBox", [System.EnvironmentVariableTarget]::Machine)
 
+# Formatting VMs disk
+$disk = (Get-Disk | Where-Object partitionstyle -eq 'raw')[0]
+$driveLetter = "F"
+$label = "VMsDisk"
+$disk | Initialize-Disk -PartitionStyle MBR -PassThru | `
+    New-Partition -UseMaximumSize -DriveLetter $driveLetter | `
+    Format-Volume -FileSystem NTFS -NewFileSystemLabel $label -Confirm:$false -Force
+
+
 # Creating ArcBox path
 Write-Output "Creating ArcBox path"
 $Env:ArcBoxDir = "C:\ArcBox"
 $Env:ArcBoxDscDir = "$Env:ArcBoxDir\DSC"
 $Env:ArcBoxLogsDir = "$Env:ArcBoxDir\Logs"
-$Env:ArcBoxVMDir = "$Env:ArcBoxDir\Virtual Machines"
+$Env:ArcBoxVMDir = "F:\Virtual Machines"
 $Env:ArcBoxKVDir = "$Env:ArcBoxDir\KeyVault"
 $Env:ArcBoxGitOpsDir = "$Env:ArcBoxDir\GitOps"
 $Env:ArcBoxIconDir = "$Env:ArcBoxDir\Icons"
@@ -188,6 +197,7 @@ Invoke-WebRequest ($templateBaseUrl + "artifacts/mgmtMonitorWorkbook.parameters.
 Invoke-WebRequest ($templateBaseUrl + "artifacts/DeploymentStatus.ps1") -OutFile $Env:ArcBoxDir\DeploymentStatus.ps1
 Invoke-WebRequest ($templateBaseUrl + "artifacts/LogInstructions.txt") -OutFile $Env:ArcBoxLogsDir\LogInstructions.txt
 Invoke-WebRequest ($templateBaseUrl + "artifacts/dsc/common.dsc.yml") -OutFile $Env:ArcBoxDscDir\common.dsc.yml
+Invoke-WebRequest ($templateBaseUrl + "artifacts/dsc/common.psconf.dsc.yml") -OutFile $Env:ArcBoxDscDir\common.psconf.dsc.yml
 Invoke-WebRequest ($templateBaseUrl + "artifacts/dsc/virtual_machines_sql.dsc.yml") -OutFile $Env:ArcBoxDscDir\virtual_machines_sql.dsc.yml
 Invoke-WebRequest ($templateBaseUrl + "artifacts/tests/arcbox-bginfo.bgi") -OutFile $Env:ArcBoxTestsDir\arcbox-bginfo.bgi
 Invoke-WebRequest ($templateBaseUrl + "artifacts/tests/common.tests.ps1") -OutFile $Env:ArcBoxTestsDir\common.tests.ps1

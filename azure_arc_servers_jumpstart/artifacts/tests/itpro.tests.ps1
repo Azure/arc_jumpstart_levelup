@@ -1,7 +1,7 @@
 
 BeforeDiscovery {
-    $VMs = @("ArcBox-Ubuntu-01","ArcBox-Win2K19")
-
+    #$VMs = @("ArcBox-Ubuntu-01","ArcBox-Win2K19")
+    $VMs = @("ArcBox-Ubuntu-01")
     $null = Connect-AzAccount -Identity -Tenant $env:spntenantId -Subscription $env:subscriptionId
 
 }
