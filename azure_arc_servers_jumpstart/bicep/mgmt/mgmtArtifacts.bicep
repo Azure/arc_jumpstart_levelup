@@ -46,7 +46,9 @@ param bastionNetworkSecurityGroupName string = 'ArcBox-Bastion-NSG'
 @description('DNS Server configuration')
 param dnsServers array = []
 
-var keyVaultName = 'arcbox${uniqueString(resourceGroup().id,deployment().name)}'
+param uniqueSuffix string = substring(newGuid(),0,4)
+
+var keyVaultName = 'arcboxkv${uniqueString(resourceGroup().id,uniqueSuffix)}'
 
 var security = {
   name: 'Security(${workspaceName})'
