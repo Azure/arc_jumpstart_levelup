@@ -252,7 +252,7 @@ if ($deploySQL -eq $true) {
     Start-VM -Name $SQLvmName
 }
 
-Start-Sleep -seconds 20
+Start-Sleep -seconds 30
 
 # Configure WinRM for 2012 machine
 $2012Machine = Get-VM $Win2k12MachineName
@@ -277,14 +277,14 @@ $linCreds = New-Object System.Management.Automation.PSCredential ($nestedLinuxUs
 
 # Restarting Windows VM Network Adapters
 Write-Header "Restarting Network Adapters"
-Start-Sleep -Seconds 20
+Start-Sleep -Seconds 30
 Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
 Invoke-Command -VMName $Win2k22vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
 Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $win2k12Creds
 if($deploySQL -eq $true){
     Invoke-Command -VMName $SQLvmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
 }
-Start-Sleep -Seconds 5
+Start-Sleep -Seconds 10
 
 # Renaming 2012 machine
 Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { Rename-Computer -NewName $using:Win2k12MachineName -Restart} -Credential $win2k12Creds
@@ -293,7 +293,7 @@ Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { Rename-Computer -NewN
 $Ubuntu01VmIp = Get-VM -Name $Ubuntu01vmName | Select-Object -ExpandProperty NetworkAdapters | Select-Object -ExpandProperty IPAddresses | Select-Object -Index 0
 $Ubuntu02VmIp = Get-VM -Name $Ubuntu02vmName | Select-Object -ExpandProperty NetworkAdapters | Select-Object -ExpandProperty IPAddresses | Select-Object -Index 0
 
-Start-Sleep -Seconds 10
+Start-Sleep -Seconds 20
 
 # Copy installation script to nested Windows VMs
 Write-Output "Transferring installation script to nested Windows VMs..."
