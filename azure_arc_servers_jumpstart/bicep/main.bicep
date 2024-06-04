@@ -1,10 +1,3 @@
-@description('Azure service principal client id')
-param spnClientId string
-
-@description('Azure service principal client secret')
-@secure()
-param spnClientSecret string
-
 @description('Azure AD tenant id for your service principal')
 param spnTenantId string
 
@@ -16,6 +9,9 @@ param windowsAdminUsername string
 @maxLength(123)
 @secure()
 param windowsAdminPassword string
+
+@description('Enable automatic logon into ArcBox Virtual Machine')
+param vmAutologon bool = true
 
 @description('Name for your log analytics workspace')
 param logAnalyticsWorkspaceName string
@@ -53,8 +49,6 @@ module clientVmDeployment 'clientVm/clientVm.bicep' = {
   params: {
     windowsAdminUsername: windowsAdminUsername
     windowsAdminPassword: windowsAdminPassword
-    spnClientId: spnClientId
-    spnClientSecret: spnClientSecret
     spnTenantId: spnTenantId
     workspaceName: logAnalyticsWorkspaceName
     stagingStorageAccountName: stagingStorageAccountDeployment.outputs.storageAccountName
@@ -66,6 +60,7 @@ module clientVmDeployment 'clientVm/clientVm.bicep' = {
     rdpPort: rdpPort
     sshPort: sshPort
     deploySQL: deploySQL
+    vmAutologon: vmAutologon
   }
 }
 

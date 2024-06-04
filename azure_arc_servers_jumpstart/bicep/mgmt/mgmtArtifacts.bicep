@@ -273,7 +273,6 @@ resource bastionHost 'Microsoft.Network/bastionHosts@2022-01-01' = if (deployBas
   }
 }
 
-
 output vnetId string = arcVirtualNetwork.id
 output subnetId string = arcVirtualNetwork.properties.subnets[0].id
 output workspaceId string = workspace.id
