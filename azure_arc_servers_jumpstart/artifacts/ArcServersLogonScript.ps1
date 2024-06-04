@@ -237,7 +237,7 @@ if ($deploySQL -eq $true) {
     Start-VM -Name $SQLvmName
 }
 
-Start-Sleep -seconds 40
+Start-Sleep -seconds 20
 
 # Configure WinRM for 2012 machine
 $2012Machine = Get-VM $Win2k12MachineName
@@ -278,7 +278,7 @@ Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { Rename-Computer -NewN
 $Ubuntu01VmIp = Get-VM -Name $Ubuntu01vmName | Select-Object -ExpandProperty NetworkAdapters | Select-Object -ExpandProperty IPAddresses | Select-Object -Index 0
 $Ubuntu02VmIp = Get-VM -Name $Ubuntu02vmName | Select-Object -ExpandProperty NetworkAdapters | Select-Object -ExpandProperty IPAddresses | Select-Object -Index 0
 
-Start-Sleep -Seconds 30
+Start-Sleep -Seconds 10
 
 # Copy installation script to nested Windows VMs
 Write-Output "Transferring installation script to nested Windows VMs..."
