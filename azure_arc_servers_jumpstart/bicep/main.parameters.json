@@ -2,12 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "spnClientId": {
-            "value": "<your service principal client id>"
-        },
-        "spnClientSecret": {
-            "value": "<your service principal secret>"
-        },
         "spnTenantId": {
             "value": "<your spn tenant id>"
         },
@@ -19,6 +13,9 @@
         },
         "logAnalyticsWorkspaceName": {
             "value": "<your unique Log Analytics workspace name>"
+        },
+        "flavor": {
+            "value":  "ITPro"
         },
         "deployBastion": {
             "value": false
