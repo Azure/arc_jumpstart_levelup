@@ -25,6 +25,21 @@ if ([System.IO.File]::Exists($logFilePath)) {
 
 Start-Transcript -Path $logFilePath -Force -ErrorAction SilentlyContinue
 
+# Remove registry keys that are used to automatically logon the user (only used for first-time setup)
+$registryPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon"
+$keys = @("AutoAdminLogon", "DefaultUserName", "DefaultPassword")
+
+foreach ($key in $keys) {
+    try {
+        $property = Get-ItemProperty -Path $registryPath -Name $key -ErrorAction Stop
+        Remove-ItemProperty -Path $registryPath -Name $key
+        Write-Host "Removed registry key that are used to automatically logon the user: $key"
+    } catch {
+        Write-Verbose "Key $key does not exist."
+    }
+}
+
+
 ################################################
 # Setup Hyper-V server before deploying VMs for each flavor
 ################################################
