@@ -416,6 +416,29 @@ if ($Env:flavor -ne "DevOps") {
 
     Start-Sleep -Seconds 15
 
+    Write-Header "Enabling Defender for Servers on the Arc-enabled machines"
+    $urlWindows = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.Security/pricings/virtualMachines?api-version=2024-01-01"
+    $urlLinux = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Ubuntu01vmName/providers/Microsoft.Security/pricings/virtualMachines?api-version=2024-01-01"
+    $accessToken = (Get-AzAccessToken).Token
+    $headers = @{
+        "Authorization" = "Bearer $accessToken"
+        "Content-Type"  = "application/json"
+    }
+
+    ## Prepare API request body
+    $body = @{
+        location   = $azureLocation
+        properties = @{
+            pricingTier = "Standard"
+            subPlan = "P1"
+        }
+    } | ConvertTo-Json
+
+    ## Invoke API request to enable the P1 plan on the VM
+    Invoke-RestMethod -Method Put -Uri $urlWindows -Body $body -Headers $headers
+    Invoke-RestMethod -Method Put -Uri $urlLinux -Body $body -Headers $headers
+
+
     Write-Header "Installing the AMA agent to the Arc-enabled machines"
     az connectedmachine extension create --name AzureMonitorWindowsAgent --publisher Microsoft.Azure.Monitor --type AzureMonitorWindowsAgent --machine-name $Win2k19vmName --resource-group $resourceGroup --location $azureLocation --enable-auto-upgrade true --no-wait
     az connectedmachine extension create --name AzureMonitorLinuxAgent --publisher Microsoft.Azure.Monitor --type AzureMonitorLinuxAgent --machine-name $Ubuntu01vmName --resource-group $resourceGroup --location $azureLocation --enable-auto-upgrade true --no-wait
