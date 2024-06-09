@@ -1,12 +1,6 @@
 @description('Location of your Azure resources')
 param azureLocation string
 
-//@description('Name of your log analytics workspace')
-//param logAnalyticsWorkspaceId string
-
-@description('Subscription Id')
-param subscriptionId string = subscription().subscriptionId
-
 @description('Id of change tracking DCR')
 param changeTrackingDCR string
 
