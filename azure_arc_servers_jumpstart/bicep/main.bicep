@@ -101,6 +101,7 @@ module policyDeployment 'mgmt/policyAzureArc.bicep' = {
   params: {
     azureLocation: location
     changeTrackingDCR: dataCollectionRules.outputs.changeTrackingDCR
+    vmInsightsDCR: dataCollectionRules.outputs.vmInsightsDCR
     //logAnalyticsWorkspaceId: workspace.id
   }
 }

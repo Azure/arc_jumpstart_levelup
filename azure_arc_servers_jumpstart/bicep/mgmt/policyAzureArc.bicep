@@ -10,8 +10,13 @@ param subscriptionId string = subscription().subscriptionId
 @description('Id of change tracking DCR')
 param changeTrackingDCR string
 
+@description('Id of VMInsights DCR')
+param vmInsightsDCR string
+
 param changeTrackingPolicySetDefintion string = '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/(ArcBox) Enable ChangeTracking for Arc-enabled machines'
 param contributorRoleDefinition string = '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
+
+param hybridAMAPolicyId string = '/providers/Microsoft.Authorization/policySetDefinitions/2b00397d-c309-49c4-aa5a-f0b2c5bc6321'
 
 param connectedMachineResourceAdminRole string = '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/cd570a14-e51a-42ad-bac8-bafd67325302'
 param monitoringContributorRole string = '/subscriptions/${subscription().subscriptionId}/providers/Microsoft.Authorization/roleDefinitions/749f88d5-cbae-40b8-bcfc-e573ddc772fa'
@@ -94,9 +99,32 @@ resource taggingPolicyAssignment 'Microsoft.Authorization/policyAssignments@2022
 }]
 */
 
-module arcAMAPolicies 'policySetDefinitionsAzureArc.bicep' = {
+/*module arcAMAPolicies 'policySetDefinitionsAzureArc.bicep' = {
   name: guid('ARCBOX_AMA_POLICIES',subscriptionId,azureLocation)
   scope: subscription(subscriptionId)
+}*/
+
+resource arcAMAPolicies 'Microsoft.Authorization/policyAssignments@2022-06-01' = {
+  name: '(ArcBox) Enable Azure Monitor for Hybrid VMs with AMA'
+  location: azureLocation
+  scope: resourceGroup()
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties:{
+    displayName: '(ArcBox) Enable Azure Monitor for Hybrid VMs with AMA'
+    description: 'Enable Azure Monitor for Hybrid VMs with AMA'
+    policyDefinitionId: hybridAMAPolicyId
+    parameters: {
+      dcrResourceId:{
+        value: vmInsightsDCR
+      }
+      enableProcessesAndDependencies: {
+        value: true
+      }
+    }
+  }
+
 }
 
 resource changeTrackingPolicyAssignemnt 'Microsoft.Authorization/policyAssignments@2022-06-01' = {
