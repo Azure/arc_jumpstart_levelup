@@ -19,6 +19,22 @@ properties:
         EnableGuestService: true
         SecureBoot: true
     - resource: HyperVDsc/VMHyperV
+      id: ArcBox-Win2K19
+      directives:
+        description: Configure VM ArcBox-Win2K19
+      settings:
+        Name: ArcBox-Win2K19
+        SwitchName: 'InternalNATSwitch'
+        VhdPath: F:\Virtual Machines\ArcBox-Win2K19.vhdx
+        ProcessorCount: 2
+        StartupMemory: '10GB'
+        RestartIfNeeded: true
+        State: Running
+        Generation: 2
+        Path: F:\Virtual Machines
+        EnableGuestService: true
+        SecureBoot: true
+    - resource: HyperVDsc/VMHyperV
       id: ArcBox-Ubuntu-01
       directives:
         description: Configure VM ArcBox-Ubuntu-01
