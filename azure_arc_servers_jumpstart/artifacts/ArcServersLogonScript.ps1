@@ -129,7 +129,7 @@ if ($Env:flavor -ne "DevOps") {
 
     az config set extension.use_dynamic_install=yes_without_prompt --only-show-errors
 
-    @("ssh", "log-analytics-solution", "connectedmachine") |
+    @("ssh", "log-analytics-solution", "connectedmachine","monitor-control-service") |
     ForEach-Object -Parallel {
         az extension add --name $PSItem --yes --only-show-errors
     }
@@ -458,7 +458,7 @@ if ($Env:flavor -ne "DevOps") {
         -ProtectedSetting $protectedSetting `
         -AutoUpgradeMinorVersion `
         -TypeHandlerVersion '1.0' `
-        -NoWait
+        -AsJob
 
     Write-Host "Deploying MDE Extension on Arc-enabled Linux machine"
     $linuxArcMachine = Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Ubuntu01vmName
@@ -477,7 +477,7 @@ if ($Env:flavor -ne "DevOps") {
         -ProtectedSetting $protectedSetting `
         -AutoUpgradeMinorVersion `
         -TypeHandlerVersion '1.0' `
-        -NoWait
+        -AsJob
 
     Write-Host "Assigning Data collection rules to Arc-enabled machines"
     az monitor data-collection rule association create --name "vmInsighitsWindows" --rule-id $vmInsightsDCR --resource $windowsArcMachine.Id --no-wait
