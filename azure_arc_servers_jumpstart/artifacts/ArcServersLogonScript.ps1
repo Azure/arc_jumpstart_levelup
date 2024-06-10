@@ -15,7 +15,15 @@ $changeTrackingDCR = $env:changeTrackingDCR
 $vmInsightsDCR = $env:vmInsightsDCR
 
 # Moved VHD storage account details here to keep only in place to prevent duplicates.
-$vhdSourceFolder = "https://jumpstartprodsg.blob.core.windows.net/arcbox/*"
+#$vhdSourceFolder = "https://jumpstartprodsg.blob.core.windows.net/arcbox/*"
+$vhdSourceFolders = @(
+    "https://jumpstartprodsg.blob.core.windows.net/arcbox/*"
+    "https://stgpsconfarcboxvhds.blob.core.windows.net/arcbox/*"
+    "https://stgpsconfarcboxvhdsneu.blob.core.windows.net/arcbox/*"
+    "https://stgpsconfarcboxvhdsuks.blob.core.windows.net/arcbox/*"
+)
+
+$vhdSourceFolder = Get-Random -InputObject $vhdSourceFolders
 
 # Archive existing log file and create new one
 $logFilePath = "$Env:ArcBoxLogsDir\ArcServersLogonScript.log"
@@ -419,6 +427,8 @@ if ($Env:flavor -ne "DevOps") {
     Start-Sleep -Seconds 15
 
     Write-Header "Enabling Defender for Servers on the Arc-enabled machines"
+    $windowsArcMachine = Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Win2k19vmName
+    $linuxArcMachine = Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Ubuntu01vmName
     <#$urlWindows = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.Security/pricings/virtualMachines?api-version=2024-01-01"
     $urlLinux = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Ubuntu01vmName/providers/Microsoft.Security/pricings/virtualMachines?api-version=2024-01-01"
     $accessToken = (Get-AzAccessToken).Token
