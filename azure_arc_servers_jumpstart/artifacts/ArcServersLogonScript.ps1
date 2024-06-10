@@ -25,6 +25,7 @@ $vhdSourceFolders = @(
 
 $vhdSourceFolder = Get-Random -InputObject $vhdSourceFolders
 
+
 # Archive existing log file and create new one
 $logFilePath = "$Env:ArcBoxLogsDir\ArcServersLogonScript.log"
 if (Test-Path $logFilePath) {
