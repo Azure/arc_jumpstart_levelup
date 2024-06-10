@@ -419,7 +419,7 @@ if ($Env:flavor -ne "DevOps") {
     Start-Sleep -Seconds 15
 
     Write-Header "Enabling Defender for Servers on the Arc-enabled machines"
-    $urlWindows = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.Security/pricings/virtualMachines?api-version=2024-01-01"
+    <#$urlWindows = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.Security/pricings/virtualMachines?api-version=2024-01-01"
     $urlLinux = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Ubuntu01vmName/providers/Microsoft.Security/pricings/virtualMachines?api-version=2024-01-01"
     $accessToken = (Get-AzAccessToken).Token
     $headers = @{
@@ -458,7 +458,7 @@ if ($Env:flavor -ne "DevOps") {
         -ProtectedSetting $protectedSetting `
         -AutoUpgradeMinorVersion `
         -TypeHandlerVersion '1.0' `
-        -AsJob
+        -NoWait
 
     Write-Host "Deploying MDE Extension on Arc-enabled Linux machine"
     $linuxArcMachine = Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Ubuntu01vmName
@@ -476,14 +476,14 @@ if ($Env:flavor -ne "DevOps") {
         -Settings $Setting `
         -ProtectedSetting $protectedSetting `
         -AutoUpgradeMinorVersion `
-        -TypeHandlerVersion '1.0' `
-        -AsJob
-
+        -TypeHandlerVersion '2.0' `
+        -NoWait
+#>
     Write-Host "Assigning Data collection rules to Arc-enabled machines"
-    az monitor data-collection rule association create --name "vmInsighitsWindows" --rule-id $vmInsightsDCR --resource $windowsArcMachine.Id --no-wait
-    az monitor data-collection rule association create --name "vmInsighitsLinux" --rule-id $vmInsightsDCR --resource $LinuxArcMachine.Id --no-wait
-    az monitor data-collection rule association create --name "changeTrackingWindows" --rule-id $changeTrackingDCR --resource $windowsArcMachine.Id --no-wait
-    az monitor data-collection rule association create --name "changeTrackingLinux" --rule-id $changeTrackingDCR --resource $LinuxArcMachine.Id --no-wait
+    az monitor data-collection rule association create --name "vmInsighitsWindows" --rule-id $vmInsightsDCR --resource $windowsArcMachine.Id --only-show-errors
+    az monitor data-collection rule association create --name "vmInsighitsLinux" --rule-id $vmInsightsDCR --resource $LinuxArcMachine.Id --only-show-errors
+    az monitor data-collection rule association create --name "changeTrackingWindows" --rule-id $changeTrackingDCR --resource $windowsArcMachine.Id --only-show-errors
+    az monitor data-collection rule association create --name "changeTrackingLinux" --rule-id $changeTrackingDCR --resource $LinuxArcMachine.Id --only-show-errors
 
     Write-Host "Installing the AMA agent to the Arc-enabled machines"
     az connectedmachine extension create --name AzureMonitorWindowsAgent --publisher Microsoft.Azure.Monitor --type AzureMonitorWindowsAgent --machine-name $Win2k19vmName --resource-group $resourceGroup --location $azureLocation --enable-auto-upgrade true --no-wait
