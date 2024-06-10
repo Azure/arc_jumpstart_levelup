@@ -439,15 +439,54 @@ if ($Env:flavor -ne "DevOps") {
     Invoke-RestMethod -Method Put -Uri $urlLinux -Body $body -Headers $headers
 
 
-    Write-Header "Installing the AMA agent to the Arc-enabled machines"
+    Write-Host "Deploying MDE Extension on Arc-enabled Windows machine"
+    $windowsArcMachine = Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Win2k19vmName
+    $mdePackage = Invoke-AzRestMethod -Uri "https://management.azure.com/subscriptions/$subscriptionId/providers/Microsoft.Security/mdeOnboardings/?api-version=2021-10-01-preview"
+    $protectedSetting = @{"defenderForEndpointOnboardingScript" = ($mdePackage.content | ConvertFrom-Json).value.properties.onboardingPackageWindows}
+    $Setting = @{
+        "azureResourceId" = $windowsArcMachine.Id
+        "vNextEnabled" = $true
+    }
+    New-AzConnectedMachineExtension -Name 'MDE.Windows' -ExtensionType 'MDE.Windows' `
+        -ResourceGroupName $resourceGroup `
+        -MachineName $windowsArcMachine.Name `
+        -Location $azureLocation `
+        -Publisher 'Microsoft.Azure.AzureDefenderForServers' `
+        -Settings $Setting `
+        -ProtectedSetting $protectedSetting `
+        -AutoUpgradeMinorVersion `
+        -TypeHandlerVersion '1.0' `
+        -NoWait
+
+    Write-Host "Deploying MDE Extension on Arc-enabled Linux machine"
+    $linuxArcMachine = Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Ubuntu01vmName
+    $mdePackage = Invoke-AzRestMethod -Uri "https://management.azure.com/subscriptions/$subscriptionId/providers/Microsoft.Security/mdeOnboardings/?api-version=2021-10-01-preview"
+    $protectedSetting = @{"defenderForEndpointOnboardingScript" = ($mdePackage.content | ConvertFrom-Json).value.properties.onboardingPackageLinux}
+    $Setting = @{
+        "azureResourceId" = $linuxArcMachine.Id
+        "vNextEnabled" = $true
+    }
+    New-AzConnectedMachineExtension -Name 'MDE.Linux' -ExtensionType 'MDE.Linux' `
+        -ResourceGroupName $resourceGroup `
+        -MachineName $linuxArcMachine.Name `
+        -Location $azureLocation `
+        -Publisher 'Microsoft.Azure.AzureDefenderForServers' `
+        -Settings $Setting `
+        -ProtectedSetting $protectedSetting `
+        -AutoUpgradeMinorVersion `
+        -TypeHandlerVersion '1.0' `
+        -NoWait
+
+
+    Write-Host "Installing the AMA agent to the Arc-enabled machines"
     az connectedmachine extension create --name AzureMonitorWindowsAgent --publisher Microsoft.Azure.Monitor --type AzureMonitorWindowsAgent --machine-name $Win2k19vmName --resource-group $resourceGroup --location $azureLocation --enable-auto-upgrade true --no-wait
     az connectedmachine extension create --name AzureMonitorLinuxAgent --publisher Microsoft.Azure.Monitor --type AzureMonitorLinuxAgent --machine-name $Ubuntu01vmName --resource-group $resourceGroup --location $azureLocation --enable-auto-upgrade true --no-wait
 
-    Write-Header "Installing the changeTracking agent to the Arc-enabled machines"
+    Write-Host "Installing the changeTracking agent to the Arc-enabled machines"
     az connectedmachine extension create --name ChangeTracking-Windows  --publisher Microsoft.Azure.ChangeTrackingAndInventory --type-handler-version 2.20  --type ChangeTracking-Windows  --machine-name $Win2k19vmName --resource-group $resourceGroup  --location $azureLocation --enable-auto-upgrade --no-wait
     az connectedmachine extension create --name ChangeTracking-Linux  --publisher Microsoft.Azure.ChangeTrackingAndInventory --type-handler-version 2.20  --type ChangeTracking-Linux  --machine-name $Ubuntu01vmName --resource-group $resourceGroup  --location $azureLocation --enable-auto-upgrade --no-wait
 
-    Write-Header "Installing the Azure Update Manager agent to the Arc-enabled machines"
+    Write-Host "Installing the Azure Update Manager agent to the Arc-enabled machines"
     az connectedmachine assess-patches --resource-group $resourceGroup --name $Win2k19vmName --no-wait
     az connectedmachine assess-patches --resource-group $resourceGroup --name $Ubuntu01vmName --no-wait
 
