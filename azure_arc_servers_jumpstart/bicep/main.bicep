@@ -62,6 +62,8 @@ module clientVmDeployment 'clientVm/clientVm.bicep' = {
     location: location
     vmAutologon: vmAutologon
     rdpPort: rdpPort
+    changeTrackingDCR: dataCollectionRules.outputs.changeTrackingDCR
+    vmInsightsDCR: dataCollectionRules.outputs.vmInsightsDCR
   }
 }
 
@@ -101,6 +103,7 @@ module policyDeployment 'mgmt/policyAzureArc.bicep' = {
   params: {
     azureLocation: location
     changeTrackingDCR: dataCollectionRules.outputs.changeTrackingDCR
+    vmInsightsDCR: dataCollectionRules.outputs.vmInsightsDCR
     //logAnalyticsWorkspaceId: workspace.id
   }
 }
