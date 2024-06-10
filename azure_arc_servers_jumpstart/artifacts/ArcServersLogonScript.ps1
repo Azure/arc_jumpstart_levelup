@@ -11,6 +11,8 @@ $spnTenantId = $env:spnTenantId
 $subscriptionId = $env:subscriptionId
 $azureLocation = $env:azureLocation
 $resourceGroup = $env:resourceGroup
+$changeTrackingDCR = $env:changeTrackingDCR
+$vmInsightsDCR = $env:vmInsightsDCR
 
 # Moved VHD storage account details here to keep only in place to prevent duplicates.
 $vhdSourceFolder = "https://jumpstartprodsg.blob.core.windows.net/arcbox/*"
@@ -477,6 +479,11 @@ if ($Env:flavor -ne "DevOps") {
         -TypeHandlerVersion '1.0' `
         -NoWait
 
+    Write-Host "Assigning Data collection rules to Arc-enabled machines"
+    az monitor data-collection rule association create --name "vmInsighitsWindows" --rule-id $vmInsightsDCR --resource $windowsArcMachine.Id --no-wait
+    az monitor data-collection rule association create --name "vmInsighitsLinux" --rule-id $vmInsightsDCR --resource $LinuxArcMachine.Id --no-wait
+    az monitor data-collection rule association create --name "changeTrackingWindows" --rule-id $changeTrackingDCR --resource $windowsArcMachine.Id --no-wait
+    az monitor data-collection rule association create --name "changeTrackingLinux" --rule-id $changeTrackingDCR --resource $LinuxArcMachine.Id --no-wait
 
     Write-Host "Installing the AMA agent to the Arc-enabled machines"
     az connectedmachine extension create --name AzureMonitorWindowsAgent --publisher Microsoft.Azure.Monitor --type AzureMonitorWindowsAgent --machine-name $Win2k19vmName --resource-group $resourceGroup --location $azureLocation --enable-auto-upgrade true --no-wait

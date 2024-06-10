@@ -26,10 +26,10 @@ param logAnalyticsWorkspaceName string
 param flavor string = 'ITPro'
 
 @description('Target GitHub account')
-param githubAccount string = 'azure'
+param githubAccount string = 'sebassem'
 
 @description('Target GitHub branch')
-param githubBranch string = 'psconfeu'
+param githubBranch string = 'sb-psconf'
 
 @description('Choice to deploy Bastion to connect to the client VM')
 param deployBastion bool = false
@@ -62,6 +62,8 @@ module clientVmDeployment 'clientVm/clientVm.bicep' = {
     location: location
     vmAutologon: vmAutologon
     rdpPort: rdpPort
+    changeTrackingDCR: dataCollectionRules.outputs.changeTrackingDCR
+    vmInsightsDCR: dataCollectionRules.outputs.vmInsightsDCR
   }
 }
 
