@@ -427,7 +427,7 @@ if ($Env:flavor -ne "DevOps") {
 
     Start-Sleep -Seconds 15
 
-    Write-Header "Enabling Defender for Servers on the Arc-enabled machines"
+    <#Write-Header "Enabling Defender for Servers on the Arc-enabled machines"
     $windowsArcMachine = (Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Win2k19vmName).Id
     $linuxArcMachine = (Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Ubuntu01vmName).Id
 
@@ -496,6 +496,7 @@ if ($Env:flavor -ne "DevOps") {
 
     Invoke-RestMethod -Method Put -Uri $mdeOnboardingURLWindows -Body $payloadWindows -Headers $headers
     Invoke-RestMethod -Method Put -Uri $mdeOnboardingURLLinux -Body $payloadLinux -Headers $headers
+    #>
 
     Write-Host "Assigning Data collection rules to Arc-enabled machines"
     az monitor data-collection rule association create --name "vmInsighitsWindows" --rule-id $vmInsightsDCR --resource $windowsArcMachine.Id --only-show-errors
@@ -503,17 +504,20 @@ if ($Env:flavor -ne "DevOps") {
     az monitor data-collection rule association create --name "changeTrackingWindows" --rule-id $changeTrackingDCR --resource $windowsArcMachine.Id --only-show-errors
     az monitor data-collection rule association create --name "changeTrackingLinux" --rule-id $changeTrackingDCR --resource $LinuxArcMachine.Id --only-show-errors
 
-    Write-Host "Installing the AMA agent to the Arc-enabled machines"
+    Write-Host "Installing the AMA agent on the Arc-enabled machines"
     az connectedmachine extension create --name AzureMonitorWindowsAgent --publisher Microsoft.Azure.Monitor --type AzureMonitorWindowsAgent --machine-name $Win2k19vmName --resource-group $resourceGroup --location $azureLocation --enable-auto-upgrade true --no-wait
     az connectedmachine extension create --name AzureMonitorLinuxAgent --publisher Microsoft.Azure.Monitor --type AzureMonitorLinuxAgent --machine-name $Ubuntu01vmName --resource-group $resourceGroup --location $azureLocation --enable-auto-upgrade true --no-wait
 
-    Write-Host "Installing the changeTracking agent to the Arc-enabled machines"
+    Write-Host "Installing the changeTracking agent on the Arc-enabled machines"
     az connectedmachine extension create --name ChangeTracking-Windows  --publisher Microsoft.Azure.ChangeTrackingAndInventory --type-handler-version 2.20  --type ChangeTracking-Windows  --machine-name $Win2k19vmName --resource-group $resourceGroup  --location $azureLocation --enable-auto-upgrade --no-wait
     az connectedmachine extension create --name ChangeTracking-Linux  --publisher Microsoft.Azure.ChangeTrackingAndInventory --type-handler-version 2.20  --type ChangeTracking-Linux  --machine-name $Ubuntu01vmName --resource-group $resourceGroup  --location $azureLocation --enable-auto-upgrade --no-wait
 
-    Write-Host "Installing the Azure Update Manager agent to the Arc-enabled machines"
+    Write-Host "Installing the Azure Update Manager agent on the Arc-enabled machines"
     az connectedmachine assess-patches --resource-group $resourceGroup --name $Win2k19vmName --no-wait
     az connectedmachine assess-patches --resource-group $resourceGroup --name $Ubuntu01vmName --no-wait
+
+    Write-Host "Installing the AdminCenter extension on the Arc-enabled windows machine"
+    az connectedmachine extension create --name AdminCenter  --publisher Microsoft.AdminCenter --type AdminCenter  --machine-name $Win2k19vmName --resource-group $resourceGroup  --location $azureLocation --enable-auto-upgrade --no-wait
 
     Write-Header "Enabling SSH access to Arc-enabled servers"
     $VMs = @("ArcBox-Ubuntu-01", "ArcBox-Win2K19")
