@@ -511,15 +511,24 @@ if ($Env:flavor -ne "DevOps") {
     az connectedmachine extension create --name AzureMonitorLinuxAgent --publisher Microsoft.Azure.Monitor --type AzureMonitorLinuxAgent --machine-name $Ubuntu01vmName --resource-group $resourceGroup --location $azureLocation --enable-auto-upgrade true --no-wait
 
     Write-Host "Installing the changeTracking agent on the Arc-enabled machines"
-    az connectedmachine extension create --name ChangeTracking-Windows  --publisher Microsoft.Azure.ChangeTrackingAndInventory --type-handler-version 2.20  --type ChangeTracking-Windows  --machine-name $Win2k19vmName --resource-group $resourceGroup  --location $azureLocation --enable-auto-upgrade --no-wait
-    az connectedmachine extension create --name ChangeTracking-Linux  --publisher Microsoft.Azure.ChangeTrackingAndInventory --type-handler-version 2.20  --type ChangeTracking-Linux  --machine-name $Ubuntu01vmName --resource-group $resourceGroup  --location $azureLocation --enable-auto-upgrade --no-wait
+    az connectedmachine extension create --name ChangeTracking-Windows --publisher Microsoft.Azure.ChangeTrackingAndInventory --type-handler-version 2.20 --type ChangeTracking-Windows --machine-name $Win2k19vmName --resource-group $resourceGroup  --location $azureLocation --enable-auto-upgrade --no-wait
+    az connectedmachine extension create --name ChangeTracking-Linux --publisher Microsoft.Azure.ChangeTrackingAndInventory --type-handler-version 2.20 --type ChangeTracking-Linux --machine-name $Ubuntu01vmName --resource-group $resourceGroup  --location $azureLocation --enable-auto-upgrade --no-wait
 
     Write-Host "Installing the Azure Update Manager agent on the Arc-enabled machines"
     az connectedmachine assess-patches --resource-group $resourceGroup --name $Win2k19vmName --no-wait
     az connectedmachine assess-patches --resource-group $resourceGroup --name $Ubuntu01vmName --no-wait
 
     Write-Host "Installing the AdminCenter extension on the Arc-enabled windows machine"
-    az connectedmachine extension create --name AdminCenter  --publisher Microsoft.AdminCenter --type AdminCenter  --machine-name $Win2k19vmName --resource-group $resourceGroup  --location $azureLocation --enable-auto-upgrade --no-wait
+    $Setting = '{\"port\":\"6516\"}'
+    az connectedmachine extension create --name AdminCenter --publisher Microsoft.AdminCenter --type AdminCenter --machine-name $Win2k19vmName --resource-group $resourceGroup --location $azureLocation --settings $Setting --enable-auto-upgrade --no-wait
+    $putPayload = "{'properties': {'type': 'default'}}"
+    Invoke-AzRestMethod -Method PUT -Uri "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.HybridConnectivity/endpoints/default?api-version=2023-03-15" -Payload $putPayload
+    $patch = @{ "properties" =  @{ "serviceName" = "WAC"; "port" = 6516}}
+    $patchPayload = ConvertTo-Json $patch
+    Invoke-AzRestMethod -Method PUT -Path "/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/WAC?api-version=2023-03-15" -Payload $patchPayload
+
+    Write-Host "Installing the dependencyAgent extension on the Arc-enabled windows machine"
+    az connectedmachine extension create --name DependencyAgent --publisher Microsoft.Azure.Monitoring.DependencyAgent --type-handler-version 9.10 --type DependencyAgentWindows --machine-name $Win2k19vmName --resource-group $resourceGroup --location $azureLocation --enable-auto-upgrade --no-wait
 
     Write-Header "Enabling SSH access to Arc-enabled servers"
     $VMs = @("ArcBox-Ubuntu-01", "ArcBox-Win2K19")
