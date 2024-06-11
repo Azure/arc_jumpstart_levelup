@@ -17,10 +17,10 @@ param vmAutologon bool = true
 param logAnalyticsWorkspaceName string
 
 @description('Target GitHub account')
-param githubAccount string = 'sebassem'
+param githubAccount string = 'azure'
 
 @description('Target GitHub branch')
-param githubBranch string = 'levelup_remove_sp'
+param githubBranch string = 'main'
 
 @description('Choice to deploy Bastion to connect to the client VM')
 param deployBastion bool = false

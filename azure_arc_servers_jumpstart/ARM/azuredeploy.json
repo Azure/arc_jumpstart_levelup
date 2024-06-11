@@ -44,14 +44,14 @@
     },
     "githubAccount": {
       "type": "string",
-      "defaultValue": "sebassem",
+      "defaultValue": "azure",
       "metadata": {
         "description": "Target GitHub account"
       }
     },
     "githubBranch": {
       "type": "string",
-      "defaultValue": "levelup_remove_sp",
+      "defaultValue": "main",
       "metadata": {
         "description": "Target GitHub branch"
       }
