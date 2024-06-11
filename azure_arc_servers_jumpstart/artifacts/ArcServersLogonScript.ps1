@@ -421,16 +421,17 @@ if ($Env:flavor -ne "DevOps") {
         Write-Output "Onboarding the nested Linux VMs as an Azure Arc-enabled servers"
         $ubuntuSession = New-SSHSession -ComputerName $Ubuntu01VmIp -Credential $linCreds -Force -WarningAction SilentlyContinue
         $Command = "sudo sh /home/$nestedLinuxUsername/installArcAgentModifiedUbuntu.sh"
-        $(Invoke-SSHCommand -SSHSession $ubuntuSession -Command $Command -Timeout 600 -WarningAction SilentlyContinue).Output
+        $(Invoke-SSHCommand -SSHSession $ubuntuSession -Command $Command -Timeout 900 -WarningAction SilentlyContinue).Output
 
     }
 
     Start-Sleep -Seconds 15
 
-    Write-Header "Enabling Defender for Servers on the Arc-enabled machines"
-    $windowsArcMachine = Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Win2k19vmName
-    $linuxArcMachine = Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Ubuntu01vmName
-    <#$urlWindows = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.Security/pricings/virtualMachines?api-version=2024-01-01"
+    <#Write-Header "Enabling Defender for Servers on the Arc-enabled machines"
+    $windowsArcMachine = (Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Win2k19vmName).Id
+    $linuxArcMachine = (Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Ubuntu01vmName).Id
+
+    $urlWindows = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.Security/pricings/virtualMachines?api-version=2024-01-01"
     $urlLinux = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Ubuntu01vmName/providers/Microsoft.Security/pricings/virtualMachines?api-version=2024-01-01"
     $accessToken = (Get-AzAccessToken).Token
     $headers = @{
@@ -450,63 +451,75 @@ if ($Env:flavor -ne "DevOps") {
     ## Invoke API request to enable the P1 plan on the VM
     Invoke-RestMethod -Method Put -Uri $urlWindows -Body $body -Headers $headers
     Invoke-RestMethod -Method Put -Uri $urlLinux -Body $body -Headers $headers
+    $mdePackageURL = Invoke-AzRestMethod -Uri "https://management.azure.com/subscriptions/$subscriptionId/providers/Microsoft.Security/mdeOnboardings?api-version=2021-10-01-preview"
+    $mdeOnboardingURLWindows = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/extensions/MDE.Windows?api-version=2024-03-31-preview"
+    $mdeOnboardingURLLinux = "https://management.azure.com/$Ubuntu01vmName/extensions/MDE.Windows?api-version=2015-06-15"
+    $payloadWindows = @{
+        name = "MDE.Windows"
+        id = "$windowsArcMachine/extensions/MDE.Windows"
+        type = "Microsoft.HybridCompute/machines/extensions"
+        location = $azureLocation
+        properties = @{
+            autoUpgradeMinorVersion = $true
+            publisher = "Microsoft.Azure.AzureDefenderForServers"
+            type = "MDE.Windows"
+            typeHandlerVersion = "1.0"
+            settings = @{
+                azureResourceId = $windowsArcMachine
+                vNextEnabled = $true
+            }
+            protectedSettings = @{
+                defenderForEndpointOnboardingScript = ($mdePackageURL.content | ConvertFrom-Json).value.properties.onboardingPackageWindows
+            }
+        }
+    } | ConvertTo-Json
 
+    $payloadLinux = @{
+        name = "MDE.Linux"
+        id = "$linuxArcMachine/extensions/MDE.Windows"
+        type = "Microsoft.HybridCompute/machines/extensions"
+        location = $azureLocation
+        properties = @{
+            autoUpgradeMinorVersion = $true
+            publisher = "Microsoft.Azure.AzureDefenderForServers"
+            type = "MDE.Linux"
+            typeHandlerVersion = "1.0"
+            settings = @{
+                azureResourceId = $linuxArcMachine
+                vNextEnabled = $true
+            }
+            protectedSettings = @{
+                defenderForEndpointOnboardingScript = ($mdePackageURL.content | ConvertFrom-Json).value.properties.onboardingPackageWindows
+            }
+        }
+    } | ConvertTo-Json
 
-    Write-Host "Deploying MDE Extension on Arc-enabled Windows machine"
-    $windowsArcMachine = Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Win2k19vmName
-    $mdePackage = Invoke-AzRestMethod -Uri "https://management.azure.com/subscriptions/$subscriptionId/providers/Microsoft.Security/mdeOnboardings/?api-version=2021-10-01-preview"
-    $protectedSetting = @{"defenderForEndpointOnboardingScript" = ($mdePackage.content | ConvertFrom-Json).value.properties.onboardingPackageWindows}
-    $Setting = @{
-        "azureResourceId" = $windowsArcMachine.Id
-        "vNextEnabled" = $true
-    }
-    New-AzConnectedMachineExtension -Name 'MDE.Windows' -ExtensionType 'MDE.Windows' `
-        -ResourceGroupName $resourceGroup `
-        -MachineName $windowsArcMachine.Name `
-        -Location $azureLocation `
-        -Publisher 'Microsoft.Azure.AzureDefenderForServers' `
-        -Settings $Setting `
-        -ProtectedSetting $protectedSetting `
-        -AutoUpgradeMinorVersion `
-        -TypeHandlerVersion '1.0' `
-        -NoWait
+    Invoke-RestMethod -Method Put -Uri $mdeOnboardingURLWindows -Body $payloadWindows -Headers $headers
+    Invoke-RestMethod -Method Put -Uri $mdeOnboardingURLLinux -Body $payloadLinux -Headers $headers
+    #>
 
-    Write-Host "Deploying MDE Extension on Arc-enabled Linux machine"
-    $linuxArcMachine = Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Ubuntu01vmName
-    $mdePackage = Invoke-AzRestMethod -Uri "https://management.azure.com/subscriptions/$subscriptionId/providers/Microsoft.Security/mdeOnboardings/?api-version=2021-10-01-preview"
-    $protectedSetting = @{"defenderForEndpointOnboardingScript" = ($mdePackage.content | ConvertFrom-Json).value.properties.onboardingPackageLinux}
-    $Setting = @{
-        "azureResourceId" = $linuxArcMachine.Id
-        "vNextEnabled" = $true
-    }
-    New-AzConnectedMachineExtension -Name 'MDE.Linux' -ExtensionType 'MDE.Linux' `
-        -ResourceGroupName $resourceGroup `
-        -MachineName $linuxArcMachine.Name `
-        -Location $azureLocation `
-        -Publisher 'Microsoft.Azure.AzureDefenderForServers' `
-        -Settings $Setting `
-        -ProtectedSetting $protectedSetting `
-        -AutoUpgradeMinorVersion `
-        -TypeHandlerVersion '2.0' `
-        -NoWait
-#>
     Write-Host "Assigning Data collection rules to Arc-enabled machines"
-    az monitor data-collection rule association create --name "vmInsighitsWindows" --rule-id $vmInsightsDCR --resource $windowsArcMachine.Id --only-show-errors
-    az monitor data-collection rule association create --name "vmInsighitsLinux" --rule-id $vmInsightsDCR --resource $LinuxArcMachine.Id --only-show-errors
-    az monitor data-collection rule association create --name "changeTrackingWindows" --rule-id $changeTrackingDCR --resource $windowsArcMachine.Id --only-show-errors
-    az monitor data-collection rule association create --name "changeTrackingLinux" --rule-id $changeTrackingDCR --resource $LinuxArcMachine.Id --only-show-errors
+    $windowsArcMachine = (Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Win2k19vmName).Id
+    $linuxArcMachine = (Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Ubuntu01vmName).Id
+    az monitor data-collection rule association create --name "vmInsighitsWindows" --rule-id $vmInsightsDCR --resource $windowsArcMachine --only-show-errors
+    az monitor data-collection rule association create --name "vmInsighitsLinux" --rule-id $vmInsightsDCR --resource $LinuxArcMachine --only-show-errors
+    az monitor data-collection rule association create --name "changeTrackingWindows" --rule-id $changeTrackingDCR --resource $windowsArcMachine --only-show-errors
+    az monitor data-collection rule association create --name "changeTrackingLinux" --rule-id $changeTrackingDCR --resource $LinuxArcMachine --only-show-errors
 
-    Write-Host "Installing the AMA agent to the Arc-enabled machines"
+    Write-Host "Installing the AMA agent on the Arc-enabled machines"
     az connectedmachine extension create --name AzureMonitorWindowsAgent --publisher Microsoft.Azure.Monitor --type AzureMonitorWindowsAgent --machine-name $Win2k19vmName --resource-group $resourceGroup --location $azureLocation --enable-auto-upgrade true --no-wait
     az connectedmachine extension create --name AzureMonitorLinuxAgent --publisher Microsoft.Azure.Monitor --type AzureMonitorLinuxAgent --machine-name $Ubuntu01vmName --resource-group $resourceGroup --location $azureLocation --enable-auto-upgrade true --no-wait
 
-    Write-Host "Installing the changeTracking agent to the Arc-enabled machines"
+    Write-Host "Installing the changeTracking agent on the Arc-enabled machines"
     az connectedmachine extension create --name ChangeTracking-Windows  --publisher Microsoft.Azure.ChangeTrackingAndInventory --type-handler-version 2.20  --type ChangeTracking-Windows  --machine-name $Win2k19vmName --resource-group $resourceGroup  --location $azureLocation --enable-auto-upgrade --no-wait
     az connectedmachine extension create --name ChangeTracking-Linux  --publisher Microsoft.Azure.ChangeTrackingAndInventory --type-handler-version 2.20  --type ChangeTracking-Linux  --machine-name $Ubuntu01vmName --resource-group $resourceGroup  --location $azureLocation --enable-auto-upgrade --no-wait
 
-    Write-Host "Installing the Azure Update Manager agent to the Arc-enabled machines"
+    Write-Host "Installing the Azure Update Manager agent on the Arc-enabled machines"
     az connectedmachine assess-patches --resource-group $resourceGroup --name $Win2k19vmName --no-wait
     az connectedmachine assess-patches --resource-group $resourceGroup --name $Ubuntu01vmName --no-wait
+
+    Write-Host "Installing the AdminCenter extension on the Arc-enabled windows machine"
+    az connectedmachine extension create --name AdminCenter  --publisher Microsoft.AdminCenter --type AdminCenter  --machine-name $Win2k19vmName --resource-group $resourceGroup  --location $azureLocation --enable-auto-upgrade --no-wait
 
     Write-Header "Enabling SSH access to Arc-enabled servers"
     $VMs = @("ArcBox-Ubuntu-01", "ArcBox-Win2K19")
