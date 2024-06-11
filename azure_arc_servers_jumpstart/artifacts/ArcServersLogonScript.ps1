@@ -428,8 +428,55 @@ if ($Env:flavor -ne "DevOps") {
     Start-Sleep -Seconds 15
 
     Write-Header "Enabling Defender for Servers on the Arc-enabled machines"
-    $windowsArcMachine = Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Win2k19vmName
-    $linuxArcMachine = Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Ubuntu01vmName
+    $windowsArcMachine = (Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Win2k19vmName).Id
+    $linuxArcMachine = (Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Ubuntu01vmName).Id
+
+    $urlWindows = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.Security/pricings/virtualMachines?api-version=2024-01-01"
+    $urlLinux = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Ubuntu01vmName/providers/Microsoft.Security/pricings/virtualMachines?api-version=2024-01-01"
+    $accessToken = (Get-AzAccessToken).Token
+    $headers = @{
+        "Authorization" = "Bearer $accessToken"
+        "Content-Type"  = "application/json"
+    }
+
+    ## Prepare API request body
+    $body = @{
+        location   = $azureLocation
+        properties = @{
+            pricingTier = "Standard"
+            subPlan = "P1"
+        }
+    } | ConvertTo-Json
+
+    ## Invoke API request to enable the P1 plan on the VM
+    Invoke-RestMethod -Method Put -Uri $urlWindows -Body $body -Headers $headers
+    Invoke-RestMethod -Method Put -Uri $urlLinux -Body $body -Headers $headers
+
+    $mdePackageURL = Invoke-AzRestMethod -Uri "https://management.azure.com/subscriptions/$subscriptionId/providers/Microsoft.Security/mdeOnboardings?api-version=2021-10-01-preview"
+    $mdeOnboardingURLWindows = "https://management.azure.com/$Win2k19vmName/extensions/MDE.Windows?api-version=2015-06-15"
+    $mdeOnboardingURLLinux = "https://management.azure.com/$Ubuntu01vmName/extensions/MDE.Windows?api-version=2015-06-15"
+    $payload = @{
+        name = "MDE.Windows"
+        id = "$windowsArcMachine/extensions/MDE.Windows"
+        type = "Microsoft.HybridCompute/machines/extensions"
+        location = $azureLocation
+        properties = @{
+            autoUpgradeMinorVersion = $true
+            publisher = "Microsoft.Azure.AzureDefenderForServers"
+            type = "MDE.Windows"
+            typeHandlerVersion = "1.0"
+            settings = @{
+                azureResourceId = $windowsArcMachine
+                vNextEnabled = $true
+            }
+            protectedSettings = @{
+                defenderForEndpointOnboardingScript = ($mdePackageURL.content | ConvertFrom-Json).value.properties.onboardingPackageWindows
+            }
+        }
+    } | ConvertTo-Json
+
+    Invoke-RestMethod -Method Put -Uri $mdeOnboardingURLWindows -Body $payload -Headers $headers
+
     <#$urlWindows = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.Security/pricings/virtualMachines?api-version=2024-01-01"
     $urlLinux = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Ubuntu01vmName/providers/Microsoft.Security/pricings/virtualMachines?api-version=2024-01-01"
     $accessToken = (Get-AzAccessToken).Token
