@@ -381,35 +381,35 @@ In this Lab, you will setup Azure update manager and learn how to enable it to e
 
 #### Task 1: Use the Azure portal and search for Azure Update manager
 
-1. Click on "Machines" in the left blade to view all your Azure machines.
+- Click on "Machines" in the left blade to view all your Azure machines.
 
 Note that all the Azure VMs and Arc-enabled server that are already visible in this Azure Update Manager service.
 
    ![Screenshot showing initial view of all VMs](./updatemgmt-allvms.png)
 
-1. Select the Arc-enabled machines and click on the refresh button to refresh the current status of selected VMs.
+- Select the Arc-enabled machines and click on the refresh button to refresh the current status of selected VMs.
 
    ![Screenshot showing machines refresh](./updatemgmt-refreshvms.png)
 
-2. **Optional** - you can enable automatic recurring task for at scale refresh once every 24 hours.
+- **Optional** - you can enable automatic recurring task for at scale refresh once every 24 hours.
 
    Select the Arc-enabled servers, click on settings then choose update settings, and set the periodic assessement drop down to enable.
 
- Note that the rest of the VMs will automatically be enabled.
+  Note that the rest of the VMs will automatically be enabled.
 
    ![Screenshot showing automatic refresh configuration](./updatemgmt-updatesettings.png)
 
 #### Task 2: Create a maintenance configuration from Azure update manager.
 
-1. Click on Maintenance configuration in the top of the screen as shown below
+- Click on Maintenance configuration in the top of the screen as shown below
 
    ![Screenshot showing how to add a maintenance config](./updatemgmt-maintenanceconfig0.png)
 
-2. Fill out the basics tab as shown below, make sure you choose a region based on your location. Leave the rest as default.
+- Fill out the basics tab as shown below, make sure you choose a region based on your location. Leave the rest as default.
 
    ![Screenshot showing how to add a maintenance config](./updatemgmt-maintenanceconfig.png)
 
-3. **Optional** click on dynamic scopes, then the subscriptions where your Arc-enabled machines are, select "filter by" option and choose how machines are added to this maintenance configuration (by OS, location, resource group)
+- **Optional** click on dynamic scopes, then the subscriptions where your Arc-enabled machines are, select "filter by" option and choose how machines are added to this maintenance configuration (by OS, location, resource group)
 
 In this guide, we filtered by the OS type as shown below.
 
@@ -419,11 +419,11 @@ In this guide, we filtered by the OS type as shown below.
 
    ![Screenshot showing the dynamic scopes for update groups](./updatemgmt-previewdynamicscope.png)
 
-4. Click on the machines tab to choose machines specifically instead of dynamically.
+- Click on the machines tab to choose machines specifically instead of dynamically.
 
    ![Screenshot showing which machines to be selected for config](./Maintenance_config_resources.png)
 
-5. Click on the updates tab to choose what type of updates will be installed by this config as shown below.
+- Click on the updates tab to choose what type of updates will be installed by this config as shown below.
 
    ![Screenshot showing which updates are going to be installed](./updatemgmt-specificupdates.png)
 
@@ -431,23 +431,23 @@ In this guide, we filtered by the OS type as shown below.
 
  Instead of using maintenance configs with specific recurring cycles, you can also setup one-time updates (immediately!). Start by forcing an immediate refresh.
 
-1. Select your Arc-enabled machines, select "Check for updates" from the top menu, and select One-time update after the assessment finishes from the top as shown below.
+- Select your Arc-enabled machines, select "Check for updates" from the top menu, and select One-time update after the assessment finishes from the top as shown below.
 
    ![Screenshot showing onetime refresh](./updatemgmt_onetimerefresh_1.png)
 
-2. Confirm your machines selection from the machines tab.
+- Confirm your machines selection from the machines tab.
 
    ![Screenshot showing what updates for each machines](./updatemgmt-installonetimeupdates.png)
 
-3. Click on the updates tab and select updates of your choice to apply to your machines.
+- Click on the updates tab and select updates of your choice to apply to your machines.
 
    ![Screenshot showing which types of updates to install](./updatemgmt-showwhichupdates.png)
 
-4. Click on the properties tab and select "reboot if required" and "60 minutes" for the Maintenance window.
+- Click on the properties tab and select "reboot if required" and "60 minutes" for the Maintenance window.
 
    ![Screenshot showing changes to be made in the onboard script](./updatemgmt-installoptions.png)
 
-5. After updates have been applied and the machines rebooted, you can see the status of the machines.
+- After updates have been applied and the machines rebooted, you can see the status of the machines.
 
    ![Screenshot showing final state](./updatemgmt-allupdatescomleted1.png)
 
@@ -455,22 +455,70 @@ In this guide, we filtered by the OS type as shown below.
 
 Under the Monitoring part of the Update Manager, there is a default workbook, which is an overview of the Azure Update Manager. There are a few views in there that show the total number of machines connected, history of runs, and the status.
 
-1. In Azure update manager, click on "update reports" under Monitoring.
+- In Azure update manager, click on "update reports" under Monitoring.
 
    ![Screenshot showing overall machine Status](./updatemgmt-reporting0.png)
 
-2. Select on the subscription that has your Azure Arc-enabled servers.
+- Select on the subscription that has your Azure Arc-enabled servers.
 
 Note that there are a few views in there that show the total number of machines connected, history of runs, and the status.
 
-3. Expand the "Machines overall status & configurations" view of currently connected machines, split by Azure and Azure Arc VMs, and Windows and Linux numbers. Notice the View of manual vs periodic assessments and manual vs automatically updated
+- Expand the "Machines overall status & configurations" view of currently connected machines, split by Azure and Azure Arc VMs, and Windows and Linux numbers. Notice the View of manual vs periodic assessments and manual vs automatically updated
 
    ![Screenshot showing overall machine Status](./updatemgmt-updatreports-1.png)
 
    ![Screenshot showing overall machine Status](./updatemgmt-updatereports-2.png)
 
-4. Expand the "Updates Data Overview" view and look at the updates by classification
+- Expand the "Updates Data Overview" view and look at the updates by classification
 
    ![Screenshot showing overall machine Status](./updatemgmt-updatereports-3.png)
 
-Please expand the rest of the views "Schedules/maintenance configurations" and "History of installation runs" to visualize the updates running in Azure Update manager.
+Expand the rest of the views "Schedules/maintenance configurations" and "History of installation runs" to visualize the updates running in Azure Update manager.
+
+### Module 8: Manage your Arc-enabled Windows machines using the Windows Admin Center
+
+#### Objective
+
+In this exercise you will learn how to use the Windows Admin Center in the Azure portal to manage the Windows operating system of your Arc-enabled servers, known as hybrid machines. You can securely manage hybrid machines from anywhere without needing a VPN, public IP address, or other inbound connectivity to your machine.
+
+#### Task 1: Pre-requisites
+
+Pre-requisite: Azure permissions
+
+- The Windows Admin Center extension is already installed for you on the Arc-enabled machines.
+
+- Connecting to Windows Admin Center requires you to have Reader and Windows Admin Center Administrator Login permissions at the Arc-enabled server resource. The following steps helps you to set these up.
+
+- Enter "Machines - Azure Arc" in the top search bar in the Azure portal and select it from the displayed services.
+
+    ![Screenshot showing how to display Arc connected servers in portal](./Arc_servers_search.png)
+
+- Click on the Windows 2019 Azure Arc-enabled **Windows** servers.
+
+    ![Screenshot showing existing Arc connected servers](./click_on_any_arc_enabled_server.png)
+
+- From the selected Windows machine click "Access control (IAM)" then add the role "Admin Center Administrator Login" to your access.
+
+    ![Screenshot of required role for Admin Center](./Admin_centre_Add_Role_1.png)
+
+#### Task 2: Connect and explore Windows Admin Center (preview)
+
+- Once the role assignment is complete then you can connect to the Windows Admin Center.
+
+    ![Screenshot connecting to Admin Center](./Admin_Center_Connect.png)
+
+- Start exploring the capabilities offered by the Windows Admin Center to manage your Arc-enabled Windows machine.
+
+    ![Screenshot Admin Center overview](./Admin_Centre_Overview.png)
+
+- Let us use the Windows Admin Center to add a local user, a new group and assign the new user to the new group. From the left menu select "Local users & groups". Then from the "Users" tab click "New user". Enter the user details and click on "Submit". Verify that the user has been added.
+
+![Screenshot adding local user](./Admin_center_local_users_1.png)
+
+- Now select the "Groups" tab and click on "New Group". Enter the group details and click on "Submit". Verify that the group has been added.
+
+    ![Screenshot adding local group](./Admin_center_local_groups_1.png)
+
+- Back to the "Users" tab, select the new user you have added, then click "Manage membership". Add the selected user to the new group and save.
+
+    ![Screenshot Group membership](./Admin_centre_group_membership_1.png)
