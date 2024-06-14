@@ -447,7 +447,7 @@ In this guide, we filtered by the OS type as shown below.
 
    ![Screenshot showing changes to be made in the onboard script](./updatemgmt-installoptions.png)
 
-5. Wait for a few hours and a few reboots - this can take repeated forcing for machines that have not been updated for a long time.
+5. After updates have been applied and the machines rebooted, you can see the status of the machines.
 
    ![Screenshot showing final state](./updatemgmt-allupdatescomleted1.png)
 
