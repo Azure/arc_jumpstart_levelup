@@ -37,7 +37,6 @@ There are two ways to get access to the lab modules and guidance.
 1. You can use this GitHub repository.
 2. You can open the guide using VSCode inside the ArcBox-Client VM to walk you through each module of this levelup.
 
-
 ## Lab Environment
 
 ArcBox PSConfEU edition is a special “flavor” of ArcBox that is intended for users who want to experience Azure Arc-enabled servers' capabilities in a sandbox environment. Screenshot below shows layout of the lab environment.
