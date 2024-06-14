@@ -250,7 +250,7 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 
 #### Objective
 
-In this exercise, you will learn how to use the Azure Resource queries both in the Azure Graph Explorer and Powershell to demonstrate inventory management of your Azure Arc connected servers. Note that the results you get by running the graph queries in this module might be different from the sample screenshots as your environment might be different.
+In this module, you will learn how to use the Azure Resource queries both in the Azure Graph Explorer and Powershell to demonstrate inventory management of your Azure Arc connected servers. Note that the results you get by running the graph queries in this module might be different from the sample screenshots as your environment might be different.
 
 #### Task 1: Apply resource tags to Azure Arc-enabled servers
 
@@ -377,7 +377,7 @@ Then run the query in PowerShell
 Azure Update Manager is the new service that unifies all VMs running in Azure together with Azure Arc, putting all update tasks in 1 common area for all supported Linux and Windows versions.
 This service is NOT dependent on Log analytics agent. (The older Azure Automation Update service relies on Log Analytics agent)
 
-In this Lab, you will setup Azure update manager and learn how to enable it to efficiently manage all updates for your machines, regardless of where they are. You will also see some of the default reports using workbooks to monitor your Azure update manager environment.
+In this module, you will setup Azure update manager and learn how to enable it to efficiently manage all updates for your machines, regardless of where they are. You will also see some of the default reports using workbooks to monitor your Azure update manager environment.
 
 #### Task 1: Use the Azure portal and search for Azure Update manager
 
@@ -479,7 +479,7 @@ Expand the rest of the views "Schedules/maintenance configurations" and "History
 
 #### Objective
 
-In this exercise you will learn how to use the Windows Admin Center in the Azure portal to manage the Windows operating system of your Arc-enabled servers, known as hybrid machines. You can securely manage hybrid machines from anywhere without needing a VPN, public IP address, or other inbound connectivity to your machine.
+In this module you will learn how to use the Windows Admin Center in the Azure portal to manage the Windows operating system of your Arc-enabled servers, known as hybrid machines. You can securely manage hybrid machines from anywhere without needing a VPN, public IP address, or other inbound connectivity to your machine.
 
 #### Task 1: Pre-requisites
 
