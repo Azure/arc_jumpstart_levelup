@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.28.1.47646",
-      "templateHash": "7671033822705041178"
+      "templateHash": "7005219474816930933"
     }
   },
   "parameters": {
@@ -645,7 +645,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.28.1.47646",
-              "templateHash": "11200813895114110716"
+              "templateHash": "11706008289243339557"
             }
           },
           "parameters": {
@@ -1205,7 +1205,7 @@
               "name": "[variables('bastionName')]",
               "location": "[parameters('location')]",
               "sku": {
-                "name": "Standard"
+                "name": "Developer"
               },
               "properties": {
                 "ipConfigurations": [
