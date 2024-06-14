@@ -252,7 +252,7 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 
 In this exercise, you will learn how to use the Azure Resource queries both in the Azure Graph Explorer and Powershell to demonstrate inventory management of your Azure Arc connected servers. Note that the results you get by running the graph queries in this module might be different from the sample screenshots as your environment might be different.
 
-##### Task 1: Apply resource tags to Azure Arc-enabled servers
+#### Task 1: Apply resource tags to Azure Arc-enabled servers
 
 In this first step, you will assign Azure resource tags to some of your Azure Arc-enabled servers. This gives you the ability to easily organize and manage server inventory.
 
@@ -270,7 +270,7 @@ In this first step, you will assign Azure resource tags to some of your Azure Ar
 
 - Repeat the same process in other Azure Arc-enabled servers if you wish. This new tag will be used later when working with Resource Graph Explorer queries.
 
-##### Task 2: The Azure Resource Graph Explorer
+#### Task 2: The Azure Resource Graph Explorer
 
 - Now, we will explore our hybrid server inventory using a number of Azure Graph Queries. Enter "Resource Graph Explorer" in the top search bar in the Azure portal and select it.
 
@@ -280,7 +280,7 @@ In this first step, you will assign Azure resource tags to some of your Azure Ar
 
     ![Screenshot of Graph Explorer Scope](./Scope_of_Graph_Query.png)
 
-##### Task 3: Run a query to show all Azure Arc-enabled servers in your subscription
+#### Task 3: Run a query to show all Azure Arc-enabled servers in your subscription
 
 - In the query window, enter and run the following query and examine the results which should show your Arc-enabled servers. Note the use of the KQL equals operator (=~) which is case insensitive [KQL =~ (equals) operator](https://learn.microsoft.com/azure/data-explorer/kusto/query/equals-operator).
 
@@ -307,7 +307,7 @@ Then run the query in PowerShell
   Search-AzGraph -Query "Resources | where type =~ 'Microsoft.HybridCompute/machines'"
   ```
 
-##### Task 4: Query your server inventory using the available metadata
+#### Task 4: Query your server inventory using the available metadata
 
 - Use PowerShell and the Resource Graph Explorer to summarize the server count by "logical cores" which is one of the detected properties referred to in the previous task. Remember to only use the query string, which is enclosed in double quotes, if you want to run the query in the portal.
 
@@ -322,7 +322,7 @@ Then run the query in PowerShell
 
     ![Screenshot of the logicalCores server summary](./chart_for_vcpu_summay.png)
 
-##### Task 5: Use the resource tags in your Graph Query
+#### Task 5: Use the resource tags in your Graph Query
 
 - Let’s now build a query that uses the tag we assigned earlier to some of our Azure Arc-enabled servers. Use the following query that includes a check for resources that have a value for the "Scenario" tag. Feel free to use the portal or PowerShell. Check that the results match the servers that you set tags for earlier.
 
@@ -333,7 +333,7 @@ Then run the query in PowerShell
     | project name, tags"
     ```
 
-##### Task 6: List the extensions installed on the Azure Arc-enabled servers
+#### Task 6: List the extensions installed on the Azure Arc-enabled servers
 
 - Run the following advanced query which allows you to see what extensions are installed on the Arc-enabled servers. Notice that running the query in PowerShell requires us to escape the $ character as explained in [Escape Characters](https://learn.microsoft.com/azure/governance/resource-graph/concepts/query-language#escape-characters).
 
@@ -354,7 +354,7 @@ Then run the query in PowerShell
 
     ![Screenshot of extensions query](./Extensions_query.png)
 
-##### Task 7: Query other properties
+#### Task 7: Query other properties
 
 - Azure Arc provides additional properties on the Azure Arc-enabled server resource that we can query with Resource Graph Explorer. In the following example, we list some of these key properties, like the Azure Arc Agent version installed on your Azure Arc-enabled servers
 
@@ -369,3 +369,108 @@ Then run the query in PowerShell
 - Running the same query in the portal should result in something like the following
 
     ![Screenshot of extra properties](./extra_properties.png)
+
+### Module 5: Enable Azure update manager for the Arc-enabled servers
+
+#### Objective
+
+Azure Update Manager is the new service that unifies all VMs running in Azure together with Azure Arc, putting all update tasks in 1 common area for all supported Linux and Windows versions.
+This service is NOT dependent on Log analytics agent. (The older Azure Automation Update service relies on Log Analytics agent)
+
+In this Lab, you will setup Azure update manager and learn how to enable it to efficiently manage all updates for your machines, regardless of where they are. You will also see some of the default reports using workbooks to monitor your Azure update manager environment.
+
+#### Task 1: Use the Azure portal and search for Azure Update manager
+
+1. Click on "Machines" in the left blade to view all your Azure machines.
+
+Note that all the Azure VMs and Arc-enabled server that are already visible in this Azure Update Manager service.
+
+   ![Screenshot showing initial view of all VMs](./updatemgmt-allvms.png)
+
+1. Select the Arc-enabled machines and click on the refresh button to refresh the current status of selected VMs.
+
+   ![Screenshot showing machines refresh](./updatemgmt-refreshvms.png)
+
+2. **Optional** - you can enable automatic recurring task for at scale refresh once every 24 hours.
+
+   Select the Arc-enabled servers, click on settings then choose update settings, and set the periodic assessement drop down to enable.
+
+ Note that the rest of the VMs will automatically be enabled.
+
+   ![Screenshot showing automatic refresh configuration](./updatemgmt-updatesettings.png)
+
+#### Task 2: Create a maintenance configuration from Azure update manager.
+
+1. Click on Maintenance configuration in the top of the screen as shown below
+
+   ![Screenshot showing how to add a maintenance config](./updatemgmt-maintenanceconfig0.png)
+
+2. Fill out the basics tab as shown below, make sure you choose a region based on your location. Leave the rest as default.
+
+   ![Screenshot showing how to add a maintenance config](./updatemgmt-maintenanceconfig.png)
+
+3. **Optional** click on dynamic scopes, then the subscriptions where your Arc-enabled machines are, select "filter by" option and choose how machines are added to this maintenance configuration (by OS, location, resource group)
+
+In this guide, we filtered by the OS type as shown below.
+
+   ![Screenshot showing the dynamic scopes for update groups](./updatemgmt-dynamicscopes.png)
+
+>**Note**: If you want to enable dynamic scopes, you will need to enable the "Dynamic Scoping" preview feature in the subscription.
+
+   ![Screenshot showing the dynamic scopes for update groups](./updatemgmt-previewdynamicscope.png)
+
+4. Click on the machines tab to choose machines specifically instead of dynamically.
+
+   ![Screenshot showing which machines to be selected for config](./Maintenance_config_resources.png)
+
+5. Click on the updates tab to choose what type of updates will be installed by this config as shown below.
+
+   ![Screenshot showing which updates are going to be installed](./updatemgmt-specificupdates.png)
+
+#### Task 3: Apply one-time updates from Azure update manager.
+
+ Instead of using maintenance configs with specific recurring cycles, you can also setup one-time updates (immediately!). Start by forcing an immediate refresh.
+
+1. Select your Arc-enabled machines, select "Check for updates" from the top menu, and select One-time update after the assessment finishes from the top as shown below.
+
+   ![Screenshot showing onetime refresh](./updatemgmt_onetimerefresh_1.png)
+
+2. Confirm your machines selection from the machines tab.
+
+   ![Screenshot showing what updates for each machines](./updatemgmt-installonetimeupdates.png)
+
+3. Click on the updates tab and select updates of your choice to apply to your machines.
+
+   ![Screenshot showing which types of updates to install](./updatemgmt-showwhichupdates.png)
+
+4. Click on the properties tab and select "reboot if required" and "60 minutes" for the Maintenance window.
+
+   ![Screenshot showing changes to be made in the onboard script](./updatemgmt-installoptions.png)
+
+5. Wait for a few hours and a few reboots - this can take repeated forcing for machines that have not been updated for a long time.
+
+   ![Screenshot showing final state](./updatemgmt-allupdatescomleted1.png)
+
+#### Task 4: Explore the Azure update manager Overview workbook.
+
+Under the Monitoring part of the Update Manager, there is a default workbook, which is an overview of the Azure Update Manager. There are a few views in there that show the total number of machines connected, history of runs, and the status.
+
+1. In Azure update manager, click on "update reports" under Monitoring.
+
+   ![Screenshot showing overall machine Status](./updatemgmt-reporting0.png)
+
+2. Select on the subscription that has your Azure Arc-enabled servers.
+
+Note that there are a few views in there that show the total number of machines connected, history of runs, and the status.
+
+3. Expand the "Machines overall status & configurations" view of currently connected machines, split by Azure and Azure Arc VMs, and Windows and Linux numbers. Notice the View of manual vs periodic assessments and manual vs automatically updated
+
+   ![Screenshot showing overall machine Status](./updatemgmt-updatreports-1.png)
+
+   ![Screenshot showing overall machine Status](./updatemgmt-updatereports-2.png)
+
+4. Expand the "Updates Data Overview" view and look at the updates by classification
+
+   ![Screenshot showing overall machine Status](./updatemgmt-updatereports-3.png)
+
+Please expand the rest of the views "Schedules/maintenance configurations" and "History of installation runs" to visualize the updates running in Azure Update manager.
