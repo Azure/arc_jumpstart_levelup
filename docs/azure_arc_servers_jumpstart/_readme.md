@@ -59,6 +59,12 @@ ArcBox PSConfEU edition is a special “flavor” of ArcBox that is intended for
   az login
   ```
 
+If you have access to multiple tenants, use the `--tenant` switch.
+
+  ```shell
+  az login --tenant <tenantId>
+  ```
+
 - [Install or update Azure PowerShell](https://learn.microsoft.com/powershell/azure/install-azps-windows). Use the below command to check if its installed.
 
   ```shell
@@ -121,7 +127,6 @@ ArcBox PSConfEU edition is a special “flavor” of ArcBox that is intended for
   ```
 
 - To deploy ArcBox, an Azure account assigned with the _Owner_ Role-based access control (RBAC) role is required.
-
 
     > **NOTE: The Jumpstart scenarios are designed with as much ease of use in-mind and adhering to security-related best practices whenever possible. It is optional but highly recommended to scope the access to a specific [Azure subscription and resource group](https://docs.microsoft.com/cli/azure/ad/sp?view=azure-cli-latest) as well considering using a [less privileged service principal account](https://docs.microsoft.com/azure/role-based-access-control/best-practices)**
 
