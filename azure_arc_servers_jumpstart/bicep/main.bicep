@@ -1,5 +1,5 @@
 @description('Azure AD tenant id for your service principal')
-param spnTenantId string
+param spnTenantId string = tenant().tenantId
 
 @description('Username for Windows account')
 param windowsAdminUsername string
@@ -10,20 +10,20 @@ param windowsAdminUsername string
 @secure()
 param windowsAdminPassword string
 
-@description('Enable automatic logon into ArcBox Virtual Machine')
-param vmAutologon bool = true
+//@description('Enable automatic logon into ArcBox Virtual Machine')
+//param vmAutologon bool = true
 
 @description('Override default RDP port using this parameter. Default is 3389. No changes will be made to the client VM.')
 param rdpPort string = '3389'
 
 @description('Name for your log analytics workspace')
-param logAnalyticsWorkspaceName string
+param logAnalyticsWorkspaceName string = 'ArcBoxWorkspace'
 
-@description('The flavor of ArcBox you want to deploy.')
-@allowed([
-  'ITPro'
-])
-param flavor string = 'ITPro'
+//@description('The flavor of ArcBox you want to deploy.')
+//@allowed([
+//  'ITPro'
+//])
+//param flavor string = 'ITPro'
 
 @description('Target GitHub account')
 param githubAccount string = 'azure'
@@ -34,14 +34,20 @@ param githubBranch string = 'psconfeu'
 @description('Choice to deploy Bastion to connect to the client VM')
 param deployBastion bool = false
 
-@description('User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps')
-param githubUser string = 'microsoft'
+//@description('User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps')
+//param githubUser string = 'microsoft'
 
 @description('Azure location to deploy all resources')
 param location string = resourceGroup().location
 
 @description('Your email address to configure alerts.')
 param emailAddress string
+
+var vmAutologon = true
+
+var githubUser = 'microsoft'
+
+var flavor = 'ITPro'
 
 var templateBaseUrl = 'https://raw.githubusercontent.com/${githubAccount}/arc_jumpstart_levelup/${githubBranch}/azure_arc_servers_jumpstart/'
 

@@ -14,9 +14,6 @@
         "logAnalyticsWorkspaceName": {
             "value": "<your unique Log Analytics workspace name>"
         },
-        "flavor": {
-            "value":  "ITPro"
-        },
         "deployBastion": {
             "value": false
         },

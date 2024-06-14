@@ -464,7 +464,7 @@ resource bastionHost 'Microsoft.Network/bastionHosts@2023-11-01' = if (deployBas
   name: bastionName
   location: location
   sku:{
-    name: 'Standard'
+    name: 'Developer'
   }
   properties: {
     ipConfigurations: [

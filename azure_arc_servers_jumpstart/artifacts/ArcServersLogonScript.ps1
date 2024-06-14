@@ -18,9 +18,9 @@ $vmInsightsDCR = $env:vmInsightsDCR
 #$vhdSourceFolder = "https://jumpstartprodsg.blob.core.windows.net/arcbox/*"
 $vhdSourceFolders = @(
     "https://jumpstartprodsg.blob.core.windows.net/arcbox/*"
-    #"https://stgpsconfarcboxvhds.blob.core.windows.net/arcbox/*"
-    #"https://stgpsconfarcboxvhdsneu.blob.core.windows.net/arcbox/*"
-    #"https://stgpsconfarcboxvhdsuks.blob.core.windows.net/arcbox/*"
+    "https://stgpsconfarcboxvhds.blob.core.windows.net/arcbox/*"
+    "https://stgpsconfarcboxvhdsneu.blob.core.windows.net/arcbox/*"
+    "https://stgpsconfarcboxvhdsuks.blob.core.windows.net/arcbox/*"
 )
 
 $vhdSourceFolder = Get-Random -InputObject $vhdSourceFolders
