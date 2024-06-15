@@ -218,18 +218,6 @@ By design, ArcBox does not open port 3389 on the network security group. Therefo
 
   > **NOTE: When using Azure Bastion, the desktop background image is not visible. Therefore some screenshots in this guide may not exactly match your experience if you are connecting to _ArcBox-Client_ with Azure Bastion.**
 
-#### Connect using just-in-time access (JIT)
-
-If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/azure/defender-for-cloud/just-in-time-access-usage?tabs=jit-config-asc%2Cjit-request-asc) enabled on your subscription and would like to use JIT to access the Client VM, use the following steps:
-
-- In the Client VM configuration pane, enable just-in-time. This will enable the default settings.
-
-  ![Screenshot showing the Microsoft Defender for cloud portal, allowing RDP on the client VM](./jit_configure.png)
-
-  ![Screenshot showing connecting to the VM using RDP](./rdp_connect.png)
-
-  ![Screenshot showing connecting to the VM using JIT](./jit_connect_rdp.png)
-
 #### The Logon scripts
 
 - Once you log into the _ArcBox-Client_ VM, multiple automated scripts will open and start running. These scripts usually take 10-20 minutes to finish, and once completed, the script windows will close automatically. At this point, the deployment is complete.
@@ -245,6 +233,48 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 ## Modules
 
 ### Module 1: On-boarding to Azure Arc-enabled servers
+
+#### Objective
+
+The deployment process that you have walked through in Lab01 should have set up four VMs running on Hyper-V in the ArcBox-Client machine. Two of these machines have been connected to Azure Arc for you by the set script. In this exercise you will verify that these two machines are indeed Arc-enabled and you will identify the other two machines that you will Arc-enable.
+
+##### Task 1: Use the Azure portal to examine you Arc-enabled machines inventory
+
+1. Enter "Machines - Azure Arc" in the top search bar in the Azure portal and select it from the displayed services.
+
+![!Screenshot Arc_servers_search](./Arc_servers_search.png)
+
+2. You should see the machines that are connected to Arc already: Arcbox-Ubuntu-01, ArcBox-Win2k12 and ArcBox-Win2K19.
+
+![Screenshot showing existing Arc connected servers](./First_view_of_Arc_connected.png)
+
+##### Task 2:  Examine the virtual machines that you will Arc-enable
+
+1. For the follow-along session you want to connect one of the other available machines running as VMs in the ArcBox-Client. You can see these (ArcBox-Win2K22 and ArcBox-Ubuntu-02) by running the Hyper-V Manager in the ArcBox-Client (after you have connected to it with RDP as explained earlier in Lab01).
+
+![Screenshot of 4 machines on Hyper-v](./choose_Hyper-V.png)
+
+##### Task 3: Installation and registration of the Azure Arc connected machine agent for a Windows machine
+
+1. From the Azure portal go to the "Machines - Azure Arc" page and select "Add/Create" at the upper left, then select "Add a machine".
+
+![Screenshot to select add a machine](./Select_Add_a_machine.png)
+
+2. In the next screen, go to "Add a single sever" and click on "Generate script".
+
+3. Fill in the Resource Group, Region, Operating System (Windows), keep Connectivity as "Public endpoint". Then download the script to your local machine (or you can copy the content into the clipboard).
+
+4. Go to the ArcBox-Client machine via RDP and from Hyper-V manager right-click on the ArcBox-Win2K22 VM and click "Connect" (Administrator default password is ArcDemo123!!). Then start PowerShell in the ArcBox-Win2K22 VM and copy the content of the onboarding script into the terminal.
+
+![Screenshot run onboard windows script](./run_windows_onboard_script.png)
+
+6. On successful completion a message is displayed to confirm the machine is connected to Azure Arc. We can also verify that our Windows machine is connected in the Azure portal (Machines - Azure Arc).
+
+![Screenshot confirm win machine on-boarded](./confirm_windows_machine_onboarding.png)
+
+For more information about deployment options, see the following two articles:
+- [Azure Connected Machine agent deployment options](https://learn.microsoft.com/azure/azure-arc/servers/deployment-options)
+- [Connect hybrid machines to Azure at scale](https://learn.microsoft.com/azure/azure-arc/servers/onboard-service-principal).
 
 ### Module 2: Query and inventory your Azure Arc-enabled servers using Azure Resource Graph
 
