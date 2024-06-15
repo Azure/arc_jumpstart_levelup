@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.28.1.47646",
-      "templateHash": "14661478389933058991"
+      "templateHash": "6572750651027523122"
     }
   },
   "parameters": {
@@ -46,14 +46,14 @@
     },
     "githubAccount": {
       "type": "string",
-      "defaultValue": "sebassem",
+      "defaultValue": "azure",
       "metadata": {
         "description": "Target GitHub account"
       }
     },
     "githubBranch": {
       "type": "string",
-      "defaultValue": "sb-psconf",
+      "defaultValue": "psconfeu",
       "metadata": {
         "description": "Target GitHub branch"
       }

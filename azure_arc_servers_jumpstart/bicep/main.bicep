@@ -26,10 +26,10 @@ param logAnalyticsWorkspaceName string = 'ArcBoxWorkspace'
 //param flavor string = 'ITPro'
 
 @description('Target GitHub account')
-param githubAccount string = 'sebassem'
+param githubAccount string = 'azure'
 
 @description('Target GitHub branch')
-param githubBranch string = 'sb-psconf'
+param githubBranch string = 'psconfeu'
 
 @description('Choice to deploy Bastion to connect to the client VM')
 param deployBastion bool = false
