@@ -1,5 +1,5 @@
 @description('Azure AD tenant id for your service principal')
-param spnTenantId string
+param spnTenantId string = tenant().tenantId
 
 @description('Username for Windows account')
 param windowsAdminUsername string
@@ -26,10 +26,10 @@ param logAnalyticsWorkspaceName string = 'ArcBoxWorkspace'
 //param flavor string = 'ITPro'
 
 @description('Target GitHub account')
-param githubAccount string = 'azure'
+param githubAccount string = 'sebassem'
 
 @description('Target GitHub branch')
-param githubBranch string = 'psconfeu'
+param githubBranch string = 'sb-psconf'
 
 @description('Choice to deploy Bastion to connect to the client VM')
 param deployBastion bool = false
@@ -101,10 +101,16 @@ module monitoringResources 'mgmt/monitoringResources.bicep' = {
   }
 }
 
+module arcAMAPolicies 'mgmt/policySetDefinitionsAzureArc.bicep' = {
+  name: guid('ARCBOX_POLICIES',subscription().id,resourceGroup().location)
+  scope: subscription()
+}
+
 module policyDeployment 'mgmt/policyAzureArc.bicep' = {
   name: 'policyDeployment'
   dependsOn: [
     mgmtArtifactsAndPolicyDeployment
+    arcAMAPolicies
   ]
   params: {
     azureLocation: location
