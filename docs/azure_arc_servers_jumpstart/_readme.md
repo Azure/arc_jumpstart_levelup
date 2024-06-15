@@ -23,7 +23,7 @@ After completion of this session, you will be able to:
 |[**Understand pre-requisites to onboard Windows and Linux servers to Azure Arc**](#levelup-lab-environment) | 5 minutes | Seif Bassem |
 |[**1 - Onboard Windows and Linux servers running using different onboarding methods**](#module-1-on-boarding-to-azure-arc-enabled-servers) | 10 minutes | Jan Egil Ring |
 |[**2 - Query and inventory your Azure Arc-enabled servers using Azure Resource Graph**](#module-11-query-and-inventory-your-azure-arc-enabled-servers-using-azure-resource-graph) | 5 minutes | Seif Bassem |
-|[**3 - Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventoryr**](#module-2-monitor-your-azure-arc-enabled-servers-using-azure-monitor) | 20 minutes | Seif Bassem |
+|[**3 - Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory**](#module-2-monitor-your-azure-arc-enabled-servers-using-azure-monitor) | 20 minutes | Seif Bassem |
 |[**4 - SSH into your Azure Arc-enabled servers using SSH access**](#module-7-ssh-into-your-azure-arc-enabled-servers-using-ssh-access) | 10 minutes | Jan Egil Ring |
 |[**5 - Keep your Azure Arc-enabled servers patched using Azure Update Manager**](#module-5-keep-your-azure-arc-enabled-servers-patched-using-azure-manager) | 10 minutes | Seif Bassem |
 |**6 Run scripts in your Arc-enabled Windows server by using Run Commands** | 5 minutes | Jan Egil Ring |
@@ -399,6 +399,15 @@ Then run the query in PowerShell
 - Running the same query in the portal should result in something like the following
 
     ![Screenshot of extra properties](./extra_properties.png)
+
+### Module 3: Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory
+
+#### Objective
+
+In this module, you will learn how to deploy the Azure Monitor agent to your Arc-enabled Windows and Linux machines, how to deploy the dependency agent to your Arc-enabled Windows machines, how to enable the _VM Insights_ solution to start monitoring your machines using Azure Monitor, how to run queries on the Log analytics workspace and how to configure alerts. In addition, you will learn how to use the Change Tracking and Inventory features to track changes in your machine.
+
+#### Task 1: Use the Azure portal and search for Azure Update manager
+
 
 ### Module 5: Enable Azure update manager for the Arc-enabled servers
 
