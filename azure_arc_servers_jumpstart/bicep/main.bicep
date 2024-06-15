@@ -101,10 +101,16 @@ module monitoringResources 'mgmt/monitoringResources.bicep' = {
   }
 }
 
+module arcAMAPolicies 'mgmt/policySetDefinitionsAzureArc.bicep' = {
+  name: guid('ARCBOX_POLICIES',subscription().id,resourceGroup().location)
+  scope: subscription()
+}
+
 module policyDeployment 'mgmt/policyAzureArc.bicep' = {
   name: 'policyDeployment'
   dependsOn: [
     mgmtArtifactsAndPolicyDeployment
+    arcAMAPolicies
   ]
   params: {
     azureLocation: location

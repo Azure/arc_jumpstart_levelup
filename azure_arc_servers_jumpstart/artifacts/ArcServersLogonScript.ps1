@@ -528,7 +528,8 @@ if ($Env:flavor -ne "DevOps") {
     Invoke-AzRestMethod -Method PUT -Path "/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/WAC?api-version=2023-03-15" -Payload $patchPayload
 
     Write-Host "Installing the dependencyAgent extension on the Arc-enabled windows machine"
-    az connectedmachine extension create --name DependencyAgent --publisher Microsoft.Azure.Monitoring.DependencyAgent --type-handler-version 9.10 --type DependencyAgentWindows --machine-name $Win2k19vmName --resource-group $resourceGroup --location $azureLocation --enable-auto-upgrade --no-wait
+    $dependencyAgentSetting = '{\"enableAMA\":\"true\"}'
+    az connectedmachine extension create --name DependencyAgent --publisher Microsoft.Azure.Monitoring.DependencyAgent --type-handler-version 9.10 --type DependencyAgentWindows --machine-name $Win2k19vmName --settings $dependencyAgentSetting --resource-group $resourceGroup --location $azureLocation --enable-auto-upgrade --no-wait
 
     Write-Header "Enabling SSH access to Arc-enabled servers"
     $VMs = @("ArcBox-Ubuntu-01", "ArcBox-Win2K19")
