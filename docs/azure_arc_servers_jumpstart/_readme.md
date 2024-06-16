@@ -584,6 +584,207 @@ ConfigurationChange | where FieldsChanged contains "FileContentChecksum" and Fil
 
   >**NOTE (Optional) In Log Analytics, alerts are always created based on log analytics query result. If you want to be alerted when someone changes the _hosts_ file on any one of your server, then you can configure an alert by referring to this [tutorial](https://learn.microsoft.com/azure/azure-monitor/alerts/tutorial-log-alert).**
 
+### Module 4: SSH into your Azure Arc-enabled servers using SSH access
+
+#### Objective
+
+Enable SSH based connections to Arc-enabled servers without requiring a public IP address or additional open ports.
+
+In this module, you will learn how to enable and configure this functionality. At the end, you will interactively explore how to access to Arc-enabled Windows and Linux machines.
+
+#### Task 1: Install prerequisites on client machine
+
+It is possible to leverage both Azure CLI and Azure PowerShell to connect to Arc-enabled servers. Choose the one to use based on your own preferences.
+
+1. RDP into the _ArcBox-Client_ VM.
+
+2. Open PowerShell and install either the Azure CLI extension or the Azure PowerShell modules based on your preference of tooling.
+
+##### Azure CLI
+
+  ```shell
+  az extension add --name ssh
+  ```
+
+or
+
+##### Azure PowerShell
+
+  ```PowerShell
+  Install-Module -Name Az.Ssh -Scope CurrentUser -Repository PSGallery
+  Install-Module -Name Az.Ssh.ArcProxy -Scope CurrentUser -Repository PSGallery
+  ```
+
+  > We recommend that you install the tools on the ArcBox Client virtual machine, but you may also choose to use your local machine if you want to verify that the Arc-enabled servers is reachable from any internet-connected machine after performing the tasks in this module.
+
+#### Task 2 - Enable SSH service on Arc-enabled servers
+
+>We will use two Arc-enabled servers running in ArcBox for this module:
+
+- _ArcBox-Win2K22_
+- _ArcBox-Ubuntu-01_
+
+1. RDP into the _ArcBox-Client_ VM
+
+2. Open Hyper-V Manager
+
+3. Right click _ArcBox-Win2K22_ and select Connect twice
+
+4. Login to the operating system using username Administrator and the password you used when deploying ArcBox, by default this is **ArcDemo123!!**
+
+5. Open Windows PowerShell and install OpenSSH for Windows by running the following:
+
+  ```PowerShell
+  # Install the OpenSSH Server
+  Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+
+  # Start the sshd service
+  Start-Service sshd
+
+  # Configure the service to start automatically
+  Set-Service -Name sshd -StartupType 'Automatic'
+
+  # Confirm the Windows Firewall is configured to allow SSH. The rule should be created automatically by setup. Run the following to verify:
+  if (!(Get-NetFirewallRule -Name "OpenSSH-Server-In-TCP" -ErrorAction SilentlyContinue | Select-Object Name, Enabled)) {
+      Write-Output "Firewall Rule "OpenSSH-Server-In-TCP" does not exist, creating it..."
+      New-NetFirewallRule -Name "OpenSSH-Server-In-TCP" -DisplayName "OpenSSH Server (sshd)" -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
+  } else {
+      Write-Output "Firewall rule 'OpenSSH-Server-In-TCP' has been created and exists."
+  }
+  ```
+
+6. Close the connection to _ArcBox-Win2K22_
+
+7. Right click _ArcBox-Ubuntu-01_ in Hyper-V Manager and select Connect
+
+8. Login to the operating system using username **arcdemo** and the password you used when deploying,  by default this is **ArcDemo123!!**
+
+9. Run the command `systemctl status sshd` to verify that the SSH service is active and running
+
+10. Close the connection to _ArcBox-Ubuntu-01_
+
+#### Task 3 - Connect to Arc-enabled servers
+
+1. From the _ArcBox-Client_ VM, open a PowerShell session and use the below commands to connect to **ArcBox-Ubuntu-01** using SSH:
+
+##### Azure CLI
+
+  ```shell
+    $serverName = "ArcBox-Ubuntu-01"
+    $localUser = "arcdemo"
+
+    az ssh arc --resource-group $Env:resourceGroup --name $serverName --local-user $localUser
+  ```
+or
+
+##### Azure PowerShell
+
+  ```PowerShell
+  $serverName = "ArcBox-Ubuntu-01"
+  $localUser = "arcdemo"
+  Enter-AzVM -ResourceGroupName $Env:resourceGroup -Name $serverName -LocalUser $localUser
+  ```
+
+2. The first time you connect to an Arc-enabled server using SSH, you will see the following prompt:
+
+> Port 22 is not allowed for SSH connections in this resource. Would you like to update the current Service Configuration in the endpoint to allow connections to port 22? If you would like to update the Service Configuration to allow connections to a different port, please provide the -Port parameter or manually set up the Service Configuration. (y/n)
+
+3. It is possible to pre-configure this setting on the Arc-enabled servers by following the steps in the section *Enable functionality on your Arc-enabled server* in the [documentation](https://learn.microsoft.com/azure/azure-arc/servers/ssh-arc-overview?tabs=azure-powershell#getting-started). However, for this exercise, type `yes` and press Enter to proceed.
+
+![Screenshot showing usage of SSH via Azure CLI](./ssh_via_az_cli_01.png)
+
+![Screenshot showing usage of SSH via Azure CLI](./ssh_via_az_cli_02.png)
+
+4. Following the previous method, connect to _ArcBox-Win2K22_ via SSH.
+
+##### Azure CLI
+
+  ```shell
+  $serverName = "ArcBox-Win2K22"
+  $localUser = "Administrator"
+  az ssh arc --resource-group $Env:resourceGroup --name $serverName --local-user $localUser
+  ```
+
+or
+##### Azure PowerShell
+
+  ```PowerShell
+  $serverName = "ArcBox-Win2K22"
+  $localUser = "Administrator"
+  Enter-AzVM -ResourceGroupName $Env:resourceGroup -Name $serverName -LocalUser $localUser
+  ```
+
+![Screenshot showing usage of SSH via Azure CLI](./ssh_via_az_cli_03.png)
+
+![Screenshot showing usage of SSH via Azure CLI](.//ssh_via_az_cli_04.png)
+
+5. In addition to SSH, you can also connect to the Azure Arc-enabled servers, Windows Server virtual machines using **Remote Desktop** tunneled via SSH.
+
+##### Azure CLI
+
+  ```shell
+  $serverName = "ArcBox-Win2K22"
+  $localUser = "Administrator"
+  az ssh arc --resource-group $Env:resourceGroup --name $serverName --local-user $localUser --rdp
+  ```
+
+or
+
+##### Azure PowerShell
+
+  ```PowerShell
+  $serverName = "ArcBox-Win2K22"
+  $localUser = "Administrator"
+  Enter-AzVM -ResourceGroupName $Env:resourceGroup -Name $serverName -LocalUser $localUser -Rdp
+  ```
+
+![Screenshot showing usage of Remote Desktop tunnelled via SSH](./rdp_via_az_cli.png)
+
+##### Task 4 - Optional: Azure Entra ID based SSH Login
+
+1. The _Azure AD based SSH Login – Azure Arc VM extension_ can be added from the extensions menu of the Arc server in the Azure portal. The Azure AD login extension can also be installed locally via a package manager via: `apt-get install aadsshlogin` or the following command:
+
+  ```shell
+  $serverName = "ArcBox-Ubuntu-01"
+  az connectedmachine extension create --machine-name $serverName --resource-group $Env:resourceGroup --publisher Microsoft.Azure.ActiveDirectory --name AADSSHLogin --type AADSSHLoginForLinux --location $env:azureLocation
+  ```
+
+2. Configure role assignments for the Arc-enabled server _ArcBox-Ubuntu-01_ using the Azure portal.  Two Azure roles are used to authorize VM login:
+    - **Virtual Machine Administrator Login**: Users who have this role assigned can log in to an Azure virtual machine with administrator privileges.
+    - **Virtual Machine User Login**: Users who have this role assigned can log in to an Azure virtual machine with regular user privileges.
+
+3. After assigning one of the two roles for your personal Azure AD/Entra ID user account, run the following command to connect to _ArcBox-Ubuntu-01_ using SSH and AAD/Entra ID-based authentication:
+
+#### Azure CLI
+
+  ```shell
+  # Log out from the Service Principcal context
+  az logout
+  # Log in using your personal account
+  az login
+
+  $serverName = "ArcBox-Ubuntu-01"
+  $localUser = "arcdemo"
+
+  az ssh arc --resource-group $Env:resourceGroup --name $serverName
+  ```
+
+or
+
+#### Azure PowerShell
+
+  ```PowerShell
+  # Log out from the Service Principal context
+  Disconnect-AzAccount
+  # Log in using your personal account
+  Connect-AzAccount
+  $serverName = "ArcBox-Ubuntu-01"
+  $localUser = "Administrator"
+  Enter-AzVM -ResourceGroupName $Env:resourceGroup -Name $serverName
+  ```
+
+4. You should now be connected and authenticated using your Azure AD/Entra ID account.
+
 ### Module 5: Enable Azure update manager for the Arc-enabled servers
 
 #### Objective
