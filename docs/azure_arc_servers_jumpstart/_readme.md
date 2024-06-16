@@ -515,11 +515,11 @@ As part of the ArcBox automation, some alerts and workbooks have been created to
 
     ![Screenshot CT Windows Services settings](./CT_2_WinServices.png)
 
--  Go to the ArcBox-Client machine via RDP and from Hyper-V manager right-click on one of the Arc-enabled VMs then click "Connect" (Administrator default password is ArcDemo123!!). Try stopping the "Print Spooler" service on the **Arc-enabled machine** using an administrative powershell session (or from the Services desktop application).
+- Go to the ArcBox-Client machine via RDP and from Hyper-V manager right-click on one of the Arc-enabled VMs then click "Connect" (Administrator default password is ArcDemo123!!). Try stopping the "Print Spooler" service on the **Arc-enabled machine** using an administrative powershell session (or from the Services desktop application).
 
-      ```PowerShell
-      Stop-Service spooler
-      ```
+```PowerShell
+Stop-Service spooler
+```
 
 - The service changes will eventually show up in the "Change tracking" page for the Arc-enabled machine.
 (By default Windows services status are updated every 30 minutes but you changed that to 20 minutes earlier to speed up the result for this task).
@@ -528,9 +528,9 @@ As part of the ArcBox automation, some alerts and workbooks have been created to
 
 - You can restart the spooler service on the server if you wish and change tracking will show the outcome in the portal after few minutes.
 
-  ```PowerShell
-  Start-Service spooler
-  ```
+```PowerShell
+Start-Service spooler
+```
 
 #### Task 6: Track file changes
 
@@ -889,6 +889,270 @@ Note that there are a few views in there that show the total number of machines 
    ![Screenshot showing overall machine Status](./updatemgmt-updatereports-3.png)
 
 Expand the rest of the views "Schedules/maintenance configurations" and "History of installation runs" to visualize the updates running in Azure Update manager.
+
+### Module 6: Configure your Azure Arc-enabled servers using Azure Automanage machine configuration
+
+#### Objective
+
+In this module, you will learn to create and assign a custom Automanage Machine Configuration to an Azure Arc-enabled Windows and Linux servers to create a local user and control installed roles and features.
+
+# Task 1: Create Automanage Machine Configuration custom configurations for Windows
+
+We will be using the **ArcBox Client** virtual machine for the configuration authoring.
+
+1. RDP into the _ArcBox-Client_ VM
+
+2. Open **Visual Studio Code** from the desktop shortcut.
+
+3. Create ```C:\ArcBox\MachineConfiguration.ps1```, then paste and run the following commands to complete the steps for this task:
+
+>To run each additional code snippet you paste in VS Code, highlight the code you need to run and press **F8**
+
+**Custom configuration for Windows**
+
+4. The first step is to install the required PowerShell modules.
+
+  ```PowerShell
+  Install-Module -Name Az.Accounts -Force -RequiredVersion 2.15.1
+  Install-Module -Name Az.PolicyInsights -Force -RequiredVersion 1.6.4
+  Install-Module -Name Az.Resources -Force -RequiredVersion 6.15.1
+  Install-Module -Name Az.Storage -Force -RequiredVersion 6.1.1
+  Install-Module -Name MSI -Force -RequiredVersion 3.3.4
+  Install-Module -Name GuestConfiguration -Force -RequiredVersion 4.5.0
+  Install-Module -Name PSDesiredStateConfiguration -Force -RequiredVersion 2.0.7
+  Install-Module -Name PSDscResources -Force -RequiredVersion 2.12.0.0
+
+# Explicitly import these modules to prevent breaking changes in newer versions, if available
+  Import-Module -Name Az.Resources -RequiredVersion 6.15.1
+  Import-Module -Name PSDesiredStateConfiguration -Force -RequiredVersion 2.0.7
+  ```
+
+5. This next part of the code will initialize variables:
+
+  ```PowerShell
+  $resourceGroupName = $env:resourceGroup
+  $location = $env:azureLocation
+  $Win2k19vmName = "ArcBox-Win2K19"
+  $Win2k22vmName = "ArcBox-Win2K22"
+
+  Connect-AzAccount -Identity
+  ```
+
+6. Run the following cmdlet to validate that the modules have installed successfully:
+
+```PowerShell
+  Get-InstalledModule
+```
+
+>The **Azure PowerShell modules** are used for:
+
+- Publishing the package to Azure storage
+- Creating a policy definition
+- Publishing the policy
+- Connecting to the Azure Arc-enabled servers
+
+>The **GuestConfiguration module** automates the process of creating custom content including:
+
+- Creating a machine configuration content artifact (.zip)
+- Validating the package meets requirements
+- Installing the machine configuration agent locally for testing
+- Validating the package can be used to audit settings in a machine
+- Validating the package can be used to configure settings in a machine
+
+>Version 3 of **Desired State Configuration module** is removing the dependency on MOF.
+Initially, there is only support for DSC Resources written as PowerShell classes.
+Due to using MOF-based DSC resources for the Windows demo-configuration, we are using version 2.0.5.
+
+7. Create a storage account to store the machine configurations:
+
+```PowerShell
+  $storageaccountsuffix = -join ((97..122) | Get-Random -Count 5 | % {[char]$_})
+  New-AzStorageAccount -ResourceGroupName $resourceGroupName -Name "machineconfigstg$storageaccountsuffix" -SkuName 'Standard_LRS' -Location $Location -OutVariable storageaccount -EnableHttpsTrafficOnly $true -AllowBlobPublicAccess $true | New-AzStorageContainer -Name machineconfiguration -Permission Blob
+```
+
+8. Create the custom configuration:
+
+```PowerShell
+  Import-Module PSDesiredStateConfiguration -RequiredVersion 2.0.7
+
+  Configuration AzureArcLevelUp_Windows
+  {
+      param (
+          [Parameter(Mandatory)]
+          [System.Management.Automation.PSCredential]
+          [System.Management.Automation.Credential()]
+          $PasswordCredential
+      )
+
+      Import-DscResource -ModuleName 'PSDscResources' -ModuleVersion 2.12.0.0
+
+      Node localhost
+      {
+          MsiPackage PS7
+          {
+              ProductId = '{F895A69B-7C3F-49AD-83FC-A87B31EFF8F3}'
+              Path = 'https://github.com/PowerShell/PowerShell/releases/download/v7.4.2/PowerShell-7.4.2-win-x64.msi'
+              Ensure = 'Present'
+          }
+          User ArcBoxUser
+          {
+              UserName = 'arcboxuser1'
+              FullName = 'ArcBox User 1'
+              Password = $PasswordCredential
+              Ensure = 'Present'
+          }
+          WindowsFeature SMB1 {
+              Name = 'FS-SMB1'
+              Ensure = 'Absent'
+          }
+      }
+  }
+  Write-Host "Creating credentials for arcbox user 1"
+  $nestedWindowsUsername = "arcboxuser1"
+  $nestedWindowsPassword = "ArcDemo123!!"  # In real-world scenarios this could be retrieved from an Azure Key Vault
+
+  # Create Windows credential object
+  $secWindowsPassword = ConvertTo-SecureString $nestedWindowsPassword -AsPlainText -Force
+  $winCreds = New-Object System.Management.Automation.PSCredential ($nestedWindowsUsername, $secWindowsPassword)
+
+  $ConfigurationData = @{
+      AllNodes = @(
+          @{
+              NodeName = 'localhost'
+              PSDscAllowPlainTextPassword = $true
+          }
+      )
+  }
+  $OutputPath = "$Env:ArcBoxDir/arc_automanage_machine_configuration_custom_windows"
+  New-Item $OutputPath -Force -ItemType Directory
+```
+
+9. Execute the newly created configuration:
+
+```PowerShell
+  AzureArcLevelUp_Windows -PasswordCredential $winCreds -ConfigurationData $ConfigurationData -OutputPath $OutputPath
+```
+
+10. Create a package that will audit and apply the configuration (Set):
+
+```PowerShell
+  New-GuestConfigurationPackage `
+  -Name 'AzureArcLevelUp_Windows' `
+  -Configuration "$OutputPath/localhost.mof" `
+  -Type AuditAndSet `
+  -Path $OutputPath `
+  -Force
+```
+
+11. Test applying the configuration to the local machine:
+
+```PowerShell
+  Start-GuestConfigurationPackageRemediation -Path "$OutputPath/AzureArcLevelUp_Windows.zip"
+```
+
+12. Upload the configuration package to the Azure Storage Account:
+
+```PowerShell
+  $StorageAccount = Get-AzStorageAccount -Name "machineconfigstg$storageaccountsuffix" -ResourceGroupName $ResourceGroupName
+
+  $StorageAccountKey = Get-AzStorageAccountKey -Name $storageaccount.StorageAccountName -ResourceGroupName $storageaccount.ResourceGroupName
+  $Context = New-AzStorageContext -StorageAccountName $storageaccount.StorageAccountName -StorageAccountKey $StorageAccountKey[0].Value
+
+  Set-AzStorageBlobContent -Container "machineconfiguration" -File  "$OutputPath/AzureArcLevelUp_Windows.zip" -Blob "AzureArcLevelUp_Windows.zip" -Context $Context -Force
+
+  $contenturi = New-AzStorageBlobSASToken -Context $Context -FullUri -Container machineconfiguration -Blob "AzureArcLevelUp_Windows.zip" -Permission r
+```
+
+13. Create an Azure Policy definition:
+
+```PowerShell
+  $PolicyId = (New-Guid).Guid
+
+  New-GuestConfigurationPolicy `
+    -PolicyId $PolicyId `
+    -ContentUri $ContentUri `
+    -DisplayName '(AzureArcJumpstart) [Windows] Custom configuration' `
+    -Description 'Azure Arc Jumpstart Windows demo configuration' `
+    -Path  $OutputPath `
+    -Platform 'Windows' `
+    -PolicyVersion 1.0.0 `
+    -Mode ApplyAndAutoCorrect `
+    -Verbose -OutVariable Policy
+
+    $PolicyParameterObject = @{'IncludeArcMachines'='true'}
+
+    New-AzPolicyDefinition -Name '(AzureArcJumpstart) [Windows] Custom configuration' -Policy $Policy.Path -OutVariable PolicyDefinition
+```
+
+14. Assign the Azure Policy definition to the target resource group:
+
+```PowerShell
+  $ResourceGroup = Get-AzResourceGroup -Name $ResourceGroupName
+
+  New-AzPolicyAssignment -Name '(AzureArcJumpstart) [Windows] Custom configuration' -PolicyDefinition $PolicyDefinition[0] -Scope $ResourceGroup.ResourceId -PolicyParameterObject $PolicyParameterObject -IdentityType SystemAssigned -Location $Location -DisplayName '(AzureArcJumpstart) [Windows] Custom configuration' -OutVariable PolicyAssignment
+```
+
+15. In order for the newly assigned policy to remediate existing resources, the policy must be assigned a **managed identity** and a **policy remediation** must be performed:
+
+```PowerShell
+  $PolicyAssignment = Get-AzPolicyAssignment -PolicyDefinitionId $PolicyDefinition.PolicyDefinitionId | Where-Object Name -eq '(AzureArcJumpstart) [Windows] Custom configuration'
+
+  $roleDefinitionIds =  $PolicyDefinition.Properties.policyRule.then.details.roleDefinitionIds
+
+  # Wait for eventual consistency
+  Start-Sleep 20
+
+  if ($roleDefinitionIds.Count -gt 0)
+   {
+       $roleDefinitionIds | ForEach-Object {
+           $roleDefId = $_.Split("/") | Select-Object -Last 1
+           New-AzRoleAssignment -Scope $resourceGroup.ResourceId -ObjectId $PolicyAssignment.Identity.PrincipalId -RoleDefinitionId $roleDefId
+       }
+   }
+
+   $job = Start-AzPolicyRemediation -AsJob -Name ($PolicyAssignment.PolicyAssignmentId -split '/')[-1] -PolicyAssignmentId $PolicyAssignment.PolicyAssignmentId -ResourceGroupName $ResourceGroup.ResourceGroupName -ResourceDiscoveryMode ReEvaluateCompliance
+```
+
+16. To check policy compliance, in the Azure Portal, navigate to *Policy* -> **Compliance**
+
+17. Set the scope to the resource group your instance of ArcBox is deployed to
+
+18. Filter for *(AzureArcJumpstart) [Windows] Custom configuration*
+
+    ![Screenshot of Azure Portal showing Azure Policy compliance](./portal_policy_compliance.png)
+
+>It may take 15-20 minutes for the policy remediation to be completed.
+
+19. To get a Machine Configuration status for a specific machine, navigate to _Azure Arc_ -> **Machines**
+
+20. Click on ArcBox-Win2K22 -> **Machine Configuration**
+
+- If the status for _ArcBox-Win2K22/AzureArcLevelUp_Windows_ is **not Compliant**, wait a few more minutes and click *Refresh*
+
+    ![Screenshot of Azure Portal showing Azure Machine Configuration compliance](./portal_machine_config_compliance.png)
+
+21. Click on _ArcBox-Win2K22/AzureArcLevelUp_Windows_ to get a per-resource view of the compliance state in the assigned configuration
+
+    ![Screenshot of Azure Portal showing Azure Machine Configuration compliance detailed view](./portal_machine_config_configs.png)
+
+**Verify that the operating system level settings are in place:**
+
+1. To verify that the operating system level settings are in place, run the following PowerShell commands:
+
+```PowerShell
+  Write-Host "Creating VM Credentials"
+  $nestedWindowsUsername = "Administrator"
+  $secWindowsPassword = ConvertTo-SecureString $nestedWindowsPassword -AsPlainText -Force
+  $winCreds = New-Object System.Management.Automation.PSCredential ($nestedWindowsUsername, $secWindowsPassword)
+
+  Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Get-LocalUser -Name arcboxuser1 } -Credential $winCreds
+  Invoke-Command -VMName $Win2k19vmName -ScriptBlock {  Get-WindowsFeature -Name FS-SMB1 | select  DisplayName,Installed,InstallState} -Credential $winCreds
+```
+
+  ![Screenshot of VScode showing Azure Machine Configuration validation on Windows](./vscode_win_machine_config_validation.png)
+
+> **Bonus task**:
+If you are interested in custom configurations on Linux, check out the Azure Arc Jumpstart scenario [Create Automanage Machine Configuration custom configurations for Linux](https://azurearcjumpstart.com/azure_arc_jumpstart/azure_arc_servers/day2/arc_automanage/arc_automanage_machine_configuration_custom_linux) which you can run in your instance of ArcBox.
 
 ### Module 7: Manage your Arc-enabled Windows machines using the Windows Admin Center
 
