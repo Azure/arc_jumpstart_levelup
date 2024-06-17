@@ -18,7 +18,7 @@ After completion of this session, you will be able to:
 
 | Module | Duration | Facilitator |
 |---------------|---------------|---------------|
-|[**Deploy ArcBox**](#levelup-lab-environment) | 5 minutes | Seif Bassem |
+|[**Deploy ArcBox**](#lab-guidance) | 5 minutes | Seif Bassem |
 |[**1 - Onboard Windows and Linux servers running using different onboarding methods**](#module-1-on-boarding-to-azure-arc-enabled-servers) | 10 minutes | Jan Egil Ring |
 |[**2 - Query and inventory your Azure Arc-enabled servers using Azure Resource Graph**](#module-2-query-and-inventory-your-azure-arc-enabled-servers-using-azure-resource-graph) | 5 minutes | Seif Bassem |
 |[**3 - Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory**](#module-3-monitor-your-azure-arc-enabled-servers-using-azure-monitor-change-tracking-and-inventory) | 20 minutes | Seif Bassem |
@@ -27,7 +27,7 @@ After completion of this session, you will be able to:
 |[**6 - Configure your Azure Arc-enabled servers using Azure Automanage machine configuration**](#module-7-configure-your-azure-arc-enabled-servers-using-azure-automanage-machine-configuration) | 15 minutes | Jan Egil Ring |
 |[**7 - Manage your Arc-enabled Windows machines using the Windows Admin Center**](#module-8-manage-your-arc-enabled-windows-machines-using-the-windows-admin-center) | 5 minutes | Seif Bassem |
 
-## LevelUp lab guidance
+## Lab guidance
 
 There are two ways to get access to the lab modules and guidance.
 
