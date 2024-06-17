@@ -119,6 +119,7 @@ If you have access to multiple tenants, use the `--tenant` switch.
   az provider register --namespace Microsoft.HybridCompute --wait
   az provider register --namespace Microsoft.GuestConfiguration --wait
   az provider register --namespace Microsoft.AzureArcData --wait
+  az provider register --namespace Microsoft.HybridConnectivity --wait
   az provider register --namespace Microsoft.OperationsManagement --wait
   az provider register --namespace Microsoft.SecurityInsights --wait
   ```
@@ -237,37 +238,37 @@ The deployment process that you have walked through in Lab01 should have set up 
 
 ##### Task 1: Use the Azure portal to examine you Arc-enabled machines inventory
 
-1. Enter "Machines - Azure Arc" in the top search bar in the Azure portal and select it from the displayed services.
+- Enter "Machines - Azure Arc" in the top search bar in the Azure portal and select it from the displayed services.
 
-![!Screenshot Arc_servers_search](./Arc_servers_search.png)
+    ![Screenshot Arc_servers_search](./Arc_servers_search.png)
 
-2. You should see the machines that are connected to Arc already: Arcbox-Ubuntu-01, ArcBox-Win2k12 and ArcBox-Win2K19.
+- You should see the machines that are connected to Arc already: Arcbox-Ubuntu-01, ArcBox-Win2k12 and ArcBox-Win2K19.
 
-![Screenshot showing existing Arc connected servers](./First_view_of_Arc_connected.png)
+    ![Screenshot showing existing Arc connected servers](./First_view_of_Arc_connected.png)
 
 ##### Task 2:  Examine the virtual machines that you will Arc-enable
 
-1. For the follow-along session you want to connect one of the other available machines running as VMs in the ArcBox-Client. You can see these (ArcBox-Win2K22 and ArcBox-Ubuntu-02) by running the Hyper-V Manager in the ArcBox-Client (after you have connected to it with RDP as explained earlier in Lab01).
+- For the follow-along session you want to connect one of the other available machines running as VMs in the ArcBox-Client. You can see these (ArcBox-Win2K22 and ArcBox-Ubuntu-02) by running the Hyper-V Manager in the ArcBox-Client (after you have connected to it with RDP as explained earlier in Lab01).
 
-![Screenshot of 4 machines on Hyper-v](./choose_Hyper-V.png)
+    ![Screenshot of 4 machines on Hyper-v](./choose_Hyper-V.png)
 
 ##### Task 3: Installation and registration of the Azure Arc connected machine agent for a Windows machine
 
-1. From the Azure portal go to the "Machines - Azure Arc" page and select "Add/Create" at the upper left, then select "Add a machine".
+- From the Azure portal go to the "Machines - Azure Arc" page and select "Add/Create" at the upper left, then select "Add a machine".
 
-![Screenshot to select add a machine](./Select_Add_a_machine.png)
+    ![Screenshot to select add a machine](./Select_Add_a_machine.png)
 
-2. In the next screen, go to "Add a single sever" and click on "Generate script".
+- In the next screen, go to "Add a single sever" and click on "Generate script".
 
-3. Fill in the Resource Group, Region, Operating System (Windows), keep Connectivity as "Public endpoint". Then download the script to your local machine (or you can copy the content into the clipboard).
+- Fill in the Resource Group, Region, Operating System (Windows), keep Connectivity as "Public endpoint". Then download the script to your local machine (or you can copy the content into the clipboard).
 
-4. Go to the ArcBox-Client machine via RDP and from Hyper-V manager right-click on the ArcBox-Win2K22 VM and click "Connect" (Administrator default password is ArcDemo123!!). Then start PowerShell in the ArcBox-Win2K22 VM and copy the content of the onboarding script into the terminal.
+- Go to the ArcBox-Client machine via RDP and from Hyper-V manager right-click on the ArcBox-Win2K22 VM and click "Connect" (Administrator default password is ArcDemo123!!). Then start PowerShell in the ArcBox-Win2K22 VM and copy the content of the onboarding script into the terminal.
 
-![Screenshot run onboard windows script](./run_windows_onboard_script.png)
+    ![Screenshot run onboard windows script](./run_windows_onboard_script.png)
 
-6. On successful completion a message is displayed to confirm the machine is connected to Azure Arc. We can also verify that our Windows machine is connected in the Azure portal (Machines - Azure Arc).
+- On successful completion a message is displayed to confirm the machine is connected to Azure Arc. We can also verify that our Windows machine is connected in the Azure portal (Machines - Azure Arc).
 
-![Screenshot confirm win machine on-boarded](./confirm_windows_machine_onboarding.png)
+    ![Screenshot confirm win machine on-boarded](./confirm_windows_machine_onboarding.png)
 
 For more information about deployment options, see the following two articles:
 - [Azure Connected Machine agent deployment options](https://learn.microsoft.com/azure/azure-arc/servers/deployment-options)
@@ -689,9 +690,9 @@ or
 
 3. It is possible to pre-configure this setting on the Arc-enabled servers by following the steps in the section *Enable functionality on your Arc-enabled server* in the [documentation](https://learn.microsoft.com/azure/azure-arc/servers/ssh-arc-overview?tabs=azure-powershell#getting-started). However, for this exercise, type `yes` and press Enter to proceed.
 
-![Screenshot showing usage of SSH via Azure CLI](./ssh_via_az_cli_01.png)
+    ![Screenshot showing usage of SSH via Azure CLI](./ssh_via_az_cli_01.png)
 
-![Screenshot showing usage of SSH via Azure CLI](./ssh_via_az_cli_02.png)
+    ![Screenshot showing usage of SSH via Azure CLI](./ssh_via_az_cli_02.png)
 
 4. Following the previous method, connect to _ArcBox-Win2K22_ via SSH.
 
@@ -712,9 +713,9 @@ or
   Enter-AzVM -ResourceGroupName $Env:resourceGroup -Name $serverName -LocalUser $localUser
   ```
 
-![Screenshot showing usage of SSH via Azure CLI](./ssh_via_az_cli_03.png)
+  ![Screenshot showing usage of SSH via Azure CLI](./ssh_via_az_cli_03.png)
 
-![Screenshot showing usage of SSH via Azure CLI](.//ssh_via_az_cli_04.png)
+  ![Screenshot showing usage of SSH via Azure CLI](.//ssh_via_az_cli_04.png)
 
 5. In addition to SSH, you can also connect to the Azure Arc-enabled servers, Windows Server virtual machines using **Remote Desktop** tunneled via SSH.
 
@@ -736,7 +737,7 @@ or
   Enter-AzVM -ResourceGroupName $Env:resourceGroup -Name $serverName -LocalUser $localUser -Rdp
   ```
 
-![Screenshot showing usage of Remote Desktop tunnelled via SSH](./rdp_via_az_cli.png)
+  ![Screenshot showing usage of Remote Desktop tunnelled via SSH](./rdp_via_az_cli.png)
 
 ##### Task 4 - Optional: Azure Entra ID based SSH Login
 
