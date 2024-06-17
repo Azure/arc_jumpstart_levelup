@@ -6,21 +6,19 @@ In this immersive 90-minute session, participants will embark on a hands-on jour
 
 After completion of this session, you will be able to:
 
-- Understand pre-requisites to onboard Windows and Linux servers to Azure Arc
+- Deploy ArcBox
 - Onboard Windows and Linux servers running using different onboarding methods
-- Monitor your Azure Arc-enabled servers using Azure Monitor
-- Keep your Azure Arc-enabled servers patched using Azure Update Manager
-- Monitor changes to your Azure Arc-enabled servers using Change tracking and inventory
-- SSH into your Azure Arc-enabled servers using SSH access
-- Run scripts in your Arc-enabled Windows server by using Run Commands
-- Configure your Azure Arc-enabled servers using Azure Automanage machine configuration
-- Manage the Windows operating system of your Arc-enabled servers using Windows Admin Center (Preview)
 - Query and inventory your Azure Arc-enabled servers using Azure Resource Graph
-- Enforce governance across your Azure Arc-enabled servers using Azure Policy
+- Keep your Azure Arc-enabled servers patched using Azure Update Manager
+- Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory
+- SSH into your Azure Arc-enabled servers using SSH access
+- Keep your Azure Arc-enabled servers patched using Azure Update Manager
+- Configure your Azure Arc-enabled servers using Azure Automanage machine configuration
+- Manage your Arc-enabled Windows machines using the Windows Admin Center
 
 | Module | Duration | Facilitator |
 |---------------|---------------|---------------|
-|[**Understand pre-requisites to onboard Windows and Linux servers to Azure Arc**](#levelup-lab-environment) | 5 minutes | Seif Bassem |
+|[**Deploy ArcBox**](#levelup-lab-environment) | 5 minutes | Seif Bassem |
 |[**1 - Onboard Windows and Linux servers running using different onboarding methods**](#module-1-on-boarding-to-azure-arc-enabled-servers) | 10 minutes | Jan Egil Ring |
 |[**2 - Query and inventory your Azure Arc-enabled servers using Azure Resource Graph**](#module-2-query-and-inventory-your-azure-arc-enabled-servers-using-azure-resource-graph) | 5 minutes | Seif Bassem |
 |[**3 - Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory**](#module-3-monitor-your-azure-arc-enabled-servers-using-azure-monitor-change-tracking-and-inventory) | 20 minutes | Seif Bassem |
