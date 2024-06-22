@@ -58,6 +58,25 @@ $Shortcut.TargetPath = $WinTerminalPath
 $shortcut.WindowStyle = 3
 $shortcut.Save()
 
+# Adding desktop shortcut for lab instructions
+$WshShell = New-Object -comObject WScript.Shell
+$Shortcut = $WshShell.CreateShortcut("$Env:USERPROFILE\Desktop\Lab instructions.lnk")
+$Shortcut.TargetPath = "https://aka.ms/arc-follow-along"
+$Shortcut.IconLocation = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+$shortcut.WindowStyle = 3
+$shortcut.Save()
+
+# Adding desktop shortcut for VS Code
+Copy-Item -Path "$Env:USERPROFILE\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Visual Studio Code\Visual Studio Code.lnk" -Destination "$Env:USERPROFILE\Desktop" -Force
+
+# Cloning the Azure Arc Jumpstart levelup repository
+git clone https://github.com/Azure/arc_jumpstart_levelup.git C:\PSConfEU
+
+Set-Location C:\PSConfEU
+
+git checkout psconfeu
+
+
 # Configure Windows Terminal as the default terminal application
 $registryPath = "HKCU:\Console\%%Startup"
 
