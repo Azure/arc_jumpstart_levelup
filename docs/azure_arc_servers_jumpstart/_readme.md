@@ -610,8 +610,8 @@ or
 ##### Azure PowerShell
 
   ```PowerShell
-  Install-Module -Name Az.Ssh -Scope CurrentUser -Repository PSGallery
-  Install-Module -Name Az.Ssh.ArcProxy -Scope CurrentUser -Repository PSGallery
+  Install-PSResource -Name Az.Ssh -TrustRepository
+  Install-PSResource -Name Az.Ssh.ArcProxy -TrustRepository
   ```
 
   > We recommend that you install the tools on the ArcBox Client virtual machine, but you may also choose to use your local machine if you want to verify that the Arc-enabled servers is reachable from any internet-connected machine after performing the tasks in this module.
@@ -670,7 +670,7 @@ Get-Service sshd
 
 #### Task 3 - Connect to Arc-enabled servers
 
-1. From the _ArcBox-Client_ VM, open a PowerShell session and use the below commands to connect to **ArcBox-Ubuntu-01** using SSH:
+1. From the _ArcBox-Client_ VM, open a PowerShell session in Windows Terminal and use the below commands to connect to **ArcBox-Ubuntu-01** using SSH:
 
 ##### Azure CLI
 
@@ -690,7 +690,7 @@ or
   Enter-AzVM -ResourceGroupName $Env:resourceGroup -Name $serverName -LocalUser $localUser
   ```
 
-2. The first time you connect to an Arc-enabled server using SSH, you will see the following prompt:
+2. The first time you connect to an Arc-enabled server using SSH, you might see the following prompt:
 
 > Port 22 is not allowed for SSH connections in this resource. Would you like to update the current Service Configuration in the endpoint to allow connections to port 22? If you would like to update the Service Configuration to allow connections to a different port, please provide the -Port parameter or manually set up the Service Configuration. (y/n)
 
@@ -763,13 +763,13 @@ or
 #### Azure CLI
 
   ```shell
-  # Log out from the Service Principcal context
+  # Log out from the Service Principal context
   az logout
+
   # Log in using your personal account
   az login
 
   $serverName = "ArcBox-Ubuntu-01"
-  $localUser = "arcdemo"
 
   az ssh arc --resource-group $Env:resourceGroup --name $serverName
   ```
@@ -781,10 +781,11 @@ or
   ```PowerShell
   # Log out from the Service Principal context
   Disconnect-AzAccount
+
   # Log in using your personal account
   Connect-AzAccount
   $serverName = "ArcBox-Ubuntu-01"
-  $localUser = "Administrator"
+
   Enter-AzVM -ResourceGroupName $Env:resourceGroup -Name $serverName
   ```
 
