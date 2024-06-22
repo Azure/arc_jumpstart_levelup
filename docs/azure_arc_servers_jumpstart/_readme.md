@@ -173,7 +173,7 @@ Example parameters-file:
 
   ![Screenshot showing example parameters](./parameters_bicep.png)
 
-- Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/Azure/arc_jumpstart_levelup/blob/main/azure_arc_servers_jumpstart/bicep) and run the below command:
+- Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/Azure/arc_jumpstart_levelup/blob/psconfeu/azure_arc_servers_jumpstart/bicep) and run the below command:
 
   ```shell
   az group create --name "<resource-group-name>" --location "<preferred-location>"
