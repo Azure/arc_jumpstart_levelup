@@ -804,7 +804,6 @@ For this task, we will be using the *ArcBox-Ubuntu-01* machine as the target.
 
 A prerequisite is to enable the PowerShell subsystem in the sshd configuration:
 
-Log on to the
 ```powershell
 $serverName = "ArcBox-Ubuntu-01"
 az ssh arc --resource-group $Env:resourceGroup --name $serverName
