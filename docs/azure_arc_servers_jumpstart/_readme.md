@@ -796,6 +796,97 @@ or
 
 4. You should now be connected and authenticated using your Azure AD/Entra ID account.
 
+##### Task 5 - Optional: PowerShell remoting to Azure Arc-enabled servers
+
+*SSH for Arc-enabled servers* enables SSH based connections to Arc-enabled servers without requiring a public IP address or additional open ports. As part of this, PowerShell remoting over SSH is available for Windows and Linux machines.
+
+For this task, we will be using the *ArcBox-Ubuntu-01* machine as the target.
+
+A prerequisite is to enable the PowerShell subsystem in the sshd configuration:
+
+Log on to the
+```powershell
+$serverName = "ArcBox-Ubuntu-01"
+az ssh arc --resource-group $Env:resourceGroup --name $serverName
+
+# Inside the SSH session:
+sudo nano /etc/ssh/sshd_config
+
+# Add the following line beneath "Subsystem sftp  /usr/lib/openssh/sftp-server"
+Subsystem powershell /usr/bin/pwsh -sshs -nologo
+
+# Press Ctrl + X to exit nano (Y followed by Enter to save)
+
+# Restart the SSH service
+sudo systemctl restart sshd.service
+```
+
+>Check out the documentation for [PowerShell remoting over SSH
+](https://learn.microsoft.com/powershell/scripting/security/remoting/ssh-remoting-in-powershell?view=powershell-7.4#install-the-ssh-service-on-an-ubuntu-linux-computer) for additional details as well as information on how to perform this step for Windows machines.
+
+Next step is to create the configuration file for use in PowerShell remoting sessions against our target machine.
+
+Select either Azure CLI or Azure PowerShell:
+
+#### Generate a SSH config file with Azure CLI
+
+```powershell
+$serverName = "ArcBox-Ubuntu-01"
+$localUser = "arcdemo"
+
+az ssh config --resource-group $Env:resourceGroup --name $serverName --local-user $localUser --resource-type Microsoft.HybridCompute --file ./sshconfig.config
+```
+
+#### Generate a SSH config file with Azure PowerShell
+
+```powershell
+$serverName = "ArcBox-Ubuntu-01"
+$localUser = "arcdemo"
+
+Export-AzSshConfig -ResourceGroupName $Env:resourceGroup -Name $serverName -LocalUser $localUser -ResourceType Microsoft.HybridCompute/machines -ConfigFilePath ./sshconfig.config
+```
+
+#### Find the newly created entry in the SSH config file
+Open the created or modified SSH config file. The entry should have a similar format to the following.
+
+```powershell
+Host rg-psconfeu-demo3-ArcBox-Ubuntu-01-arcdemo
+   HostName ArcBox-Ubuntu-01
+   User arcdemo
+   ProxyCommand "C:\Users\arcdemo\Documents\PowerShell\Modules\Az.Ssh.ArcProxy\1.0.0\sshProxy_windows_amd64_1.3.022941.exe" -r "C:\Users\arcdemo\az_ssh_config\rg-psconfeu-ArcBox-Ubuntu-01\rg-psconfeu-ArcBox-Ubuntu-01-relay_info"
+```
+
+#### Leveraging the -Options parameter
+
+Levering the [options](https://learn.microsoft.com/powershell/module/microsoft.powershell.core/new-pssession#-options) parameter allows you to specify a hashtable of SSH options used when connecting to a remote SSH-based session.
+Create the hashtable by following the below format. Be mindful of the locations of quotation marks.
+
+```powershell
+$options = @{ProxyCommand = '"C:\Users\arcdemo\Documents\PowerShell\Modules\Az.Ssh.ArcProxy\1.0.0\sshProxy_windows_amd64_1.3.022941.exe -r C:\Users\arcdemo\az_ssh_config\rg-psconfeu-ArcBox-Ubuntu-01\rg-psconfeu-ArcBox-Ubuntu-01-relay_info"'}
+```
+
+Next leverage the options hashtable in a PowerShell remoting command.
+
+```powershell
+$ubuntu01 = New-PSSession -HostName $serverName -UserName $localUser -Options $options
+```
+
+ ![Screenshot showing establishing of PowerShell remoting session tunnelled via SSH](./ps_remoting_session_via_arc_agent.png)
+
+Now we can leverage the session in any command which supports the -Session parameter.
+
+Two examples:
+
+```powershell
+Invoke-Command -Session $ubuntu01 -ScriptBlock {Write-Output "Hello from user $(whoami) on computer $(hostname)"}
+```
+
+```powershell
+Enter-PSSession -Session $ubuntu01
+```
+
+ ![Screenshot showing usage of PowerShell remoting tunnelled via SSH](./ps_remoting_usage_via_arc_agent.png)
+
 ### Module 5: Keep your Azure Arc-enabled servers patched using Azure Update Manager
 
 #### Objective
