@@ -12,7 +12,6 @@ After completion of this session, you will be able to:
 - Keep your Azure Arc-enabled servers patched using Azure Update Manager
 - Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory
 - SSH into your Azure Arc-enabled servers using SSH access
-- Keep your Azure Arc-enabled servers patched using Azure Update Manager
 - Configure your Azure Arc-enabled servers using Azure Automanage machine configuration
 - Manage your Arc-enabled Windows machines using the Windows Admin Center
 
@@ -24,8 +23,8 @@ After completion of this session, you will be able to:
 |[**3 - Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory**](#module-3-monitor-your-azure-arc-enabled-servers-using-azure-monitor-change-tracking-and-inventory) | 20 minutes | Seif Bassem |
 |[**4 - SSH into your Azure Arc-enabled servers using SSH access**](#module-4-ssh-into-your-azure-arc-enabled-servers-using-ssh-access) | 10 minutes | Jan Egil Ring |
 |[**5 - Keep your Azure Arc-enabled servers patched using Azure Update Manager**](#module-5-keep-your-azure-arc-enabled-servers-patched-using-azure-update-manager) | 10 minutes | Seif Bassem |
-|[**6 - Configure your Azure Arc-enabled servers using Azure Automanage machine configuration**](#module-7-configure-your-azure-arc-enabled-servers-using-azure-automanage-machine-configuration) | 15 minutes | Jan Egil Ring |
-|[**7 - Manage your Arc-enabled Windows machines using the Windows Admin Center**](#module-8-manage-your-arc-enabled-windows-machines-using-the-windows-admin-center) | 5 minutes | Seif Bassem |
+|[**6 - Configure your Azure Arc-enabled servers using Azure Automanage machine configuration**](#module-6-configure-your-azure-arc-enabled-servers-using-azure-automanage-machine-configuration) | 15 minutes | Jan Egil Ring |
+|[**7 - Manage your Arc-enabled Windows machines using the Windows Admin Center**](#module-7-manage-your-arc-enabled-windows-machines-using-the-windows-admin-center) | 5 minutes | Seif Bassem |
 
 ## Lab guidance
 
@@ -791,7 +790,7 @@ or
 
 4. You should now be connected and authenticated using your Azure AD/Entra ID account.
 
-### Module 5: Enable Azure update manager for the Arc-enabled servers
+### Module 5: Keep your Azure Arc-enabled servers patched using Azure Update Manager
 
 #### Objective
 
