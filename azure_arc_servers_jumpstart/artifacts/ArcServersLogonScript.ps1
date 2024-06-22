@@ -69,6 +69,9 @@ $shortcut.Save()
 # Adding desktop shortcut for VS Code
 Copy-Item -Path "$Env:USERPROFILE\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Visual Studio Code\Visual Studio Code.lnk" -Destination "$Env:USERPROFILE\Desktop" -Force
 
+# Removing desktop shortcut for MS Edge
+Get-ChildItem "C:\Users\Public\Desktop\*Edge.lnk" | Remove-Item
+
 # Cloning the Azure Arc Jumpstart levelup repository
 git clone https://github.com/Azure/arc_jumpstart_levelup.git C:\PSConfEU
 

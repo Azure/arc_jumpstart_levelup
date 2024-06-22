@@ -5,7 +5,8 @@ Write-Header "Installing VSCode extensions"
 $VSCodeExtensions = @(
     'ms-vscode.powershell',
     'esbenp.prettier-vscode',
-    'ms-vscode-remote.remote-ssh'
+    'ms-vscode-remote.remote-ssh',
+    'hnw.vscode-auto-open-markdown-preview'
 )
 
 foreach ($extension in $VSCodeExtensions) {
