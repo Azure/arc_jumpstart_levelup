@@ -30,8 +30,12 @@ After completion of this session, you will be able to:
 
 There are two ways to get access to the lab modules and guidance.
 
-1. You can use this GitHub repository.
-2. You can open the guide using VSCode inside the ArcBox-Client VM to walk you through each module of this levelup.
+1. You can use this GitHub repository from a web browser
+    1. From your local machine
+    1. Inside the ArcBox-Client VM where you will find a direct link called *Lab instructions* on the desktop
+1. Alternatively, you can open the guide using VS Code inside the ArcBox-Client VM to walk you through each module of this follow-along session.
+    1. Run the following from a terminal window: `code 'C:\PSConfEU\docs\azure_arc_servers_jumpstart\_readme.md'`
+        - After VS Code is opened, a warning is present at the top regarding *Restricted Mode*. Click on *Manage -> Trust* in order to mark the content as trusted and enable Markdown-rendering.
 
 ## Lab Environment
 
@@ -162,7 +166,7 @@ If you have access to multiple tenants, use the `--tenant` switch.
   az bicep upgrade
   ```
 
-- Edit the [main.bicepparam](https://github.com/Azure/arc_jumpstart_levelup/blob/main/azure_arc_servers_jumpstart/bicep/main.bicepparam) template parameters file and supply some values for your environment.
+- Edit the [main.bicepparam](https://github.com/Azure/arc_jumpstart_levelup/blob/psconfeu/azure_arc_servers_jumpstart/bicep/main.bicepparam) template parameters file and supply some values for your environment.
   - _`spnTenantId`_ - Your Azure tenant id
   - _`windowsAdminUsername`_ - Client Windows VM Administrator name
   - _`windowsAdminPassword`_ - Client Windows VM Password. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
@@ -173,7 +177,7 @@ Example parameters-file:
 
   ![Screenshot showing example parameters](./parameters_bicep.png)
 
-- Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/Azure/arc_jumpstart_levelup/blob/main/azure_arc_servers_jumpstart/bicep) and run the below command:
+- Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/Azure/arc_jumpstart_levelup/blob/psconfeu/azure_arc_servers_jumpstart/bicep) and run the below command:
 
   ```shell
   az group create --name "<resource-group-name>" --location "<preferred-location>"
@@ -791,6 +795,97 @@ or
   ```
 
 4. You should now be connected and authenticated using your Azure AD/Entra ID account.
+
+##### Task 5 - Optional: PowerShell remoting to Azure Arc-enabled servers
+
+*SSH for Arc-enabled servers* enables SSH based connections to Arc-enabled servers without requiring a public IP address or additional open ports. As part of this, PowerShell remoting over SSH is available for Windows and Linux machines.
+
+For this task, we will be using the *ArcBox-Ubuntu-01* machine as the target.
+
+A prerequisite is to enable the PowerShell subsystem in the sshd configuration:
+
+Log on to the
+```powershell
+$serverName = "ArcBox-Ubuntu-01"
+az ssh arc --resource-group $Env:resourceGroup --name $serverName
+
+# Inside the SSH session:
+sudo nano /etc/ssh/sshd_config
+
+# Add the following line beneath "Subsystem sftp  /usr/lib/openssh/sftp-server"
+Subsystem powershell /usr/bin/pwsh -sshs -nologo
+
+# Press Ctrl + X to exit nano (Y followed by Enter to save)
+
+# Restart the SSH service
+sudo systemctl restart sshd.service
+```
+
+>Check out the documentation for [PowerShell remoting over SSH
+](https://learn.microsoft.com/powershell/scripting/security/remoting/ssh-remoting-in-powershell?view=powershell-7.4#install-the-ssh-service-on-an-ubuntu-linux-computer) for additional details as well as information on how to perform this step for Windows machines.
+
+Next step is to create the configuration file for use in PowerShell remoting sessions against our target machine.
+
+Select either Azure CLI or Azure PowerShell:
+
+#### Generate a SSH config file with Azure CLI
+
+```powershell
+$serverName = "ArcBox-Ubuntu-01"
+$localUser = "arcdemo"
+
+az ssh config --resource-group $Env:resourceGroup --name $serverName --local-user $localUser --resource-type Microsoft.HybridCompute --file ./sshconfig.config
+```
+
+#### Generate a SSH config file with Azure PowerShell
+
+```powershell
+$serverName = "ArcBox-Ubuntu-01"
+$localUser = "arcdemo"
+
+Export-AzSshConfig -ResourceGroupName $Env:resourceGroup -Name $serverName -LocalUser $localUser -ResourceType Microsoft.HybridCompute/machines -ConfigFilePath ./sshconfig.config
+```
+
+#### Find the newly created entry in the SSH config file
+Open the created or modified SSH config file. The entry should have a similar format to the following.
+
+```powershell
+Host rg-psconfeu-demo3-ArcBox-Ubuntu-01-arcdemo
+   HostName ArcBox-Ubuntu-01
+   User arcdemo
+   ProxyCommand "C:\Users\arcdemo\Documents\PowerShell\Modules\Az.Ssh.ArcProxy\1.0.0\sshProxy_windows_amd64_1.3.022941.exe" -r "C:\Users\arcdemo\az_ssh_config\rg-psconfeu-ArcBox-Ubuntu-01\rg-psconfeu-ArcBox-Ubuntu-01-relay_info"
+```
+
+#### Leveraging the -Options parameter
+
+Levering the [options](https://learn.microsoft.com/powershell/module/microsoft.powershell.core/new-pssession#-options) parameter allows you to specify a hashtable of SSH options used when connecting to a remote SSH-based session.
+Create the hashtable by following the below format. Be mindful of the locations of quotation marks.
+
+```powershell
+$options = @{ProxyCommand = '"C:\Users\arcdemo\Documents\PowerShell\Modules\Az.Ssh.ArcProxy\1.0.0\sshProxy_windows_amd64_1.3.022941.exe -r C:\Users\arcdemo\az_ssh_config\rg-psconfeu-ArcBox-Ubuntu-01\rg-psconfeu-ArcBox-Ubuntu-01-relay_info"'}
+```
+
+Next leverage the options hashtable in a PowerShell remoting command.
+
+```powershell
+$ubuntu01 = New-PSSession -HostName $serverName -UserName $localUser -Options $options
+```
+
+ ![Screenshot showing establishing of PowerShell remoting session tunnelled via SSH](./ps_remoting_session_via_arc_agent.png)
+
+Now we can leverage the session in any command which supports the -Session parameter.
+
+Two examples:
+
+```powershell
+Invoke-Command -Session $ubuntu01 -ScriptBlock {Write-Output "Hello from user $(whoami) on computer $(hostname)"}
+```
+
+```powershell
+Enter-PSSession -Session $ubuntu01
+```
+
+ ![Screenshot showing usage of PowerShell remoting tunnelled via SSH](./ps_remoting_usage_via_arc_agent.png)
 
 ### Module 5: Keep your Azure Arc-enabled servers patched using Azure Update Manager
 
