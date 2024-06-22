@@ -30,8 +30,12 @@ After completion of this session, you will be able to:
 
 There are two ways to get access to the lab modules and guidance.
 
-1. You can use this GitHub repository.
-2. You can open the guide using VSCode inside the ArcBox-Client VM to walk you through each module of this levelup.
+1. You can use this GitHub repository from a web browser
+    1. From your local machine
+    1. Inside the ArcBox-Client VM where you will find a direct link called *Lab instructions* on the desktop
+1. Alternatively, you can open the guide using VS Code inside the ArcBox-Client VM to walk you through each module of this follow-along session.
+    1. Run the following from a terminal window: `code 'C:\PSConfEU\docs\azure_arc_servers_jumpstart\_readme.md'`
+        - After VS Code is opened, a warning is present at the top regarding *Restricted Mode*. Click on *Manage -> Trust* in order to mark the content as trusted and enable Markdown-rendering.
 
 ## Lab Environment
 

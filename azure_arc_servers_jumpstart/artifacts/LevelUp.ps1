@@ -67,3 +67,11 @@ git checkout psconfeu
 Get-Item C:\Users\arcdemo\Documents\WindowsPowerShell* | Remove-Item -Force -Recurse
 
 New-Item -Path C:\Users\arcdemo\Documents -ItemType SymbolicLink -Name WindowsPowerShell -Value C:\Users\arcdemo\Documents\PowerShell
+
+# Disable welcome-pane in VS Code
+@"
+{
+    "workbench.welcomePage.walkthroughs.openOnInstall": false,
+    "workbench.startupEditor": "none"
+}
+"@ | Out-File -FilePath "C:\Users\arcdemo\AppData\Roaming\Code\User\settings.json" -Force
