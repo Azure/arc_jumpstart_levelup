@@ -169,18 +169,20 @@ If you have access to multiple tenants, use the `--tenant` switch.
   - _`logAnalyticsWorkspaceName`_ - Unique name for the ArcBox Log Analytics workspace
   - _`emailAddress`_ - Your email address, to configure alerts for the monitoring action group
 
+Example parameters-file:
+
   ![Screenshot showing example parameters](./parameters_bicep.png)
 
 - Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/Azure/arc_jumpstart_levelup/blob/main/azure_arc_servers_jumpstart/bicep) and run the below command:
 
   ```shell
   az group create --name "<resource-group-name>" --location "<preferred-location>"
-  az deployment group create -g "<resource-group-name>" -f "main.bicep" -p "main.parameters.json"
+  az deployment group create -g "<resource-group-name>" -f "main.bicep" -p "main.bicepparam"
   ```
 
     > **NOTE: If you see any failure in the deployment, please check the [troubleshooting guide](https://azurearcjumpstart.io/azure_jumpstart_arcbox/itpro/#basic-troubleshooting).**
 
-    > **NOTE: The deployment takes around 20 minutes to complete.**
+    > **NOTE: The deployment takes around 10 minutes to complete.**
 
 ### Connecting to the ArcBox Client virtual machine
 

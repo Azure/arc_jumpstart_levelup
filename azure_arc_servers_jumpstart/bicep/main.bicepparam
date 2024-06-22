@@ -1,15 +1,18 @@
 using 'main.bicep'
 
-param spnTenantId = '<your spn tenant id>'
+param spnTenantId = '11111111-1111-1111-1111-1111111111111'
 
 param windowsAdminUsername = 'arcdemo'
 
-param windowsAdminPassword = '<your windows admin password>'
+param windowsAdminPassword = 'ArcPassword123!!'
 
-param logAnalyticsWorkspaceName = '<your unique Log Analytics workspace name>'
+param logAnalyticsWorkspaceName = 'arc-law'
 
 param deployBastion = false
 
 param rdpPort = '3389'
 
-param emailAddress = '<Your email address for alerts>'
+param emailAddress = 'psconfeu@outlook.com'
+
+
+
