@@ -62,3 +62,8 @@ git clone https://github.com/Azure/arc_jumpstart_levelup.git C:\PSConfEU
 Set-Location C:\PSConfEU
 
 git checkout psconfeu
+
+# Workaround for PowerShell modules installing into the wrong directory from Polyglot notebooks
+Get-Item C:\Users\arcdemo\Documents\WindowsPowerShell* | Remove-Item -Force -Recurse
+
+New-Item -Path C:\Users\arcdemo\Documents -ItemType SymbolicLink -Name WindowsPowerShell -Value C:\Users\arcdemo\Documents\PowerShell
