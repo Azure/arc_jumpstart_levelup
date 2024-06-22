@@ -258,7 +258,7 @@ The deployment process that you have walked through in Lab01 should have set up 
 
     ![Screenshot to select add a machine](./Select_Add_a_machine.png)
 
-- In the next screen, go to "Add a single sever" and click on "Generate script".
+- In the next screen, go to "Add a single server" and click on "Generate script".
 
 - Fill in the Resource Group, Region, Operating System (Windows), keep Connectivity as "Public endpoint". Then download the script to your local machine (or you can copy the content into the clipboard).
 
@@ -631,7 +631,13 @@ or
 
 4. Login to the operating system using username Administrator and the password you used when deploying ArcBox, by default this is **ArcDemo123!!**
 
-5. Open Windows PowerShell and install OpenSSH for Windows by running the following:
+5. Open Windows PowerShell or PowerShell 7 and run the following to check if the SSH service is already installed
+
+ ```PowerShell
+Get-Service sshd
+```
+
+6. If not already in place, install OpenSSH for Windows by running the following:
 
   ```PowerShell
   # Install the OpenSSH Server
