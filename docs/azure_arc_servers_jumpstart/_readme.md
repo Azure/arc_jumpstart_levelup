@@ -688,7 +688,7 @@ Enter-PSSession -Session $ubuntu01
 
  ![Screenshot showing usage of PowerShell remoting tunnelled via SSH](./ps_remoting_usage_via_arc_agent.png)
 
- ### Module 4: Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory
+### Module 4: Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory
 
 #### Objective
 
@@ -756,7 +756,7 @@ As part of the ArcBox automation, some alerts and workbooks have been created to
 
 - Save and create the data collection rule.
 
-- Repeat the previous steps to create another Linux data collection rule.
+- [Optional]Repeat the previous steps to create another Linux data collection rule.
 
     ![Screenshot showing creating a new linux data collection rule](./alerts_dcr_linux_basics.png)
 
@@ -806,9 +806,9 @@ As part of the ArcBox automation, some alerts and workbooks have been created to
 
 - Go to the ArcBox-Client machine via RDP and from Hyper-V manager right-click on one of the Arc-enabled VMs then click "Connect" (Administrator default password is ArcDemo123!!). Try stopping the "Print Spooler" service on the **Arc-enabled machine** using an administrative powershell session (or from the Services desktop application).
 
-```PowerShell
-Stop-Service spooler
-```
+  ```PowerShell
+  Stop-Service spooler
+  ```
 
 - The service changes will eventually show up in the "Change tracking" page for the Arc-enabled machine.
 (By default Windows services status are updated every 30 minutes but you changed that to 20 minutes earlier to speed up the result for this task).
@@ -817,9 +817,9 @@ Stop-Service spooler
 
 - You can restart the spooler service on the server if you wish and change tracking will show the outcome in the portal after few minutes.
 
-```PowerShell
-Start-Service spooler
-```
+  ```PowerShell
+  Start-Service spooler
+  ```
 
 #### Task 6: Track file changes
 
@@ -930,15 +930,11 @@ In this guide, we filtered by the OS type as shown below.
 
    ![Screenshot showing which updates are going to be installed](./updatemgmt-specificupdates.png)
 
-#### Task 3: Apply one-time updates from Azure update manager.
+#### Task 3: Apply one-time updates from Azure update manager
 
  Instead of using maintenance configs with specific recurring cycles, you can also setup one-time updates (immediately!). Start by forcing an immediate refresh.
 
-- Select your Arc-enabled machines, select "Check for updates" from the top menu, and select One-time update after the assessment finishes from the top as shown below.
-
-   ![Screenshot showing onetime refresh](./updatemgmt_onetimerefresh_1.png)
-
-- Confirm your machines selection from the machines tab.
+- Select your Arc-enabled machines, select "One-time update" from the top menu.
 
    ![Screenshot showing what updates for each machines](./updatemgmt-installonetimeupdates.png)
 

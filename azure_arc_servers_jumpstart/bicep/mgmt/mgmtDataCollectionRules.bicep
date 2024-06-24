@@ -253,16 +253,16 @@ resource dataCollectionRuleChangeTracking 'Microsoft.Insights/dataCollectionRule
               ]
             }
             fileSettings: {
-              fileCollectionFrequency: 2700
+              fileCollectionFrequency: 600
             }
             softwareSettings: {
-              softwareCollectionFrequency: 1800
+              softwareCollectionFrequency: 600
             }
             inventorySettings: {
               inventoryCollectionFrequency: 36000
             }
             servicesSettings: {
-              serviceCollectionFrequency: 1800
+              serviceCollectionFrequency: 600
             }
           }
           name: 'CTDataSource-Windows'
