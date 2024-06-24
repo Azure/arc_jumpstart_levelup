@@ -10,8 +10,8 @@ After completion of this session, you will be able to:
 - Onboard Windows and Linux servers running using different onboarding methods
 - Query and inventory your Azure Arc-enabled servers using Azure Resource Graph
 - Keep your Azure Arc-enabled servers patched using Azure Update Manager
-- Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory
 - SSH into your Azure Arc-enabled servers using SSH access
+- Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory
 - Configure your Azure Arc-enabled servers using Azure Automanage machine configuration
 - Manage your Arc-enabled Windows machines using the Windows Admin Center
 
@@ -20,8 +20,8 @@ After completion of this session, you will be able to:
 |[**Deploy ArcBox**](#lab-guidance) | 5 minutes | Seif Bassem |
 |[**1 - Onboard Windows and Linux servers running using different onboarding methods**](#module-1-on-boarding-to-azure-arc-enabled-servers) | 10 minutes | Jan Egil Ring |
 |[**2 - Query and inventory your Azure Arc-enabled servers using Azure Resource Graph**](#module-2-query-and-inventory-your-azure-arc-enabled-servers-using-azure-resource-graph) | 5 minutes | Seif Bassem |
-|[**3 - Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory**](#module-3-monitor-your-azure-arc-enabled-servers-using-azure-monitor-change-tracking-and-inventory) | 20 minutes | Seif Bassem |
-|[**4 - SSH into your Azure Arc-enabled servers using SSH access**](#module-4-ssh-into-your-azure-arc-enabled-servers-using-ssh-access) | 10 minutes | Jan Egil Ring |
+|[**3 - SSH into your Azure Arc-enabled servers using SSH access**](#module-3-ssh-into-your-azure-arc-enabled-servers-using-ssh-access) | 10 minutes | Jan Egil Ring |
+|[**4 - Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory**](#module-4-monitor-your-azure-arc-enabled-servers-using-azure-monitor-change-tracking-and-inventory) | 20 minutes | Seif Bassem |
 |[**5 - Keep your Azure Arc-enabled servers patched using Azure Update Manager**](#module-5-keep-your-azure-arc-enabled-servers-patched-using-azure-update-manager) | 10 minutes | Seif Bassem |
 |[**6 - Configure your Azure Arc-enabled servers using Azure Automanage machine configuration**](#module-6-configure-your-azure-arc-enabled-servers-using-azure-automanage-machine-configuration) | 15 minutes | Jan Egil Ring |
 |[**7 - Manage your Arc-enabled Windows machines using the Windows Admin Center**](#module-7-manage-your-arc-enabled-windows-machines-using-the-windows-admin-center) | 5 minutes | Seif Bassem |
@@ -403,192 +403,7 @@ Then run the query in PowerShell
 
     ![Screenshot of extra properties](./extra_properties.png)
 
-### Module 3: Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory
-
-#### Objective
-
-In this module, you will learn how to deploy the Azure Monitor agent to your Arc-enabled Windows and Linux machines, how to deploy the dependency agent to your Arc-enabled Windows machines, how to enable the _VM Insights_ solution to start monitoring your machines using Azure Monitor, how to run queries on the Log analytics workspace and how to configure alerts. In addition, you will learn how to use the Change Tracking and Inventory features to track changes in your machine. Change Tracking and Inventory is an built-in Azure service, provided by Azure Automation. The new version uses the Azure Monitor Agent AMA as opposed to the Log Analytics Agent. You will be using the new version in this exercise.
-
-#### Task 1: Monitor your Arc-enabled servers' performance using VMInsights
-
-As part of the automation, we deploy the Azure Monitor Agents to the Windows and Linux machines, data collection rule for VMInsights and configure the VMInsight solution for you.
-
-- Enter "Machines - Azure Arc" in the top search bar in the Azure portal and select it from the displayed services.
-
-    ![Screenshot showing how to display Arc connected servers in portal](./Arc_servers_search.png)
-
-- Click on the Windows 2019 Azure Arc-enabled **Windows** servers.
-
-    ![Screenshot showing existing Arc connected servers](./click_on_any_arc_enabled_server.png)
-
-- Click on the **Extensions** tab to validate the installation of the Azure Monitor Agent extension successful deployment.
-
-    ![Screenshot showing the extensions installed on the Arc-enabled server](./monitoring_extensions.png)
-
-- Click on the **Insights** tab to view the different metrics of your servers.
-
-    ![Screenshot showing existing Arc connected servers](./machine_vm_insights.png)
-
-- Explore also the **Dependency map solution** to view the different connections the Arc-enabled server is making.
-
-    ![Screenshot showing existing Arc connected servers](./vminsights_dependency.png)
-
-#### Task 2: Configure data collection for logs and metrics
-
-As part of the ArcBox automation, some alerts and workbooks have been created to demonstrate the different monitoring operations you can perform after onboarding the Arc-enabled machines. You will now configure some data collection rules to start sending the needed metrics and logs to the Log Analytics workspace.
-
-- In the Azure portal, search for _Data Collection rules_.
-
-    ![Screenshot showing searching for data collection rules](./dcr_search_portal.png)
-
-- Create a new data collection rule.
-
-    ![Screenshot showing creating a new data collection rule](./alerts_dcr_create.png)
-
-- Provide a name and select the same resource group where ArcBox is deployed. Make sure to select Windows as the operating system.
-
-    ![Screenshot showing creating a new data collection rule](./alerts_dcr_basics.png)
-
-- In the "Resources" tab, select the right resource group and the Arc-enabled servers onboarded.
-
-    ![Screenshot showing adding resources to the data collection rule](./alerts_dcr_resources.png)
-
-- Add a new "Performance Counters" data source, and make sure to select all the custom counters.
-
-    ![Screenshot showing adding performance counters to the data collection rule](./alerts_dcr_counters.png)
-
-- Add a new "Azure Monitor Logs" destination and select the log analytics workspace deployed in the ArcBox resource group and save.
-
-    ![Screenshot showing adding performance counters to the data collection rule](./alerts_dcr_counters_destination.png)
-
-- Add a new "Windows Event logs" data source.
-
-    ![Screenshot showing adding log data source to the data collection rule](./alerts_dcr_windows_logs_source.png)
-
-- Select _Critial_, _Error_ and _Warning_ events in the Application and System logs and add the data source.
-
-    ![Screenshot showing adding log data source to the data collection rule](./alerts_dcr_windows_logs_types.png)
-
-- Save and create the data collection rule.
-
-- Repeat the previous steps to create another Linux data collection rule.
-
-    ![Screenshot showing creating a new linux data collection rule](./alerts_dcr_linux_basics.png)
-
-    ![Screenshot showing adding resources to the data collection rule](./alerts_dcr_resources_linux.png)
-
-    ![Screenshot showing adding logs to the data collection rule](./alerts_dcr_logs_linux.png)
-
-- After waiting for 5-10 minutes for the data collection rule to start collecting data, restart the servers in the Hyper-V manager on the _ArcBox-Client_ VM to trigger some new events.
-
-    ![Screenshot showing restarting the vms in the hyper-v manager](./alerts_hyperv_restart.png)
-
-#### Task 3: View alerts and visualizations
-
-**NOTE: It might take some time for all visualizations to load properly**
-
-- In Azure Monitor, click on _Alerts_. and select _Alert rules_
-
-    ![Screenshot showing opening the alerts page](./alerts_rules_open.png)
-
-- Explore the alert rules crated for you.
-
-    ![Screenshot showing opening one alert around processor time](./alerts_rules_rules.png)
-
-- Go back to Azure Monitor and click on _Workbooks_. There are three workbooks deployed for you.
-
-    ![Screenshot showing deployed workbooks](./alerts_workbooks_list.png)
-
-    ![Screenshot showing alerts workbook](./alerts_workbooks_alerts.png)
-
-    ![Screenshot showing performance workbook](./alerts_workbooks_perf.png)
-
-    ![Screenshot showing events workbook](./alerts_workbooks_events.png)
-
-#### Task 4: Enable Change Tracking and Inventory
-
-- To enable these features you would need to set up a Data Collection Rule that would collect the right events and data for Change Tracking and Inventory and create an Azure policy to onboard your Arc-enabled machines to Change Tracking. **For the purposes of this workshop** - these tasks have all been done for you, so you do not need to do them manually. Follow the link [here](https://learn.microsoft.com/azure/automation/change-tracking/enable-vms-monitoring-agent?tabs=singlevm%2Carcvm#enable-change-tracking-at-scale-using-azure-monitoring-agent) to learn how to do these yourself in future.
-
-- Verify that Change Tracking and Inventory is now enabled and the Arc VMs are reporting status.
-
-    ![Screenshot showing Inventory](./CT_1_verify-.png)
-
-#### Task 5: Track changes in Windows services
-
-- From the "Change tracking" settings select "Windows Services" and change the "Collection Frequency" to 20 minutes.
-
-    ![Screenshot CT Windows Services settings](./CT_2_WinServices.png)
-
-- Go to the ArcBox-Client machine via RDP and from Hyper-V manager right-click on one of the Arc-enabled VMs then click "Connect" (Administrator default password is ArcDemo123!!). Try stopping the "Print Spooler" service on the **Arc-enabled machine** using an administrative powershell session (or from the Services desktop application).
-
-```PowerShell
-Stop-Service spooler
-```
-
-- The service changes will eventually show up in the "Change tracking" page for the Arc-enabled machine.
-(By default Windows services status are updated every 30 minutes but you changed that to 20 minutes earlier to speed up the result for this task).
-
-    ![Screenshot CT Spooler stopped](./CT_3_WinServices-spooler.png)
-
-- You can restart the spooler service on the server if you wish and change tracking will show the outcome in the portal after few minutes.
-
-```PowerShell
-Start-Service spooler
-```
-
-#### Task 6: Track file changes
-
-- Navigate to one of the Arc-enabled Windows machines and select "Change tracking" then select "Settings" then select "Windows Files". You should see the "Add windows file setting" screen on the right hand side. Configure these settings to track the changes to the file "c:\windows\system32\drivers\etc\hosts" and to upload the file content.
-
-    ![Screenshot showing Edit windows file Settings](./CT_4_File-Settings.png)
-
-- Set the file location where changed files will be uploaded. You should have a storage account deployed in the resource group of this lab.
-
-    ![Screenshot showing Storage Account Settings](./CT_5_File-Location-1.png)
-
-- Navigate to the storage account. Click on "Containers" and you should see a container created automatically for you by Azure Change Tracking.
-
-    ![Screenshot storage container for CT](./CT_6_CT-Storage-Container.png)
-
-- Click on the "changetrackingblob" container, and in the next page select "Access Control (IAM)", then on "Add role assignment".
-
-    ![Screenshot blob IAM](./CT_7_CT-Storage-Container-Access.png)
-
-- Select the Storage Blob Data Contributor role then assign the role to the Windows Arc enabled machines managed identity.
-
-    ![Screenshot blob contributor](./CT_8_CT-BlobDataContributor.png)
-
-    ![Screenshot assign VM data contributor role](./CT_9_CT-BlobDataContributor-VM-1.png)
-
-- Modify the _hosts_ file on the Arc-enabled machine (c:\Windows\System32\Drivers\etc\hosts).
-
-**NOTE: To modify the hosts file, open _Notepad_ as administrator, select File>Open, and then browse to c:\Windows\System32\Drivers\etc\hosts file**
-
-- Add a line like this from an administrative notepad and save the file.
-
-  ```shell
-  1.1.1.1      www.fakehost.com
-  ```
-
-- Eventually, the file changes will show up in the change tracking page of the machine (it might take some time to show so move on to other tasks and come back to check later). The file changed content will also be uploaded to the "changetrackingblob" storage container.
-
-    ![Screenshot file in blob](./CT_11_File_in_Blob.png)
-
-#### Task 7: Query in Log Analytics
-
-- On the Change tracking page from your Arc-enabled machine, select _Log Analytics_.
-
-- In the Logs search, look for content changes to the _hosts_ file by entering and running the following query. The result should show information about the changes.
-
-```shell
-ConfigurationChange | where FieldsChanged contains "FileContentChecksum" and FileSystemPath == "c:\\windows\\system32\\drivers\\etc\\hosts"
-```
-
-  ![Screenshot CT results in Log Analytics](./CT_10_LogAnalyticsFile.png)
-
-  >**NOTE (Optional) In Log Analytics, alerts are always created based on log analytics query result. If you want to be alerted when someone changes the _hosts_ file on any one of your server, then you can configure an alert by referring to this [tutorial](https://learn.microsoft.com/azure/azure-monitor/alerts/tutorial-log-alert).**
-
-### Module 4: SSH into your Azure Arc-enabled servers using SSH access
+### Module 3: SSH into your Azure Arc-enabled servers using SSH access
 
 #### Objective
 
@@ -885,6 +700,191 @@ Enter-PSSession -Session $ubuntu01
 ```
 
  ![Screenshot showing usage of PowerShell remoting tunnelled via SSH](./ps_remoting_usage_via_arc_agent.png)
+
+ ### Module 4: Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory
+
+#### Objective
+
+In this module, you will learn how to deploy the Azure Monitor agent to your Arc-enabled Windows and Linux machines, how to deploy the dependency agent to your Arc-enabled Windows machines, how to enable the _VM Insights_ solution to start monitoring your machines using Azure Monitor, how to run queries on the Log analytics workspace and how to configure alerts. In addition, you will learn how to use the Change Tracking and Inventory features to track changes in your machine. Change Tracking and Inventory is an built-in Azure service, provided by Azure Automation. The new version uses the Azure Monitor Agent AMA as opposed to the Log Analytics Agent. You will be using the new version in this exercise.
+
+#### Task 1: Monitor your Arc-enabled servers' performance using VMInsights
+
+As part of the automation, we deploy the Azure Monitor Agents to the Windows and Linux machines, data collection rule for VMInsights and configure the VMInsight solution for you.
+
+- Enter "Machines - Azure Arc" in the top search bar in the Azure portal and select it from the displayed services.
+
+    ![Screenshot showing how to display Arc connected servers in portal](./Arc_servers_search.png)
+
+- Click on the Windows 2019 Azure Arc-enabled **Windows** servers.
+
+    ![Screenshot showing existing Arc connected servers](./click_on_any_arc_enabled_server.png)
+
+- Click on the **Extensions** tab to validate the installation of the Azure Monitor Agent extension successful deployment.
+
+    ![Screenshot showing the extensions installed on the Arc-enabled server](./monitoring_extensions.png)
+
+- Click on the **Insights** tab to view the different metrics of your servers.
+
+    ![Screenshot showing existing Arc connected servers](./machine_vm_insights.png)
+
+- Explore also the **Dependency map solution** to view the different connections the Arc-enabled server is making.
+
+    ![Screenshot showing existing Arc connected servers](./vminsights_dependency.png)
+
+#### Task 2: Configure data collection for logs and metrics
+
+As part of the ArcBox automation, some alerts and workbooks have been created to demonstrate the different monitoring operations you can perform after onboarding the Arc-enabled machines. You will now configure some data collection rules to start sending the needed metrics and logs to the Log Analytics workspace.
+
+- In the Azure portal, search for _Data Collection rules_.
+
+    ![Screenshot showing searching for data collection rules](./dcr_search_portal.png)
+
+- Create a new data collection rule.
+
+    ![Screenshot showing creating a new data collection rule](./alerts_dcr_create.png)
+
+- Provide a name and select the same resource group where ArcBox is deployed. Make sure to select Windows as the operating system.
+
+    ![Screenshot showing creating a new data collection rule](./alerts_dcr_basics.png)
+
+- In the "Resources" tab, select the right resource group and the Arc-enabled servers onboarded.
+
+    ![Screenshot showing adding resources to the data collection rule](./alerts_dcr_resources.png)
+
+- Add a new "Performance Counters" data source, and make sure to select all the custom counters.
+
+    ![Screenshot showing adding performance counters to the data collection rule](./alerts_dcr_counters.png)
+
+- Add a new "Azure Monitor Logs" destination and select the log analytics workspace deployed in the ArcBox resource group and save.
+
+    ![Screenshot showing adding performance counters to the data collection rule](./alerts_dcr_counters_destination.png)
+
+- Add a new "Windows Event logs" data source.
+
+    ![Screenshot showing adding log data source to the data collection rule](./alerts_dcr_windows_logs_source.png)
+
+- Select _Critial_, _Error_ and _Warning_ events in the Application and System logs and add the data source.
+
+    ![Screenshot showing adding log data source to the data collection rule](./alerts_dcr_windows_logs_types.png)
+
+- Save and create the data collection rule.
+
+- Repeat the previous steps to create another Linux data collection rule.
+
+    ![Screenshot showing creating a new linux data collection rule](./alerts_dcr_linux_basics.png)
+
+    ![Screenshot showing adding resources to the data collection rule](./alerts_dcr_resources_linux.png)
+
+    ![Screenshot showing adding logs to the data collection rule](./alerts_dcr_logs_linux.png)
+
+- After waiting for 5-10 minutes for the data collection rule to start collecting data, restart the servers in the Hyper-V manager on the _ArcBox-Client_ VM to trigger some new events.
+
+    ![Screenshot showing restarting the vms in the hyper-v manager](./alerts_hyperv_restart.png)
+
+#### Task 3: View alerts and visualizations
+
+**NOTE: It might take some time for all visualizations to load properly**
+
+- In Azure Monitor, click on _Alerts_. and select _Alert rules_
+
+    ![Screenshot showing opening the alerts page](./alerts_rules_open.png)
+
+- Explore the alert rules crated for you.
+
+    ![Screenshot showing opening one alert around processor time](./alerts_rules_rules.png)
+
+- Go back to Azure Monitor and click on _Workbooks_. There are three workbooks deployed for you.
+
+    ![Screenshot showing deployed workbooks](./alerts_workbooks_list.png)
+
+    ![Screenshot showing alerts workbook](./alerts_workbooks_alerts.png)
+
+    ![Screenshot showing performance workbook](./alerts_workbooks_perf.png)
+
+    ![Screenshot showing events workbook](./alerts_workbooks_events.png)
+
+#### Task 4: Enable Change Tracking and Inventory
+
+- To enable these features you would need to set up a Data Collection Rule that would collect the right events and data for Change Tracking and Inventory and create an Azure policy to onboard your Arc-enabled machines to Change Tracking. **For the purposes of this workshop** - these tasks have all been done for you, so you do not need to do them manually. Follow the link [here](https://learn.microsoft.com/azure/automation/change-tracking/enable-vms-monitoring-agent?tabs=singlevm%2Carcvm#enable-change-tracking-at-scale-using-azure-monitoring-agent) to learn how to do these yourself in future.
+
+- Verify that Change Tracking and Inventory is now enabled and the Arc VMs are reporting status.
+
+    ![Screenshot showing Inventory](./CT_1_verify-.png)
+
+#### Task 5: Track changes in Windows services
+
+- From the "Change tracking" settings select "Windows Services" and change the "Collection Frequency" to 20 minutes.
+
+    ![Screenshot CT Windows Services settings](./CT_2_WinServices.png)
+
+- Go to the ArcBox-Client machine via RDP and from Hyper-V manager right-click on one of the Arc-enabled VMs then click "Connect" (Administrator default password is ArcDemo123!!). Try stopping the "Print Spooler" service on the **Arc-enabled machine** using an administrative powershell session (or from the Services desktop application).
+
+```PowerShell
+Stop-Service spooler
+```
+
+- The service changes will eventually show up in the "Change tracking" page for the Arc-enabled machine.
+(By default Windows services status are updated every 30 minutes but you changed that to 20 minutes earlier to speed up the result for this task).
+
+    ![Screenshot CT Spooler stopped](./CT_3_WinServices-spooler.png)
+
+- You can restart the spooler service on the server if you wish and change tracking will show the outcome in the portal after few minutes.
+
+```PowerShell
+Start-Service spooler
+```
+
+#### Task 6: Track file changes
+
+- Navigate to one of the Arc-enabled Windows machines and select "Change tracking" then select "Settings" then select "Windows Files". You should see the "Add windows file setting" screen on the right hand side. Configure these settings to track the changes to the file "c:\windows\system32\drivers\etc\hosts" and to upload the file content.
+
+    ![Screenshot showing Edit windows file Settings](./CT_4_File-Settings.png)
+
+- Set the file location where changed files will be uploaded. You should have a storage account deployed in the resource group of this lab.
+
+    ![Screenshot showing Storage Account Settings](./CT_5_File-Location-1.png)
+
+- Navigate to the storage account. Click on "Containers" and you should see a container created automatically for you by Azure Change Tracking.
+
+    ![Screenshot storage container for CT](./CT_6_CT-Storage-Container.png)
+
+- Click on the "changetrackingblob" container, and in the next page select "Access Control (IAM)", then on "Add role assignment".
+
+    ![Screenshot blob IAM](./CT_7_CT-Storage-Container-Access.png)
+
+- Select the Storage Blob Data Contributor role then assign the role to the Windows Arc enabled machines managed identity.
+
+    ![Screenshot blob contributor](./CT_8_CT-BlobDataContributor.png)
+
+    ![Screenshot assign VM data contributor role](./CT_9_CT-BlobDataContributor-VM-1.png)
+
+- Modify the _hosts_ file on the Arc-enabled machine (c:\Windows\System32\Drivers\etc\hosts).
+
+**NOTE: To modify the hosts file, open _Notepad_ as administrator, select File>Open, and then browse to c:\Windows\System32\Drivers\etc\hosts file**
+
+- Add a line like this from an administrative notepad and save the file.
+
+  ```shell
+  1.1.1.1      www.fakehost.com
+  ```
+
+- Eventually, the file changes will show up in the change tracking page of the machine (it might take some time to show so move on to other tasks and come back to check later). The file changed content will also be uploaded to the "changetrackingblob" storage container.
+
+    ![Screenshot file in blob](./CT_11_File_in_Blob.png)
+
+#### Task 7: Query in Log Analytics
+
+- On the Change tracking page from your Arc-enabled machine, select _Log Analytics_.
+
+- In the Logs search, look for content changes to the _hosts_ file by entering and running the following query. The result should show information about the changes.
+
+```shell
+ConfigurationChange | where FieldsChanged contains "FileContentChecksum" and FileSystemPath == "c:\\windows\\system32\\drivers\\etc\\hosts"
+```
+
+  ![Screenshot CT results in Log Analytics](./CT_10_LogAnalyticsFile.png)
+
+  >**NOTE (Optional) In Log Analytics, alerts are always created based on log analytics query result. If you want to be alerted when someone changes the _hosts_ file on any one of your server, then you can configure an alert by referring to this [tutorial](https://learn.microsoft.com/azure/azure-monitor/alerts/tutorial-log-alert).**
 
 ### Module 5: Keep your Azure Arc-enabled servers patched using Azure Update Manager
 
