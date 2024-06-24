@@ -306,7 +306,7 @@ In this first step, you will assign Azure resource tags to some of your Azure Ar
 - In the query window, enter and run the following query and examine the results which should show your Arc-enabled servers. Note the use of the KQL equals operator (=~) which is case insensitive [KQL =~ (equals) operator](https://learn.microsoft.com/azure/data-explorer/kusto/query/equals-operator).
 
     ```shell
-    Resources
+    resources
     | where type =~ 'Microsoft.HybridCompute/machines'
     ```
 
@@ -325,7 +325,7 @@ To install the PowerShell module, run the following command
 Then run the query in PowerShell
 
   ```powershell
-  Search-AzGraph -Query "Resources | where type =~ 'Microsoft.HybridCompute/machines'"
+  Search-AzGraph -Query "resources | where type =~ 'Microsoft.HybridCompute/machines'"
   ```
 
 #### Task 4: Query your server inventory using the available metadata
@@ -333,10 +333,10 @@ Then run the query in PowerShell
 - Use PowerShell and the Resource Graph Explorer to summarize the server count by "logical cores" which is one of the detected properties referred to in the previous task. Remember to only use the query string, which is enclosed in double quotes, if you want to run the query in the portal.
 
     ```powershell
-    Search-AzGraph -Query  "Resources
+    Search-AzGraph -Query "resources
     | where type =~ 'Microsoft.HybridCompute/machines'
-    | extend logicalCores = tostring(properties.detectedProperties.logicalCoreCount)
-    | summarize serversCount = count() by logicalCores"
+    | extend logicalCores = tostring(properties.detectedProperties.logicalCoreCount), operatingSystem = tostring(properties.osType)
+    | summarize serversCount =count() by logicalCores,operatingSystem"
     ```
 
 - The Graph Explorer allows you to get a graphical view of your results by selecting the "charts" option.
@@ -348,7 +348,7 @@ Then run the query in PowerShell
 - Let’s now build a query that uses the tag we assigned earlier to some of our Azure Arc-enabled servers. Use the following query that includes a check for resources that have a value for the "Scenario" tag. Feel free to use the portal or PowerShell. Check that the results match the servers that you set tags for earlier.
 
     ```powershell
-    Search-AzGraph -Query  "Resources
+    Search-AzGraph -Query "resources
     | where type =~ 'Microsoft.HybridCompute/machines' and isnotempty(tags['Scenario'])
     | extend Scenario = tags['Scenario']
     | project name, tags"
@@ -359,14 +359,13 @@ Then run the query in PowerShell
 - Run the following advanced query which allows you to see what extensions are installed on the Arc-enabled servers. Notice that running the query in PowerShell requires us to escape the $ character as explained in [Escape Characters](https://learn.microsoft.com/azure/governance/resource-graph/concepts/query-language#escape-characters).
 
     ```powershell
-    Search-AzGraph -Query "Resources
+    Search-AzGraph -Query "resources
     | where type == 'microsoft.hybridcompute/machines'
     | project id, JoinID = toupper(id), ComputerName = tostring(properties.osProfile.computerName), OSName = tostring(properties.osName)
     | join kind=leftouter(
-        Resources
+        resources
         | where type == 'microsoft.hybridcompute/machines/extensions'
-        | project MachineId = toupper(substring(id, 0, indexof(id, '/extensions'))), ExtensionName = name
-    ) on `$left.JoinID == `$right.MachineId
+        | project MachineId = toupper(substring(id, 0, indexof(id, '/extensions'))), ExtensionName = name) on `$left.JoinID == `$right.MachineId
     | summarize Extensions = make_list(ExtensionName) by id, ComputerName, OSName
     | order by tolower(OSName) desc"
     ```
@@ -380,7 +379,7 @@ Then run the query in PowerShell
 - Azure Arc provides additional properties on the Azure Arc-enabled server resource that we can query with Resource Graph Explorer. In the following example, we list some of these key properties, like the Azure Arc Agent version installed on your Azure Arc-enabled servers
 
     ```powershell
-    Search-AzGraph -Query  "Resources
+    Search-AzGraph -Query  "resources
     | where type =~ 'Microsoft.HybridCompute/machines'
     | extend arcAgentVersion = tostring(properties.['agentVersion']), osName = tostring(properties.['osName']), osVersion = tostring(properties.['osVersion']), osSku = tostring(properties.['osSku']),
     lastStatusChange = tostring(properties.['lastStatusChange'])
@@ -689,7 +688,7 @@ Enter-PSSession -Session $ubuntu01
 
  ![Screenshot showing usage of PowerShell remoting tunnelled via SSH](./ps_remoting_usage_via_arc_agent.png)
 
- ### Module 4: Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory
+### Module 4: Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory
 
 #### Objective
 
@@ -757,7 +756,7 @@ As part of the ArcBox automation, some alerts and workbooks have been created to
 
 - Save and create the data collection rule.
 
-- Repeat the previous steps to create another Linux data collection rule.
+- [Optional]Repeat the previous steps to create another Linux data collection rule.
 
     ![Screenshot showing creating a new linux data collection rule](./alerts_dcr_linux_basics.png)
 
@@ -807,9 +806,9 @@ As part of the ArcBox automation, some alerts and workbooks have been created to
 
 - Go to the ArcBox-Client machine via RDP and from Hyper-V manager right-click on one of the Arc-enabled VMs then click "Connect" (Administrator default password is ArcDemo123!!). Try stopping the "Print Spooler" service on the **Arc-enabled machine** using an administrative powershell session (or from the Services desktop application).
 
-```PowerShell
-Stop-Service spooler
-```
+  ```PowerShell
+  Stop-Service spooler
+  ```
 
 - The service changes will eventually show up in the "Change tracking" page for the Arc-enabled machine.
 (By default Windows services status are updated every 30 minutes but you changed that to 20 minutes earlier to speed up the result for this task).
@@ -818,9 +817,9 @@ Stop-Service spooler
 
 - You can restart the spooler service on the server if you wish and change tracking will show the outcome in the portal after few minutes.
 
-```PowerShell
-Start-Service spooler
-```
+  ```PowerShell
+  Start-Service spooler
+  ```
 
 #### Task 6: Track file changes
 
@@ -931,15 +930,11 @@ In this guide, we filtered by the OS type as shown below.
 
    ![Screenshot showing which updates are going to be installed](./updatemgmt-specificupdates.png)
 
-#### Task 3: Apply one-time updates from Azure update manager.
+#### Task 3: Apply one-time updates from Azure update manager
 
  Instead of using maintenance configs with specific recurring cycles, you can also setup one-time updates (immediately!). Start by forcing an immediate refresh.
 
-- Select your Arc-enabled machines, select "Check for updates" from the top menu, and select One-time update after the assessment finishes from the top as shown below.
-
-   ![Screenshot showing onetime refresh](./updatemgmt_onetimerefresh_1.png)
-
-- Confirm your machines selection from the machines tab.
+- Select your Arc-enabled machines, select "One-time update" from the top menu.
 
    ![Screenshot showing what updates for each machines](./updatemgmt-installonetimeupdates.png)
 
