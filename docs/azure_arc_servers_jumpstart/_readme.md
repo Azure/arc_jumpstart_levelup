@@ -65,18 +65,6 @@ If you have access to multiple tenants, use the `--tenant` switch.
   az login --tenant <tenantId>
   ```
 
-- [Install or update Azure PowerShell](https://learn.microsoft.com/powershell/azure/install-azps-windows). Use the below command to check if its installed.
-
-  ```shell
-  Get-Module -Name Az.Accounts -listavailable
-  ```
-
-- Login to Azure PowerShell the ```Connect-AzAccount``` command.
-
-  ```shell
-  Connect-AzAccount
-  ```
-
 - Set the default subscription using Azure CLI.
 
   ```shell
@@ -119,12 +107,12 @@ If you have access to multiple tenants, use the `--tenant` switch.
 - Register necessary Azure resource providers by running the following commands.
 
   ```shell
-  az provider register --namespace Microsoft.HybridCompute --wait
-  az provider register --namespace Microsoft.GuestConfiguration --wait
-  az provider register --namespace Microsoft.AzureArcData --wait
-  az provider register --namespace Microsoft.HybridConnectivity --wait
-  az provider register --namespace Microsoft.OperationsManagement --wait
-  az provider register --namespace Microsoft.SecurityInsights --wait
+  az provider register --namespace Microsoft.HybridCompute
+  az provider register --namespace Microsoft.GuestConfiguration
+  az provider register --namespace Microsoft.AzureArcData
+  az provider register --namespace Microsoft.HybridConnectivity
+  az provider register --namespace Microsoft.OperationsManagement
+  az provider register --namespace Microsoft.SecurityInsights
   ```
 
 - To deploy ArcBox, an Azure account assigned with the _Owner_ Role-based access control (RBAC) role is required.
