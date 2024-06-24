@@ -9,9 +9,9 @@ After completion of this session, you will be able to:
 - Deploy ArcBox
 - Onboard Windows and Linux servers running using different onboarding methods
 - Query and inventory your Azure Arc-enabled servers using Azure Resource Graph
-- Keep your Azure Arc-enabled servers patched using Azure Update Manager
 - SSH into your Azure Arc-enabled servers using SSH access
 - Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory
+- Keep your Azure Arc-enabled servers patched using Azure Update Manager
 - Configure your Azure Arc-enabled servers using Azure Automanage machine configuration
 - Manage your Arc-enabled Windows machines using the Windows Admin Center
 
