@@ -5,7 +5,8 @@ Write-Header "Installing VSCode extensions"
 $VSCodeExtensions = @(
     'ms-vscode.powershell',
     'esbenp.prettier-vscode',
-    'ms-vscode-remote.remote-ssh'
+    'ms-vscode-remote.remote-ssh',
+    'hnw.vscode-auto-open-markdown-preview'
 )
 
 foreach ($extension in $VSCodeExtensions) {
@@ -40,3 +41,37 @@ Write-Host "Configuring PSWSMan on the Linux VM"
 $ubuntuSession = New-SSHSession -ComputerName $Ubuntu01VmIp -Credential $linCreds -Force -WarningAction SilentlyContinue
 $Command = "sudo pwsh -command 'Install-WSMan'"
 $(Invoke-SSHCommand -SSHSession $ubuntuSession -Command $Command -Timeout 600 -WarningAction SilentlyContinue).Output
+
+# Adding desktop shortcut for lab instructions
+$WshShell = New-Object -comObject WScript.Shell
+$Shortcut = $WshShell.CreateShortcut("$Env:USERPROFILE\Desktop\Lab instructions.lnk")
+$Shortcut.TargetPath = "https://aka.ms/arc-follow-along"
+$Shortcut.IconLocation = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+$shortcut.WindowStyle = 3
+$shortcut.Save()
+
+# Adding desktop shortcut for VS Code
+Copy-Item -Path "$Env:USERPROFILE\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Visual Studio Code\Visual Studio Code.lnk" -Destination "$Env:USERPROFILE\Desktop" -Force
+
+# Removing desktop shortcut for MS Edge
+Get-ChildItem "C:\Users\Public\Desktop\*Edge.lnk" | Remove-Item
+
+# Cloning the Azure Arc Jumpstart levelup repository
+git clone https://github.com/Azure/arc_jumpstart_levelup.git C:\PSConfEU
+
+Set-Location C:\PSConfEU
+
+git checkout psconfeu
+
+# Workaround for PowerShell modules installing into the wrong directory from Polyglot notebooks
+Get-Item C:\Users\arcdemo\Documents\WindowsPowerShell* | Remove-Item -Force -Recurse
+
+New-Item -Path C:\Users\arcdemo\Documents -ItemType SymbolicLink -Name WindowsPowerShell -Value C:\Users\arcdemo\Documents\PowerShell
+
+# Disable welcome-pane in VS Code
+@"
+{
+    "workbench.welcomePage.walkthroughs.openOnInstall": false,
+    "workbench.startupEditor": "none"
+}
+"@ | Out-File -FilePath "C:\Users\arcdemo\AppData\Roaming\Code\User\settings.json" -Force
