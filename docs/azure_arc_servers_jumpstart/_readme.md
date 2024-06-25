@@ -228,7 +228,7 @@ The deployment process that you have walked through in Lab01 should have set up 
 
     ![Screenshot Arc_servers_search](./Arc_servers_search.png)
 
-- You should see the machines that are connected to Arc already: Arcbox-Ubuntu-01, ArcBox-Win2k12 and ArcBox-Win2K19.
+- You should see the machines that are connected to Arc already: Arcbox-Ubuntu-01 and ArcBox-Win2K19.
 
     ![Screenshot showing existing Arc connected servers](./First_view_of_Arc_connected.png)
 
