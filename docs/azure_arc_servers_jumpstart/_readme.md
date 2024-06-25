@@ -785,6 +785,10 @@ As part of the ArcBox automation, some alerts and workbooks have been created to
 
 #### Task 4: Enable Change Tracking and Inventory
 
+- From the "Change tracking" settings select "Windows Services" and change the "Collection Frequency" to 10 minutes.
+
+    ![Screenshot CT Windows Services settings](./CT_2_WinServices.png)
+
 - To enable these features you would need to set up a Data Collection Rule that would collect the right events and data for Change Tracking and Inventory and create an Azure policy to onboard your Arc-enabled machines to Change Tracking. **For the purposes of this workshop** - these tasks have all been done for you, so you do not need to do them manually. Follow the link [here](https://learn.microsoft.com/azure/automation/change-tracking/enable-vms-monitoring-agent?tabs=singlevm%2Carcvm#enable-change-tracking-at-scale-using-azure-monitoring-agent) to learn how to do these yourself in future.
 
 - Verify that Change Tracking and Inventory is now enabled and the Arc VMs are reporting status.
