@@ -72,13 +72,6 @@ If you have access to multiple tenants, use the `--tenant` switch.
   az account set -s $subscriptionId
   ```
 
-- Set the default subscription using Azure PowerShell.
-
-  ```shell
-  $subscriptionId = "<Subscription Id>"
-  Set-AzContext -SubscriptionId $subscriptionId
-  ```
-
 - Ensure that you have selected the correct subscription you want to deploy ArcBox to by using the ```az account list --query "[?isDefault]"``` command. If you need to adjust the active subscription used by Az CLI, follow [this guidance](https://docs.microsoft.com/cli/azure/manage-azure-subscriptions-azure-cli#change-the-active-subscription).
 
 - ArcBox must be deployed to one of the following regions. **Deploying ArcBox outside of these regions may result in unexpected results or deployment errors.**
