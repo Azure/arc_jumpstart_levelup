@@ -800,10 +800,6 @@ As part of the ArcBox automation, some alerts and workbooks have been created to
 
 #### Task 5: Track changes in Windows services
 
-- From the "Change tracking" settings select "Windows Services" and change the "Collection Frequency" to 20 minutes.
-
-    ![Screenshot CT Windows Services settings](./CT_2_WinServices.png)
-
 - Go to the ArcBox-Client machine via RDP and from Hyper-V manager right-click on one of the Arc-enabled VMs then click "Connect" (Administrator default password is ArcDemo123!!). Try stopping the "Print Spooler" service on the **Arc-enabled machine** using an administrative powershell session (or from the Services desktop application).
 
   ```PowerShell
