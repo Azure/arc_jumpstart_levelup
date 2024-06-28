@@ -2,12 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "spnClientId": {
-            "value": "<your service principal client id>"
-        },
-        "spnClientSecret": {
-            "value": "<your service principal secret>"
-        },
         "spnTenantId": {
             "value": "<your spn tenant id>"
         },
@@ -20,14 +14,11 @@
         "logAnalyticsWorkspaceName": {
             "value": "<your unique Log Analytics workspace name>"
         },
-        "deployBastion": {
-            "value": false
-        },
-        "rdpPort": {
-            "value": "3389"
-        },
         "emailAddress": {
             "value": "<Your email address for alerts>"
+        },
+        "deploySQL": {
+            "value": false
         }
     }
 }

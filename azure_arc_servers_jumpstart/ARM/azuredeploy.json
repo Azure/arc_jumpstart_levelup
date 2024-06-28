@@ -4,23 +4,11 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.26.170.59819",
-      "templateHash": "18013952058343046591"
+      "version": "0.27.1.19265",
+      "templateHash": "7856397102627136550"
     }
   },
   "parameters": {
-    "spnClientId": {
-      "type": "string",
-      "metadata": {
-        "description": "Azure service principal client id"
-      }
-    },
-    "spnClientSecret": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Azure service principal client secret"
-      }
-    },
     "spnTenantId": {
       "type": "string",
       "metadata": {
@@ -41,6 +29,13 @@
         "description": "Password for Windows account. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long"
       }
     },
+    "vmAutologon": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Enable automatic logon into ArcBox Virtual Machine"
+      }
+    },
     "logAnalyticsWorkspaceName": {
       "type": "string",
       "metadata": {
@@ -49,7 +44,7 @@
     },
     "githubAccount": {
       "type": "string",
-      "defaultValue": "Azure",
+      "defaultValue": "azure",
       "metadata": {
         "description": "Target GitHub account"
       }
@@ -127,12 +122,6 @@
           "windowsAdminPassword": {
             "value": "[parameters('windowsAdminPassword')]"
           },
-          "spnClientId": {
-            "value": "[parameters('spnClientId')]"
-          },
-          "spnClientSecret": {
-            "value": "[parameters('spnClientSecret')]"
-          },
           "spnTenantId": {
             "value": "[parameters('spnTenantId')]"
           },
@@ -165,6 +154,9 @@
           },
           "deploySQL": {
             "value": "[parameters('deploySQL')]"
+          },
+          "vmAutologon": {
+            "value": "[parameters('vmAutologon')]"
           }
         },
         "template": {
@@ -173,8 +165,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.26.170.59819",
-              "templateHash": "17446925573703323983"
+              "version": "0.27.1.19265",
+              "templateHash": "10838758566026742909"
             }
           },
           "parameters": {
@@ -198,6 +190,13 @@
               "maxLength": 123,
               "metadata": {
                 "description": "Password for Windows account. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long"
+              }
+            },
+            "vmAutologon": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Enable automatic logon into ArcBox Virtual Machine"
               }
             },
             "windowsOSVersion": {
@@ -224,18 +223,6 @@
               "type": "object",
               "defaultValue": {
                 "Project": "jumpstart_arcbox"
-              }
-            },
-            "spnClientId": {
-              "type": "string",
-              "metadata": {
-                "description": "Client id of the service principal"
-              }
-            },
-            "spnClientSecret": {
-              "type": "securestring",
-              "metadata": {
-                "description": "Client secret of the service principal"
               }
             },
             "spnAuthority": {
@@ -366,6 +353,9 @@
               "name": "[parameters('vmName')]",
               "location": "[parameters('location')]",
               "tags": "[parameters('resourceTags')]",
+              "identity": {
+                "type": "SystemAssigned"
+              },
               "properties": {
                 "hardwareProfile": {
                   "vmSize": "Standard_E8s_v5"
@@ -451,8 +441,20 @@
                   "fileUris": [
                     "[uri(parameters('templateBaseUrl'), 'artifacts/Bootstrap.ps1')]"
                   ],
-                  "commandToExecute": "[format('powershell.exe -ExecutionPolicy Bypass -File Bootstrap.ps1 -adminUsername {0} -adminPassword {1} -spnClientId {2} -spnClientSecret {3} -spnTenantId {4} -spnAuthority {5} -subscriptionId {6} -resourceGroup {7} -acceptEula {8} -azureLocation {9} -stagingStorageAccountName {10} -workspaceName {11} -templateBaseUrl {12} -githubUser {13} -rdpPort {14} -sshPort {15} -deploySQL {16}', parameters('windowsAdminUsername'), parameters('windowsAdminPassword'), parameters('spnClientId'), parameters('spnClientSecret'), parameters('spnTenantId'), parameters('spnAuthority'), subscription().subscriptionId, resourceGroup().name, parameters('acceptEula'), parameters('location'), parameters('stagingStorageAccountName'), parameters('workspaceName'), parameters('templateBaseUrl'), parameters('githubUser'), parameters('rdpPort'), parameters('sshPort'), parameters('deploySQL'))]"
+                  "commandToExecute": "[format('powershell.exe -ExecutionPolicy Bypass -File Bootstrap.ps1 -adminUsername {0} -adminPassword {1} -spnTenantId {2} -spnAuthority {3} -subscriptionId {4} -resourceGroup {5} -acceptEula {6} -azureLocation {7} -stagingStorageAccountName {8} -workspaceName {9} -templateBaseUrl {10} -githubUser {11} -rdpPort {12} -sshPort {13} -deploySQL {14} -vmAutologon {15}', parameters('windowsAdminUsername'), parameters('windowsAdminPassword'), parameters('spnTenantId'), parameters('spnAuthority'), subscription().subscriptionId, resourceGroup().name, parameters('acceptEula'), parameters('location'), parameters('stagingStorageAccountName'), parameters('workspaceName'), parameters('templateBaseUrl'), parameters('githubUser'), parameters('rdpPort'), parameters('sshPort'), parameters('deploySQL'), parameters('vmAutologon'))]"
                 }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "name": "[guid(resourceId('Microsoft.Compute/virtualMachines', parameters('vmName')), 'Microsoft.Authorization/roleAssignments', 'Owner')]",
+              "properties": {
+                "principalId": "[reference(resourceId('Microsoft.Compute/virtualMachines', parameters('vmName')), '2022-03-01', 'full').identity.principalId]",
+                "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]"
               },
               "dependsOn": [
                 "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
@@ -496,8 +498,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.26.170.59819",
-              "templateHash": "7237325783497799028"
+              "version": "0.27.1.19265",
+              "templateHash": "10833637123131406395"
             }
           },
           "parameters": {
@@ -575,8 +577,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.26.170.59819",
-              "templateHash": "1106682342427433748"
+              "version": "0.27.1.19265",
+              "templateHash": "4098875167484165766"
             }
           },
           "parameters": {
@@ -960,8 +962,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.26.170.59819",
-              "templateHash": "7320157115012360833"
+              "version": "0.27.1.19265",
+              "templateHash": "6453217578668217148"
             }
           },
           "parameters": {
@@ -4560,8 +4562,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.26.170.59819",
-              "templateHash": "3161118877044017353"
+              "version": "0.27.1.19265",
+              "templateHash": "10382421329053061438"
             }
           },
           "parameters": {
@@ -4746,8 +4748,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.26.170.59819",
-                      "templateHash": "8360470170332663328"
+                      "version": "0.27.1.19265",
+                      "templateHash": "503454139149702494"
                     }
                   },
                   "parameters": {
@@ -4946,8 +4948,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.26.170.59819",
-              "templateHash": "16613582178417144294"
+              "version": "0.27.1.19265",
+              "templateHash": "18373608077015398546"
             }
           },
           "parameters": {
