@@ -92,12 +92,12 @@ if ($inernalSwitch.Name -ne $switchName) {
     Set-VMHost -EnableEnhancedSessionMode $true
 }
 
-Write-Host "Creating VM Credentials"
-# Hard-coded username and password for the nested VMs
+Write-Host "Creating demo VM Credentials"
+# Hard-coded username and password for the nested demo VMs
 $nestedWindowsUsername = "Administrator"
 $nestedWindowsPassword = "ArcDemo123!!"
 
-# Hard-coded username and password for the nested 2012 VM
+# Hard-coded username and password for the nested demo 2012 VM
 $nestedWindows2k12Username = "Administrator"
 $nestedWindows2k12Password = "JS123!!"
 
@@ -266,8 +266,8 @@ $hostfile = Get-Content $file
 $hostfile += "$privateIpAddress $Win2k12vmName"
 Set-Content -Path $file -Value $hostfile -Force
 
-Write-Header "Creating VM Credentials"
-# Hard-coded username and password for the nested VMs
+Write-Header "Creating  demo VM Credentials"
+# Hard-coded username and password for the nested demo VMs
 $nestedLinuxUsername = "arcdemo"
 $nestedLinuxPassword = "ArcDemo123!!"
 
