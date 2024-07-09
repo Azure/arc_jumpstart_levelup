@@ -241,6 +241,8 @@ if ($deploySQL -eq $true) {
 Write-Header "Enabling Guest Integration Service"
 Get-VM | Get-VMIntegrationService | Where-Object { -not($_.Enabled) } | Enable-VMIntegrationService -Verbose
 
+Start-Sleep -seconds 20
+
 # Start all the VMs
 Write-Header "Starting VMs"
 Start-VM -Name $Win2k19vmName
