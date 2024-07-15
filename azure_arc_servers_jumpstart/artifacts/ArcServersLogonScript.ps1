@@ -114,7 +114,7 @@ Write-Host "Creating Hyper-V Shortcut"
 Copy-Item -Path "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Administrative Tools\Hyper-V Manager.lnk" -Destination "C:\Users\All Users\Desktop" -Force
 
 # Configure the ArcBox Hyper-V host to allow the nested VMs onboard as Azure Arc-enabled servers
-<#Write-Header "Blocking IMDS"
+<#Write-Host "Blocking IMDS"
 Write-Output "Configure the ArcBox VM to allow the nested VMs onboard as Azure Arc-enabled servers"
 Set-Service WindowsAzureGuestAgent -StartupType Disabled -Verbose
 Stop-Service WindowsAzureGuestAgent -Force -Verbose
@@ -132,13 +132,13 @@ if (-not $($cliDir.Parent.Attributes.HasFlag([System.IO.FileAttributes]::Hidden)
 $Env:AZURE_CONFIG_DIR = $cliDir.FullName
 
 # Install Azure CLI extensions
-Write-Header "Az CLI extensions"
+Write-Host "Az CLI extensions"
 az extension add --name ssh --yes --only-show-errors
 az extension add --name log-analytics-solution --yes --only-show-errors
 az extension add --name connectedmachine --yes --only-show-errors
 
 # Required for CLI commands
-Write-Header "Az CLI Login"
+Write-Host "Az CLI Login"
 az login --identity
 
 az account set -s $subscriptionId
@@ -146,11 +146,11 @@ az account set -s $subscriptionId
 # Connect to azure using azure powershell
 $null = Connect-AzAccount -Identity -Tenant $spnTenantId
 $null = Select-AzSubscription -SubscriptionId $subscriptionId
-$accessToken = (Get-AzAccessToken).Token
+$accessToken = ConvertFrom-SecureString ((Get-AzAccessToken -AsSecureString).Token) -AsPlainText
 
 Set-AzContext -Subscription $subscriptionId -tenant $spnTenantId
 
-Write-Header "Fetching Nested VMs"
+Write-Host "Fetching Nested VMs"
 
 $Win2k19vmName = "ArcBox-Win2K19"
 $win2k19vmvhdPath = "${Env:ArcBoxVMDir}\${Win2k19vmName}.vhdx"
@@ -188,7 +188,7 @@ if (!([System.IO.File]::Exists($win2k19vmvhdPath) -and [System.IO.File]::Exists(
 }
 
 # Create the nested VMs if not already created
-Write-Header "Create Hyper-V VMs"
+Write-Host "Create Hyper-V VMs"
 
 # Check if VM already exists
 if ((Get-VM -Name $Win2k19vmName -ErrorAction SilentlyContinue).State -ne "Running") {
@@ -238,13 +238,13 @@ if ($deploySQL -eq $true) {
     }
 }
 
-Write-Header "Enabling Guest Integration Service"
+Write-Host "Enabling Guest Integration Service"
 Get-VM | Get-VMIntegrationService | Where-Object { -not($_.Enabled) } | Enable-VMIntegrationService -Verbose
 
 Start-Sleep -seconds 20
 
 # Start all the VMs
-Write-Header "Starting VMs"
+Write-Host "Starting VMs"
 Start-VM -Name $Win2k19vmName
 Start-VM -Name $Win2k22vmName
 Start-VM -Name $Ubuntu01vmName
@@ -268,7 +268,7 @@ $hostfile = Get-Content $file
 $hostfile += "$privateIpAddress $Win2k12vmName"
 Set-Content -Path $file -Value $hostfile -Force
 
-Write-Header "Creating  demo VM Credentials"
+Write-Host "Creating  demo VM Credentials"
 # Hard-coded username and password for the nested demo VMs
 $nestedLinuxUsername = "arcdemo"
 $nestedLinuxPassword = "ArcDemo123!!"
@@ -278,7 +278,7 @@ $secLinuxPassword = ConvertTo-SecureString $nestedLinuxPassword -AsPlainText -Fo
 $linCreds = New-Object System.Management.Automation.PSCredential ($nestedLinuxUsername, $secLinuxPassword)
 
 # Restarting Windows VM Network Adapters
-Write-Header "Restarting Network Adapters"
+Write-Host "Restarting Network Adapters"
 Start-Sleep -Seconds 30
 Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
 Invoke-Command -VMName $Win2k22vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
@@ -323,7 +323,7 @@ Write-Output "Transferring installation script to nested Linux VMs..."
 Set-SCPItem -ComputerName $Ubuntu01VmIp -Credential $linCreds -Destination "/home/$nestedLinuxUsername" -Path "$agentScript\installArcAgentModifiedUbuntu.sh" -Force
 Set-SCPItem -ComputerName $Ubuntu02VmIp -Credential $linCreds -Destination "/home/$nestedLinuxUsername" -Path "$agentScript\installArcAgentModifiedUbuntu.sh" -Force
 
-Write-Header "Onboarding Arc-enabled servers"
+Write-Host "Onboarding Arc-enabled servers"
 
 # Onboarding the nested VMs as Azure Arc-enabled servers
 
@@ -333,7 +333,7 @@ Invoke-Command -VMName $Win2k19vmName -ScriptBlock { powershell -File $Using:nes
 Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { powershell -File $Using:nestedVMArcBoxDir\installArcAgent.ps1 -accessToken $Using:accessToken, -spnTenantId $Using:spnTenantId, -subscriptionId $Using:subscriptionId, -resourceGroup $Using:resourceGroup, -azureLocation $Using:azureLocation } -Credential $win2k12Creds
 
 # Test Defender for Servers
-Write-Header "Simulating threats to generate alerts from Defender for Cloud"
+Write-Host "Simulating threats to generate alerts from Defender for Cloud"
 $remoteScriptFile = "$Env:ArcBoxDir\testDefenderForServers.cmd"
 Copy-VMFile $Win2k19vmName -SourcePath "$agentScript\testDefenderForServers.cmd" -DestinationPath $remoteScriptFile -CreateFullPath -FileSource Host -Force
 Copy-VMFile $Win2k22vmName -SourcePath "$agentScript\testDefenderForServers.cmd" -DestinationPath $remoteScriptFile -CreateFullPath -FileSource Host -Force
@@ -353,7 +353,7 @@ $(Invoke-SSHCommand -SSHSession $ubuntuSession -Command $Command -Timeout 600 -W
 #############################################################
 # Install VSCode extensions
 #############################################################
-Write-Header "Installing VSCode extensions"
+Write-Host "Installing VSCode extensions"
 # Install VSCode extensions
 $VSCodeExtensions = @(
     'ms-vscode.powershell',
@@ -368,19 +368,19 @@ foreach ($extension in $VSCodeExtensions) {
 #############################################################
 # Install PowerShell 7
 #############################################################
-Write-Header "Installing PowerShell 7 on the client VM"
+Write-Host "Installing PowerShell 7 on the client VM"
 
 Start-Process msiexec.exe -ArgumentList "/I $Env:ArcBoxDir\PowerShell-7.4.1-win-x64.msi /quiet"
 
-Write-Header "Installing PowerShell 7 on the ArcBox-Win2K22 machine"
+Write-Host "Installing PowerShell 7 on the ArcBox-Win2K22 machine"
 Copy-VMFile $Win2k22vmName -SourcePath "$Env:ArcBoxDir\PowerShell-7.4.1-win-x64.msi" -DestinationPath "$Env:ArcBoxDir\PowerShell-7.4.1-win-x64.msi" -CreateFullPath -FileSource Host -Force
 Invoke-Command -VMName $Win2k22vmName -ScriptBlock { Start-Process msiexec.exe -ArgumentList "/I C:\ArcBox\PowerShell-7.4.1-win-x64.msi /quiet" } -Credential $winCreds
 
-Write-Header "Installing PowerShell 7 on the ArcBox-Win2K19 machine"
+Write-Host "Installing PowerShell 7 on the ArcBox-Win2K19 machine"
 Copy-VMFile $Win2k19vmName -SourcePath "$Env:ArcBoxDir\PowerShell-7.4.1-win-x64.msi" -DestinationPath "$Env:ArcBoxDir\PowerShell-7.4.1-win-x64.msi" -CreateFullPath -FileSource Host -Force
 Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Start-Process msiexec.exe -ArgumentList "/I C:\ArcBox\PowerShell-7.4.1-win-x64.msi /quiet" } -Credential $winCreds
 
-Write-Header "Installing PowerShell 7 on the nested ArcBox-Ubuntu-01 VM"
+Write-Host "Installing PowerShell 7 on the nested ArcBox-Ubuntu-01 VM"
 $ubuntuSession = New-SSHSession -ComputerName $Ubuntu01VmIp -Credential $linCreds -Force -WarningAction SilentlyContinue
 $Command = "wget https://github.com/PowerShell/PowerShell/releases/download/v7.3.3/powershell_7.3.3-1.deb_amd64.deb;sudo dpkg -i /home/arcdemo/powershell_7.3.3-1.deb_amd64.deb"
 $(Invoke-SSHCommand -SSHSession $ubuntuSession -Command $Command -Timeout 600 -WarningAction SilentlyContinue).Output
@@ -397,13 +397,13 @@ $(Invoke-SSHCommand -SSHSession $ubuntuSession -Command $Command -Timeout 600 -W
 
 
 # Removing the LogonScript Scheduled Task so it won't run on next reboot
-Write-Header "Removing Logon Task"
+Write-Host "Removing Logon Task"
 if ($null -ne (Get-ScheduledTask -TaskName "ArcServersLogonScript" -ErrorAction SilentlyContinue)) {
     Unregister-ScheduledTask -TaskName "ArcServersLogonScript" -Confirm:$false
 }
 
 # Executing the deployment logs bundle PowerShell script in a new window
-Write-Header "Uploading Log Bundle"
+Write-Host "Uploading Log Bundle"
 Invoke-Expression 'cmd /c start Powershell -Command {
 $RandomString = -join ((48..57) + (97..122) | Get-Random -Count 6 | % {[char]$_})
 Write-Host "Sleeping for 5 seconds before creating deployment logs bundle..."
@@ -432,7 +432,7 @@ namespace Win32{
 '@
 
 # Set wallpaper image based on the ArcBox Flavor deployed
-Write-Header "Changing Wallpaper"
+Write-Host "Changing Wallpaper"
 $imgPath = "$Env:ArcBoxDir\wallpaper.png"
 Add-Type $code
 [Win32.Wallpaper]::SetWallpaper($imgPath)

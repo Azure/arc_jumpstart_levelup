@@ -96,7 +96,7 @@ Install-WindowsFeature -Name "DHCP" -IncludeManagementTools
 
 # Installing tools
 Write-Header "Installing Chocolatey Apps"
-$chocolateyAppList = 'azure-cli,az.powershell,vcredist140,microsoft-edge,azcopy10,vscode,git,7zip,putty.install,zoomit,openssl.light'
+$chocolateyAppList = 'powershell-core,azure-cli,az.powershell,vcredist140,microsoft-edge,azcopy10,vscode,git,7zip,putty.install,zoomit,openssl.light'
 
 try {
     choco config get cacheLocation
@@ -194,13 +194,13 @@ if (($rdpPort -ne $null) -and ($rdpPort -ne "") -and ($rdpPort -ne "3389")) {
 Write-Header "Configuring Logon Scripts"
 
 $Trigger = New-ScheduledTaskTrigger -AtLogOn
-$Action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument $Env:ArcBoxDir\ArcServersLogonScript.ps1
+$Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument $Env:ArcBoxDir\ArcServersLogonScript.ps1
 Register-ScheduledTask -TaskName "ArcServersLogonScript" -Trigger $Trigger -User $adminUsername -Action $Action -RunLevel "Highest" -Force
 
 
 # Creating scheduled task for MonitorWorkbookLogonScript.ps1
 $Trigger = New-ScheduledTaskTrigger -AtLogOn
-$Action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument $Env:ArcBoxDir\MonitorWorkbookLogonScript.ps1
+$Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument $Env:ArcBoxDir\MonitorWorkbookLogonScript.ps1
 Register-ScheduledTask -TaskName "MonitorWorkbookLogonScript" -Trigger $Trigger -User $adminUsername -Action $Action -RunLevel "Highest" -Force
 
 # Disabling Windows Server Manager Scheduled Task
