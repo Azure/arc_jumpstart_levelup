@@ -146,7 +146,7 @@ az account set -s $subscriptionId
 # Connect to azure using azure powershell
 $null = Connect-AzAccount -Identity -Tenant $spnTenantId
 $null = Select-AzSubscription -SubscriptionId $subscriptionId
-$accessToken = ConvertFrom-SecureString ((Get-AzAccessToken -AsSecureString).Token) -AsPlainText
+$accessToken = (Get-AzAccessToken).Token
 
 Set-AzContext -Subscription $subscriptionId -tenant $spnTenantId
 
