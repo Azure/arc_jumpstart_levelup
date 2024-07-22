@@ -12,7 +12,7 @@
             "value": "Olivia@12345"
         },
         "logAnalyticsWorkspaceName": {
-            "value": "MyWS1"
+            "value": "MyARCWS1"
         },
         "emailAddress": {
             "value": "basim_majeed@yahoo.co.uk"
