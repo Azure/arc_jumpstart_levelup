@@ -399,16 +399,6 @@ $ubuntuSession = New-SSHSession -ComputerName $Ubuntu01VmIp -Credential $linCred
 $Command = "sudo pwsh -command 'Install-WSMan'"
 $(Invoke-SSHCommand -SSHSession $ubuntuSession -Command $Command -Timeout 600 -WarningAction SilentlyContinue).Output
 
-Install-Module -Name Microsoft.PowerShell.PSResourceGet -Force -Scope AllUsers
-$modules = @("Az", "Az.ConnectedMachine", "Az.ConnectedKubernetes", "Az.CustomLocation", "Azure.Arc.Jumpstart.Common", "Microsoft.PowerShell.SecretManagement", "Posh-SSH", "Pester")
-
-foreach ($module in $modules) {
-
-    Write-Output "Installing module $module"
-
-    Install-PSResource -Name $module -Scope AllUsers -Quiet -AcceptLicense -TrustRepository
-
-}
 #---
 Write-Host "Assigning Data collection rules to Arc-enabled machines"
 $windowsArcMachine = (Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Win2k19vmName).Id
