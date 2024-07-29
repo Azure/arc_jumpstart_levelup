@@ -286,7 +286,10 @@ Write-Host "Restarting Network Adapters"
 Start-Sleep -Seconds 30
 Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
 Invoke-Command -VMName $Win2k22vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
-Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $win2k12Creds
+#Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $win2k12Creds
+$session = New-PSSession -ComputerName $Win2k12vmName -Credential $win2k12Creds
+Invoke-Command -session $session -Script {Get-NetAdapter | Restart-NetAdapter} -AsJob | Receive-Job -Wait
+Exit-PSSession
 if($deploySQL -eq $true){
     Invoke-Command -VMName $SQLvmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
 }
@@ -433,7 +436,7 @@ Write-Host "Installing the dependencyAgent extension on the Arc-enabled windows 
 $dependencyAgentSetting = '{\"enableAMA\":\"true\"}'
 az connectedmachine extension create --name DependencyAgent --publisher Microsoft.Azure.Monitoring.DependencyAgent --type-handler-version 9.10 --type DependencyAgentWindows --machine-name $Win2k19vmName --settings $dependencyAgentSetting --resource-group $resourceGroup --location $azureLocation --enable-auto-upgrade --no-wait
 
-Write-Header "Enabling SSH access to Arc-enabled servers"
+Write-Host "Enabling SSH access to Arc-enabled servers"
 $VMs = @("ArcBox-Ubuntu-01", "ArcBox-Win2K19")
 $VMs | ForEach-Object -Parallel {
     $spnTenantId  =  $Using:spnTenantId
