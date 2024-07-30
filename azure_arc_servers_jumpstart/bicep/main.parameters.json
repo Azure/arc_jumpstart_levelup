@@ -3,19 +3,19 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "spnTenantId": {
-            "value": "4ae0b701-9f0e-47f7-b21d-cda31bac3217"
+            "value": "<your spn tenant id>"
         },
         "windowsAdminUsername": {
             "value": "arcdemo"
         },
         "windowsAdminPassword": {
-            "value": "Olivia@12345"
+            "value": "<your windows admin password>"
         },
         "logAnalyticsWorkspaceName": {
-            "value": "MyARCWS1"
+            "value": "<your unique Log Analytics workspace name>"
         },
         "emailAddress": {
-            "value": "basim_majeed@yahoo.co.uk"
+            "value": "<Your email address for alerts>"
         },
         "deploySQL": {
             "value": false

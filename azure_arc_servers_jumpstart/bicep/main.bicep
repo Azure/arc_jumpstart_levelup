@@ -17,16 +17,16 @@ param vmAutologon bool = true
 param logAnalyticsWorkspaceName string
 
 @description('Target GitHub account')
-param githubAccount string = 'basimolimajeed'
+param githubAccount string = 'Azure'
 
 @description('Target GitHub branch')
-param githubBranch string = 'preconf-1'
+param githubBranch string = 'main'
 
 @description('Choice to deploy Bastion to connect to the client VM')
 param deployBastion bool = false
 
 @description('User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps')
-param githubUser string = 'basimolimajeed'
+param githubUser string = 'microsoft'
 
 @description('Override default RDP port 3389 using this parameter. Default is 3389. No changes will be made to the client VM.')
 param rdpPort string = '3389'
