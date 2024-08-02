@@ -14,8 +14,10 @@ param (
     [string]$rdpPort,
     [string]$sshPort,
     [string]$deploySQL,
-    [string]$vmAutologon
-)
+    [string]$vmAutologon,
+    [string]$changeTrackingDCR,
+    [string]$vmInsightsDCR
+    )
 
 [System.Environment]::SetEnvironmentVariable('adminUsername', $adminUsername, [System.EnvironmentVariableTarget]::Machine)
 #[System.Environment]::SetEnvironmentVariable('adminPassword', $adminPassword, [System.EnvironmentVariableTarget]::Machine)
@@ -34,7 +36,8 @@ param (
 [System.Environment]::SetEnvironmentVariable('automationTriggerAtLogon', $automationTriggerAtLogon, [System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable('deploySQL', $deploySQL, [System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable('ArcBoxDir', "C:\ArcBox", [System.EnvironmentVariableTarget]::Machine)
-
+[System.Environment]::SetEnvironmentVariable('changeTrackingDCR', $changeTrackingDCR, [System.EnvironmentVariableTarget]::Machine)
+[System.Environment]::SetEnvironmentVariable('vmInsightsDCR', $vmInsightsDCR, [System.EnvironmentVariableTarget]::Machine)
 
 # Formatting VMs disk
 $disk = (Get-Disk | Where-Object partitionstyle -eq 'raw')[0]
@@ -86,9 +89,23 @@ Invoke-WebRequest ($templateBaseUrl + "artifacts/PSProfile.ps1") -OutFile $PsHom
 Write-Host "Extending C:\ partition to the maximum size"
 Resize-Partition -DriveLetter C -Size $(Get-PartitionSupportedSize -DriveLetter C).SizeMax
 
+
+
 # Installing Posh-SSH PowerShell Module
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 Install-Module -Name Posh-SSH -Force
+
+Install-Module -Name Microsoft.PowerShell.PSResourceGet -Force -Scope AllUsers
+#$modules = @("Az", "Az.ConnectedMachine", "Az.ConnectedKubernetes", "Az.CustomLocation", "Azure.Arc.Jumpstart.Common", "Microsoft.PowerShell.SecretManagement", "Posh-SSH", "Pester")
+$modules = @("Az", "Az.ConnectedMachine", "Microsoft.PowerShell.SecretManagement", "Posh-SSH", "Pester")
+
+foreach ($module in $modules) {
+
+    Write-Output "Installing module $module"
+
+    Install-PSResource -Name $module -Scope AllUsers -Quiet -AcceptLicense -TrustRepository
+
+}
 
 # Installing DHCP service
 Write-Output "Installing DHCP service"

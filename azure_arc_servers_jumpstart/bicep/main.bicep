@@ -17,7 +17,7 @@ param vmAutologon bool = true
 param logAnalyticsWorkspaceName string
 
 @description('Target GitHub account')
-param githubAccount string = 'azure'
+param githubAccount string = 'Azure'
 
 @description('Target GitHub branch')
 param githubBranch string = 'main'
@@ -61,6 +61,8 @@ module clientVmDeployment 'clientVm/clientVm.bicep' = {
     sshPort: sshPort
     deploySQL: deploySQL
     vmAutologon: vmAutologon
+    changeTrackingDCR: dataCollectionRules.outputs.changeTrackingDCR
+    vmInsightsDCR: dataCollectionRules.outputs.vmInsightsDCR
   }
 }
 

@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.28.1.47646",
-      "templateHash": "340400677552364799"
+      "version": "0.29.45.22436",
+      "templateHash": "8001514879944090537"
     }
   },
   "parameters": {
@@ -44,7 +44,7 @@
     },
     "githubAccount": {
       "type": "string",
-      "defaultValue": "azure",
+      "defaultValue": "Azure",
       "metadata": {
         "description": "Target GitHub account"
       }
@@ -157,6 +157,12 @@
           },
           "vmAutologon": {
             "value": "[parameters('vmAutologon')]"
+          },
+          "changeTrackingDCR": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'dataCollectionRules'), '2022-09-01').outputs.changeTrackingDCR.value]"
+          },
+          "vmInsightsDCR": {
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'dataCollectionRules'), '2022-09-01').outputs.vmInsightsDCR.value]"
           }
         },
         "template": {
@@ -165,8 +171,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.28.1.47646",
-              "templateHash": "16150175137764108067"
+              "version": "0.29.45.22436",
+              "templateHash": "12149836631585015228"
             }
           },
           "parameters": {
@@ -296,6 +302,20 @@
               "defaultValue": "Premium_LRS",
               "metadata": {
                 "description": "The SKU of the VMs disk"
+              }
+            },
+            "changeTrackingDCR": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "ChangeTracking DCR Id"
+              }
+            },
+            "vmInsightsDCR": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "VMInsights DCR Id"
               }
             }
           },
@@ -441,7 +461,7 @@
                   "fileUris": [
                     "[uri(parameters('templateBaseUrl'), 'artifacts/Bootstrap.ps1')]"
                   ],
-                  "commandToExecute": "[format('powershell.exe -ExecutionPolicy Bypass -File Bootstrap.ps1 -adminUsername {0} -adminPassword {1} -spnTenantId {2} -spnAuthority {3} -subscriptionId {4} -resourceGroup {5} -acceptEula {6} -azureLocation {7} -stagingStorageAccountName {8} -workspaceName {9} -templateBaseUrl {10} -githubUser {11} -rdpPort {12} -sshPort {13} -deploySQL {14} -vmAutologon {15}', parameters('windowsAdminUsername'), parameters('windowsAdminPassword'), parameters('spnTenantId'), parameters('spnAuthority'), subscription().subscriptionId, resourceGroup().name, parameters('acceptEula'), parameters('location'), parameters('stagingStorageAccountName'), parameters('workspaceName'), parameters('templateBaseUrl'), parameters('githubUser'), parameters('rdpPort'), parameters('sshPort'), parameters('deploySQL'), parameters('vmAutologon'))]"
+                  "commandToExecute": "[format('powershell.exe -ExecutionPolicy Bypass -File Bootstrap.ps1 -adminUsername {0} -adminPassword {1} -spnTenantId {2} -spnAuthority {3} -subscriptionId {4} -resourceGroup {5} -acceptEula {6} -azureLocation {7} -stagingStorageAccountName {8} -workspaceName {9} -templateBaseUrl {10} -githubUser {11} -rdpPort {12} -sshPort {13} -deploySQL {14} -vmAutologon {15} -changeTrackingDCR {16} -vmInsightsDCR {17}', parameters('windowsAdminUsername'), parameters('windowsAdminPassword'), parameters('spnTenantId'), parameters('spnAuthority'), subscription().subscriptionId, resourceGroup().name, parameters('acceptEula'), parameters('location'), parameters('stagingStorageAccountName'), parameters('workspaceName'), parameters('templateBaseUrl'), parameters('githubUser'), parameters('rdpPort'), parameters('sshPort'), parameters('deploySQL'), parameters('vmAutologon'), parameters('changeTrackingDCR'), parameters('vmInsightsDCR'))]"
                 }
               },
               "dependsOn": [
@@ -474,6 +494,7 @@
         }
       },
       "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'dataCollectionRules')]",
         "[resourceId('Microsoft.Resources/deployments', 'mgmtArtifactsAndPolicyDeployment')]",
         "[resourceId('Microsoft.Resources/deployments', 'stagingStorageAccountDeployment')]"
       ]
@@ -498,8 +519,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.28.1.47646",
-              "templateHash": "13398955536480108720"
+              "version": "0.29.45.22436",
+              "templateHash": "2116950964862569561"
             }
           },
           "parameters": {
@@ -577,8 +598,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.28.1.47646",
-              "templateHash": "13563973020892248488"
+              "version": "0.29.45.22436",
+              "templateHash": "5826932517043793929"
             }
           },
           "parameters": {
@@ -962,8 +983,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.28.1.47646",
-              "templateHash": "3605065425905209050"
+              "version": "0.29.45.22436",
+              "templateHash": "15867469898113118884"
             }
           },
           "parameters": {
@@ -4562,8 +4583,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.28.1.47646",
-              "templateHash": "17743936220571113000"
+              "version": "0.29.45.22436",
+              "templateHash": "1215504639141915793"
             }
           },
           "parameters": {
@@ -4748,8 +4769,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.28.1.47646",
-                      "templateHash": "7275846626047831721"
+                      "version": "0.29.45.22436",
+                      "templateHash": "7692811822009235360"
                     }
                   },
                   "parameters": {
@@ -4948,8 +4969,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.28.1.47646",
-              "templateHash": "10152510443540251919"
+              "version": "0.29.45.22436",
+              "templateHash": "1491315408348275724"
             }
           },
           "parameters": {
@@ -5329,6 +5350,10 @@
             "changeTrackingDCR": {
               "type": "string",
               "value": "[resourceId('Microsoft.Insights/dataCollectionRules', parameters('dataCollectionRuleNameCt'))]"
+            },
+            "vmInsightsDCR": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Insights/dataCollectionRules', parameters('dataCollectionRuleNameVMI'))]"
             }
           }
         }

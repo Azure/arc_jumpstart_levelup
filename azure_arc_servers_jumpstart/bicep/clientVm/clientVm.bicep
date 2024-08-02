@@ -60,6 +60,12 @@ param deploySQL bool = false
 @description('The SKU of the VMs disk')
 param vmsDiskSku string = 'Premium_LRS'
 
+@description('ChangeTracking DCR Id')
+param changeTrackingDCR string = ''
+
+@description('VMInsights DCR Id')
+param vmInsightsDCR string = ''
+
 var bastionName = 'ArcBox-Bastion'
 var publicIpAddressName = deployBastion == false ? '${vmName}-PIP' : '${bastionName}-PIP'
 var networkInterfaceName = '${vmName}-NIC'
@@ -187,7 +193,7 @@ resource vmBootstrap 'Microsoft.Compute/virtualMachines/extensions@2022-03-01' =
       fileUris: [
         uri(templateBaseUrl, 'artifacts/Bootstrap.ps1')
       ]
-      commandToExecute: 'powershell.exe -ExecutionPolicy Bypass -File Bootstrap.ps1 -adminUsername ${windowsAdminUsername} -adminPassword ${windowsAdminPassword} -spnTenantId ${spnTenantId} -spnAuthority ${spnAuthority} -subscriptionId ${subscription().subscriptionId} -resourceGroup ${resourceGroup().name} -acceptEula ${acceptEula} -azureLocation ${location} -stagingStorageAccountName ${stagingStorageAccountName} -workspaceName ${workspaceName} -templateBaseUrl ${templateBaseUrl} -githubUser ${githubUser} -rdpPort ${rdpPort} -sshPort ${sshPort} -deploySQL ${deploySQL} -vmAutologon ${vmAutologon}'
+      commandToExecute: 'powershell.exe -ExecutionPolicy Bypass -File Bootstrap.ps1 -adminUsername ${windowsAdminUsername} -adminPassword ${windowsAdminPassword} -spnTenantId ${spnTenantId} -spnAuthority ${spnAuthority} -subscriptionId ${subscription().subscriptionId} -resourceGroup ${resourceGroup().name} -acceptEula ${acceptEula} -azureLocation ${location} -stagingStorageAccountName ${stagingStorageAccountName} -workspaceName ${workspaceName} -templateBaseUrl ${templateBaseUrl} -githubUser ${githubUser} -rdpPort ${rdpPort} -sshPort ${sshPort} -deploySQL ${deploySQL} -vmAutologon ${vmAutologon} -changeTrackingDCR ${changeTrackingDCR} -vmInsightsDCR ${vmInsightsDCR}'
     }
   }
 }
