@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.29.47.4906",
-      "templateHash": "1410225957458766359"
+      "templateHash": "6761565342765105757"
     }
   },
   "parameters": {
@@ -599,7 +599,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.29.47.4906",
-              "templateHash": "7246571661375969764"
+              "templateHash": "2085767812996027554"
             }
           },
           "parameters": {
@@ -864,6 +864,7 @@
               "apiVersion": "2024-03-01",
               "scope": "[format('Microsoft.OperationalInsights/workspaces/{0}', parameters('workspaceName'))]",
               "name": "Default",
+              "properties": {},
               "dependsOn": [
                 "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspaceName'))]"
               ]
