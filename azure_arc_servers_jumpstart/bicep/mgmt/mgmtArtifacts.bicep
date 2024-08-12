@@ -213,7 +213,7 @@ resource workspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' = {
 }
 
 resource sentinel 'Microsoft.SecurityInsights/onboardingStates@2024-03-01' = {
-  name: 'Default'
+  name: 'default'
   scope: workspace
   properties: {}
 }
