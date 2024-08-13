@@ -16,7 +16,7 @@ $changeTrackingDCR = $env:changeTrackingDCR
 $vmInsightsDCR = $env:vmInsightsDCR
 
 # Moved VHD storage account details here to keep only in place to prevent duplicates.
-$vhdSourceFolder = "https://jumpstartprodsg.blob.core.windows.net/arcbox/*"
+$vhdSourceFolder = "https://jumpstartprodsg.blob.core.windows.net/arcbox/prod/*"
 $vhdSourceFolderESU = "https://jumpstartprodsg.blob.core.windows.net/scenarios/prod/*"
 
 # Archive exising log file and crate new one
