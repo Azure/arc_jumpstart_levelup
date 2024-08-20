@@ -266,7 +266,7 @@ Set-Content -Path $file -Value $hostfile -Force
 
 Write-Host "Creating  demo VM Credentials"
 # Hard-coded username and password for the nested demo VMs
-$nestedLinuxUsername = "arcdemo"
+$nestedLinuxUsername = "jumpstart"
 $nestedLinuxPassword = "JS123!!"
 
 # Create Linux credential object
