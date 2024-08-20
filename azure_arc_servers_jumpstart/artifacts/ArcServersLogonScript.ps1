@@ -98,11 +98,7 @@ if ($inernalSwitch.Name -ne $switchName) {
 Write-Host "Creating demo VM Credentials"
 # Hard-coded username and password for the nested demo VMs
 $nestedWindowsUsername = "Administrator"
-$nestedWindowsPassword = "ArcDemo123!!"
-
-# Hard-coded username and password for the nested demo 2012 VM
-$nestedWindows2k12Username = "Administrator"
-$nestedWindows2k12Password = "JS123!!"
+$nestedWindowsPassword = "JS123!!"
 
 # Create Windows credential object
 $secWindowsPassword = ConvertTo-SecureString $nestedWindowsPassword -AsPlainText -Force
@@ -110,7 +106,7 @@ $winCreds = New-Object System.Management.Automation.PSCredential ($nestedWindows
 
 # Create Windows credential object for 2012
 $secWindows2k12Password = ConvertTo-SecureString $nestedWindows2k12Password -AsPlainText -Force
-$win2k12Creds = New-Object System.Management.Automation.PSCredential ($nestedWindows2k12Username, $secWindows2k12Password)
+$win2k12Creds = New-Object System.Management.Automation.PSCredential ($nestedWindowsUsername, $secWindowsPassword)
 
 # Creating Hyper-V Manager desktop shortcut
 Write-Host "Creating Hyper-V Shortcut"
@@ -275,7 +271,7 @@ Set-Content -Path $file -Value $hostfile -Force
 Write-Host "Creating  demo VM Credentials"
 # Hard-coded username and password for the nested demo VMs
 $nestedLinuxUsername = "arcdemo"
-$nestedLinuxPassword = "ArcDemo123!!"
+$nestedLinuxPassword = "JS123!!"
 
 # Create Linux credential object
 $secLinuxPassword = ConvertTo-SecureString $nestedLinuxPassword -AsPlainText -Force
