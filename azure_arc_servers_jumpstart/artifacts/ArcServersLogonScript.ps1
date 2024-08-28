@@ -10,7 +10,6 @@ $spnTenantId = $env:spnTenantId
 $subscriptionId = $env:subscriptionId
 $azureLocation = $env:azureLocation
 $resourceGroup = $env:resourceGroup
-$deploySQL = $env:deploySQL
 
 $changeTrackingDCR = $env:changeTrackingDCR
 $vmInsightsDCR = $env:vmInsightsDCR
@@ -181,13 +180,7 @@ if (!([System.IO.File]::Exists($win2k19vmvhdPath) -and [System.IO.File]::Exists(
     $Env:AZCOPY_BUFFER_GB = 4
     # Other ArcBox flavors does not have an azcopy network throughput capping
     Write-Output "Downloading nested VMs VHDX files. This can take some time, hold tight..."
-
-    if ($deploySQL -eq $true) {
-        azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;${SQLvmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR --check-md5 NoCheck
-    }
-    else {
-        azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR --check-md5 NoCheck
-    }
+    azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;${SQLvmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR --check-md5 NoCheck
     azcopy cp $vhdSourceFolderESU $Env:ArcBoxVMDir --include-pattern "${Win2k12vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR --check-md5 NoCheck
 }
 
@@ -233,13 +226,12 @@ if ((Get-VM -Name $Ubuntu02vmName -ErrorAction SilentlyContinue).State -ne "Runn
     Set-VM -Name $Ubuntu02vmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
 }
 
-if ($deploySQL -eq $true) {
-    if ((Get-VM -Name $SQLvmName -ErrorAction SilentlyContinue).State -ne "Running") {
-        Remove-VM -Name $SQLvmName -Force -ErrorAction SilentlyContinue
-        New-VM -Name $SQLvmName -MemoryStartupBytes 10GB -BootDevice VHD -VHDPath $SQLvmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
-        Set-VMProcessor -VMName $SQLvmName -Count 2
-        Set-VM -Name $SQLvmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
-    }
+
+if ((Get-VM -Name $SQLvmName -ErrorAction SilentlyContinue).State -ne "Running") {
+    Remove-VM -Name $SQLvmName -Force -ErrorAction SilentlyContinue
+    New-VM -Name $SQLvmName -MemoryStartupBytes 10GB -BootDevice VHD -VHDPath $SQLvmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
+    Set-VMProcessor -VMName $SQLvmName -Count 2
+    Set-VM -Name $SQLvmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
 }
 
 Write-Host "Enabling Guest Integration Service"
@@ -254,9 +246,8 @@ Start-VM -Name $Win2k22vmName
 Start-VM -Name $Ubuntu01vmName
 Start-VM -Name $Ubuntu02vmName
 Start-VM -Name $Win2k12MachineName
-if ($deploySQL -eq $true) {
-    Start-VM -Name $SQLvmName
-}
+Start-VM -Name $SQLvmName
+
 
 Start-Sleep -seconds 30
 
@@ -289,9 +280,8 @@ Invoke-Command -VMName $Win2k22vmName -ScriptBlock { Get-NetAdapter | Restart-Ne
 $session = New-PSSession -ComputerName $Win2k12vmName -Credential $win2k12Creds
 Invoke-Command -session $session -Script {Get-NetAdapter | Restart-NetAdapter} -AsJob | Receive-Job -Wait
 Exit-PSSession
-if($deploySQL -eq $true){
-    Invoke-Command -VMName $SQLvmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
-}
+Invoke-Command -VMName $SQLvmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
+
 Start-Sleep -Seconds 10
 
 # Renaming 2012 machine
@@ -308,21 +298,18 @@ Write-Output "Transferring installation script to nested Windows VMs..."
 Copy-VMFile $Win2k19vmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
 Copy-VMFile $Win2k22vmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
 Copy-VMFile $Win2k12MachineName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
-if($deploySQL -eq $true){
-    Copy-VMFile $SQLvmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
-    Copy-VMFile $SQLvmName -SourcePath "$agentScript\testDefenderForSQL.ps1" -DestinationPath "$Env:ArcBoxDir\testDefenderForSQL.ps1" -CreateFullPath -FileSource Host -Force
-    Copy-VMFile $SQLvmName -SourcePath "$agentScript\SqlAdvancedThreatProtectionShell.psm1" -DestinationPath "$Env:ArcBoxDir\SqlAdvancedThreatProtectionShell.psm1" -CreateFullPath -FileSource Host -Force
-}
+
+Copy-VMFile $SQLvmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
+Copy-VMFile $SQLvmName -SourcePath "$agentScript\testDefenderForSQL.ps1" -DestinationPath "$Env:ArcBoxDir\testDefenderForSQL.ps1" -CreateFullPath -FileSource Host -Force
+Copy-VMFile $SQLvmName -SourcePath "$agentScript\SqlAdvancedThreatProtectionShell.psm1" -DestinationPath "$Env:ArcBoxDir\SqlAdvancedThreatProtectionShell.psm1" -CreateFullPath -FileSource Host -Force
 
 (Get-Content -path "$agentScript\installArcAgentUbuntu.sh" -Raw) -replace '\$accessToken', "'$accessToken'" -replace '\$resourceGroup', "'$Env:resourceGroup'" -replace '\$spnTenantId', "'$Env:spnTenantId'" -replace '\$azureLocation', "'$Env:azureLocation'" -replace '\$subscriptionId', "'$Env:subscriptionId'" | Set-Content -Path "$agentScript\installArcAgentModifiedUbuntu.sh"
 
 # Download and restore AdventureWorks Database to SQLvm
-if($deploySQL -eq $true){
 Write-Host "Restoring AdventureWorks database"
 Copy-VMFile $SQLvmName -SourcePath "$Env:ArcBoxDir\AdventureWorksLT2019.bak" -DestinationPath "$Env:ArcBoxDir\AdventureWorksLT2019.bak" -CreateFullPath -FileSource Host -Force
 Start-Sleep -Seconds 3
 Invoke-Command -VMName $SQLvmName -ScriptBlock {Restore-SqlDatabase -ServerInstance $Env:COMPUTERNAME -Database "AdventureWorksLT2019" -BackupFile C:\ArcBox\AdventureWorksLT2019.bak -PassThru -Verbose} -Credential $winCreds
-}
 
 # Copy installation script to nested Linux VMs
 Write-Output "Transferring installation script to nested Linux VMs..."

@@ -16,9 +16,6 @@
         },
         "emailAddress": {
             "value": "<Your email address for alerts>"
-        },
-        "deploySQL": {
-            "value": false
         }
     }
 }
