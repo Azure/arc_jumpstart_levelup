@@ -410,12 +410,21 @@ az connectedmachine assess-patches --resource-group $resourceGroup --name $Win2k
 az connectedmachine assess-patches --resource-group $resourceGroup --name $Ubuntu01vmName --no-wait
 
 Write-Host "Installing the AdminCenter extension on the Arc-enabled windows machine"
-$Setting = '{\"port\":\"6516\"}'
-az connectedmachine extension create --name AdminCenter --publisher Microsoft.AdminCenter --type AdminCenter --machine-name $Win2k19vmName --resource-group $resourceGroup --location $azureLocation --settings $Setting --enable-auto-upgrade --no-wait
+#$Setting = '{\"port\":\"6516\"}'
+#az connectedmachine extension create --name AdminCenter --publisher Microsoft.AdminCenter --type AdminCenter --machine-name $Win2k19vmName --resource-group $resourceGroup --location $azureLocation --settings $Setting --enable-auto-upgrade --no-wait
+#$putPayload = "{'properties': {'type': 'default'}}"
+#Invoke-AzRestMethod -Method PUT -Uri "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.HybridConnectivity/endpoints/default?api-version=2023-03-15" -Payload $putPayload
+#$patch = @{ "properties" =  @{ "serviceName" = "WAC"; "port" = 6516}}
+#$patchPayload = ConvertTo-Json $patch
+#Invoke-AzRestMethod -Method PUT -Path "/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/WAC?api-version=2023-03-15" -Payload $patchPayload
+$port = "6516"
+$portint = 6516
+$Setting = @{"port" = $port} 
+New-AzConnectedMachineExtension -Name "AdminCenter" -ResourceGroupName $resourceGroup -MachineName $Win2k19vmName -Location $azureLocation -Publisher "Microsoft.AdminCenter" -Settings $Setting -ExtensionType "AdminCenter" -EnableAutomaticUpgrade -NoWait
 $putPayload = "{'properties': {'type': 'default'}}"
 Invoke-AzRestMethod -Method PUT -Uri "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.HybridConnectivity/endpoints/default?api-version=2023-03-15" -Payload $putPayload
-$patch = @{ "properties" =  @{ "serviceName" = "WAC"; "port" = 6516}}
-$patchPayload = ConvertTo-Json $patch
+$patch = @{ "properties" =  @{ "serviceName" = "WAC"; "port" = $portint}} 
+$patchPayload = ConvertTo-Json $patch 
 Invoke-AzRestMethod -Method PUT -Path /subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/WAC?api-version=2023-03-15 -Payload $patchPayload
 
 Write-Host "Installing the dependencyAgent extension on the Arc-enabled windows machine"
