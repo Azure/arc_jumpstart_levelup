@@ -331,10 +331,10 @@ $remoteScriptFile = "$Env:ArcBoxDir\testDefenderForServers.cmd"
 Copy-VMFile $Win2k19vmName -SourcePath "$agentScript\testDefenderForServers.cmd" -DestinationPath $remoteScriptFile -CreateFullPath -FileSource Host -Force
 Copy-VMFile $Win2k22vmName -SourcePath "$agentScript\testDefenderForServers.cmd" -DestinationPath $remoteScriptFile -CreateFullPath -FileSource Host -Force
 
-$cmdExePath = "C:\Windows\System32\cmd.exe"
-$cmdArguments = "/C `"$remoteScriptFile`""
+# $cmdExePath = "C:\Windows\System32\cmd.exe"
+# $cmdArguments = "/C `"$remoteScriptFile`""
 
-Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Start-Process -FilePath $Using:cmdExePath -ArgumentList $Using:cmdArguments } -Credential $winCreds
+# Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Start-Process -FilePath $Using:cmdExePath -ArgumentList $Using:cmdArguments } -Credential $winCreds
 
 Write-Output "Onboarding the nested Linux VMs as an Azure Arc-enabled servers"
 $ubuntuSession = New-SSHSession -ComputerName $Ubuntu01VmIp -Credential $linCreds -Force -WarningAction SilentlyContinue
@@ -410,7 +410,8 @@ az connectedmachine assess-patches --resource-group $resourceGroup --name $Win2k
 az connectedmachine assess-patches --resource-group $resourceGroup --name $Ubuntu01vmName --no-wait
 
 # Write-Host "Installing the AdminCenter extension on the Arc-enabled windows machine"
-# $Setting = "{'port':'6516'}"
+## $Setting = "{'port':'6516'}"
+#$Setting = '{\"port\":\"6516\"}'
 # az connectedmachine extension create --name AdminCenter --publisher Microsoft.AdminCenter --type AdminCenter --machine-name $Win2k19vmName --resource-group $resourceGroup --location $azureLocation --settings $Setting --enable-auto-upgrade --no-wait
 # $putPayload = "{'properties': {'type': 'default'}}"
 # Invoke-AzRestMethod -Method PUT -Uri "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.HybridConnectivity/endpoints/default?api-version=2023-03-15" -Payload $putPayload
