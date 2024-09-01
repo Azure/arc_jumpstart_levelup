@@ -420,7 +420,7 @@ az connectedmachine assess-patches --resource-group $resourceGroup --name $Ubunt
 $port = "6516"
 $portint = 6516
 $Setting = @{"port" = $port} 
-New-AzConnectedMachineExtension -Name "AdminCenter" -ResourceGroupName $resourceGroup -MachineName $Win2k19vmName -Location $azureLocation -Publisher "Microsoft.AdminCenter" -Settings $Setting -ExtensionType "AdminCenter" -EnableAutomaticUpgrade -NoWait
+New-AzConnectedMachineExtension -Name "AdminCenter" -ResourceGroupName $resourceGroup -MachineName $Win2k19vmName -Location $azureLocation -Publisher "Microsoft.AdminCenter" -Settings $Setting -ExtensionType "AdminCenter" -EnableAutomaticUpgrade
 $putPayload = "{'properties': {'type': 'default'}}"
 Invoke-AzRestMethod -Method PUT -Uri "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.HybridConnectivity/endpoints/default?api-version=2023-03-15" -Payload $putPayload
 $patch = @{ "properties" =  @{ "serviceName" = "WAC"; "port" = $portint}} 
