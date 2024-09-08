@@ -15,7 +15,7 @@ $changeTrackingDCR = $env:changeTrackingDCR
 $vmInsightsDCR = $env:vmInsightsDCR
 
 # Moved VHD storage account details here to keep only in place to prevent duplicates.
-$vhdSourceFolder = "https://jumpstartprodsg.blob.core.windows.net/arcbox/*"
+$vhdSourceFolder = "https://jumpstartprodsg.blob.core.windows.net/arcbox/prod/*"
 $vhdSourceFolderESU = "https://jumpstartprodsg.blob.core.windows.net/scenarios/prod/*"
 
 # Archive exising log file and crate new one
@@ -97,7 +97,7 @@ if ($inernalSwitch.Name -ne $switchName) {
 Write-Host "Creating demo VM Credentials"
 # Hard-coded username and password for the nested demo VMs
 $nestedWindowsUsername = "Administrator"
-$nestedWindowsPassword = "ArcDemo123!!"
+$nestedWindowsPassword = "JS123!!"
 
 # Hard-coded username and password for the nested demo 2012 VM
 $nestedWindows2k12Username = "Administrator"
@@ -265,8 +265,8 @@ Set-Content -Path $file -Value $hostfile -Force
 
 Write-Host "Creating  demo VM Credentials"
 # Hard-coded username and password for the nested demo VMs
-$nestedLinuxUsername = "arcdemo"
-$nestedLinuxPassword = "ArcDemo123!!"
+$nestedLinuxUsername = "jumpstart"
+$nestedLinuxPassword = "JS123!!"
 
 # Create Linux credential object
 $secLinuxPassword = ConvertTo-SecureString $nestedLinuxPassword -AsPlainText -Force
