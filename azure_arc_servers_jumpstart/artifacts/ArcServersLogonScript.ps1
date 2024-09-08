@@ -375,7 +375,7 @@ Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Start-Process msiexec.exe -
 
 Write-Host "Installing PowerShell 7 on the nested ArcBox-Ubuntu-01 VM"
 $ubuntuSession = New-SSHSession -ComputerName $Ubuntu01VmIp -Credential $linCreds -Force -WarningAction SilentlyContinue
-$Command = "wget https://github.com/PowerShell/PowerShell/releases/download/v7.3.3/powershell_7.3.3-1.deb_amd64.deb;sudo dpkg -i /home/arcdemo/powershell_7.3.3-1.deb_amd64.deb"
+$Command = "wget https://github.com/PowerShell/PowerShell/releases/download/v7.3.3/powershell_7.3.3-1.deb_amd64.deb;sudo dpkg -i /home/jumpstart/powershell_7.3.3-1.deb_amd64.deb"
 $(Invoke-SSHCommand -SSHSession $ubuntuSession -Command $Command -Timeout 600 -WarningAction SilentlyContinue).Output
 
 Write-Host "Installing PSWSMan on the Linux VM"
