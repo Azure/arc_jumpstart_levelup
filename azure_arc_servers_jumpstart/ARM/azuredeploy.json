@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.29.47.4906",
-      "templateHash": "6761565342765105757"
+      "templateHash": "387826031415377396"
     }
   },
   "parameters": {
@@ -93,13 +93,6 @@
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]"
-    },
-    "deploySQL": {
-      "type": "bool",
-      "defaultValue": false,
-      "metadata": {
-        "description": "Option to deploy Arc-enabled SQL scenarios."
-      }
     }
   },
   "variables": {
@@ -152,9 +145,6 @@
           "sshPort": {
             "value": "[parameters('sshPort')]"
           },
-          "deploySQL": {
-            "value": "[parameters('deploySQL')]"
-          },
           "vmAutologon": {
             "value": "[parameters('vmAutologon')]"
           },
@@ -172,7 +162,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.29.47.4906",
-              "templateHash": "4050004258877873945"
+              "templateHash": "12608631978629161702"
             }
           },
           "parameters": {
@@ -288,13 +278,6 @@
               "defaultValue": "22",
               "metadata": {
                 "description": "Override default SSH port 22 using this parameter. Default is 22. No changes will be made to the client VM."
-              }
-            },
-            "deploySQL": {
-              "type": "bool",
-              "defaultValue": false,
-              "metadata": {
-                "description": "Option to deploy Arc-enabled SQL scenarios."
               }
             },
             "vmsDiskSku": {
@@ -461,7 +444,7 @@
                   "fileUris": [
                     "[uri(parameters('templateBaseUrl'), 'artifacts/Bootstrap.ps1')]"
                   ],
-                  "commandToExecute": "[format('powershell.exe -ExecutionPolicy Bypass -File Bootstrap.ps1 -adminUsername {0} -adminPassword {1} -spnTenantId {2} -spnAuthority {3} -subscriptionId {4} -resourceGroup {5} -acceptEula {6} -azureLocation {7} -stagingStorageAccountName {8} -workspaceName {9} -templateBaseUrl {10} -githubUser {11} -rdpPort {12} -sshPort {13} -deploySQL {14} -vmAutologon {15} -changeTrackingDCR {16} -vmInsightsDCR {17}', parameters('windowsAdminUsername'), parameters('windowsAdminPassword'), parameters('spnTenantId'), parameters('spnAuthority'), subscription().subscriptionId, resourceGroup().name, parameters('acceptEula'), parameters('location'), parameters('stagingStorageAccountName'), parameters('workspaceName'), parameters('templateBaseUrl'), parameters('githubUser'), parameters('rdpPort'), parameters('sshPort'), parameters('deploySQL'), parameters('vmAutologon'), parameters('changeTrackingDCR'), parameters('vmInsightsDCR'))]"
+                  "commandToExecute": "[format('powershell.exe -ExecutionPolicy Bypass -File Bootstrap.ps1 -adminUsername {0} -adminPassword {1} -spnTenantId {2} -spnAuthority {3} -subscriptionId {4} -resourceGroup {5} -acceptEula {6} -azureLocation {7} -stagingStorageAccountName {8} -workspaceName {9} -templateBaseUrl {10} -githubUser {11} -rdpPort {12} -sshPort {13} -vmAutologon {14} -changeTrackingDCR {15} -vmInsightsDCR {16}', parameters('windowsAdminUsername'), parameters('windowsAdminPassword'), parameters('spnTenantId'), parameters('spnAuthority'), subscription().subscriptionId, resourceGroup().name, parameters('acceptEula'), parameters('location'), parameters('stagingStorageAccountName'), parameters('workspaceName'), parameters('templateBaseUrl'), parameters('githubUser'), parameters('rdpPort'), parameters('sshPort'), parameters('vmAutologon'), parameters('changeTrackingDCR'), parameters('vmInsightsDCR'))]"
                 }
               },
               "dependsOn": [

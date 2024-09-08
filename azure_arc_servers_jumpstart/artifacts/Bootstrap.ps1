@@ -13,7 +13,6 @@ param (
     [string]$templateBaseUrl,
     [string]$rdpPort,
     [string]$sshPort,
-    [string]$deploySQL,
     [string]$vmAutologon,
     [string]$changeTrackingDCR,
     [string]$vmInsightsDCR
@@ -34,7 +33,6 @@ param (
 [System.Environment]::SetEnvironmentVariable('githubUser', $githubUser, [System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable('templateBaseUrl', $templateBaseUrl, [System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable('automationTriggerAtLogon', $automationTriggerAtLogon, [System.EnvironmentVariableTarget]::Machine)
-[System.Environment]::SetEnvironmentVariable('deploySQL', $deploySQL, [System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable('ArcBoxDir', "C:\ArcBox", [System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable('changeTrackingDCR', $changeTrackingDCR, [System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable('vmInsightsDCR', $vmInsightsDCR, [System.EnvironmentVariableTarget]::Machine)

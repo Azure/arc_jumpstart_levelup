@@ -54,9 +54,6 @@ param rdpPort string = '3389'
 @description('Override default SSH port 22 using this parameter. Default is 22. No changes will be made to the client VM.')
 param sshPort string = '22'
 
-@description('Option to deploy Arc-enabled SQL scenarios.')
-param deploySQL bool = false
-
 @description('The SKU of the VMs disk')
 param vmsDiskSku string = 'Premium_LRS'
 
@@ -193,7 +190,7 @@ resource vmBootstrap 'Microsoft.Compute/virtualMachines/extensions@2022-03-01' =
       fileUris: [
         uri(templateBaseUrl, 'artifacts/Bootstrap.ps1')
       ]
-      commandToExecute: 'powershell.exe -ExecutionPolicy Bypass -File Bootstrap.ps1 -adminUsername ${windowsAdminUsername} -adminPassword ${windowsAdminPassword} -spnTenantId ${spnTenantId} -spnAuthority ${spnAuthority} -subscriptionId ${subscription().subscriptionId} -resourceGroup ${resourceGroup().name} -acceptEula ${acceptEula} -azureLocation ${location} -stagingStorageAccountName ${stagingStorageAccountName} -workspaceName ${workspaceName} -templateBaseUrl ${templateBaseUrl} -githubUser ${githubUser} -rdpPort ${rdpPort} -sshPort ${sshPort} -deploySQL ${deploySQL} -vmAutologon ${vmAutologon} -changeTrackingDCR ${changeTrackingDCR} -vmInsightsDCR ${vmInsightsDCR}'
+      commandToExecute: 'powershell.exe -ExecutionPolicy Bypass -File Bootstrap.ps1 -adminUsername ${windowsAdminUsername} -adminPassword ${windowsAdminPassword} -spnTenantId ${spnTenantId} -spnAuthority ${spnAuthority} -subscriptionId ${subscription().subscriptionId} -resourceGroup ${resourceGroup().name} -acceptEula ${acceptEula} -azureLocation ${location} -stagingStorageAccountName ${stagingStorageAccountName} -workspaceName ${workspaceName} -templateBaseUrl ${templateBaseUrl} -githubUser ${githubUser} -rdpPort ${rdpPort} -sshPort ${sshPort} -vmAutologon ${vmAutologon} -changeTrackingDCR ${changeTrackingDCR} -vmInsightsDCR ${vmInsightsDCR}'
     }
   }
 }

@@ -98,13 +98,6 @@
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]"
-    },
-    "deploySQL": {
-      "type": "bool",
-      "defaultValue": false,
-      "metadata": {
-        "description": "Option to deploy Arc-enabled SQL scenarios."
-      }
     }
   },
   "variables": {
@@ -162,9 +155,6 @@
           },
           "sshPort": {
             "value": "[parameters('sshPort')]"
-          },
-          "deploySQL": {
-            "value": "[parameters('deploySQL')]"
           }
         },
         "template": {
@@ -296,13 +286,6 @@
               "metadata": {
                 "description": "Override default SSH port 22 using this parameter. Default is 22. No changes will be made to the client VM."
               }
-            },
-            "deploySQL": {
-              "type": "bool",
-              "defaultValue": false,
-              "metadata": {
-                "description": "Option to deploy Arc-enabled SQL scenarios."
-              }
             }
           },
           "variables": {
@@ -418,7 +401,7 @@
                   "fileUris": [
                     "[uri(parameters('templateBaseUrl'), 'artifacts/Bootstrap.ps1')]"
                   ],
-                  "commandToExecute": "[format('powershell.exe -ExecutionPolicy Bypass -File Bootstrap.ps1 -adminUsername {0} -adminPassword {1} -spnClientId {2} -spnClientSecret {3} -spnTenantId {4} -spnAuthority {5} -subscriptionId {6} -resourceGroup {7} -acceptEula {8} -azureLocation {9} -stagingStorageAccountName {10} -workspaceName {11} -templateBaseUrl {12} -githubUser {13} -rdpPort {14} -sshPort {15} -deploySQL {16}', parameters('windowsAdminUsername'), parameters('windowsAdminPassword'), parameters('spnClientId'), parameters('spnClientSecret'), parameters('spnTenantId'), parameters('spnAuthority'), subscription().subscriptionId, resourceGroup().name, parameters('acceptEula'), parameters('location'), parameters('stagingStorageAccountName'), parameters('workspaceName'), parameters('templateBaseUrl'), parameters('githubUser'), parameters('rdpPort'), parameters('sshPort'), parameters('deploySQL'))]"
+                  "commandToExecute": "[format('powershell.exe -ExecutionPolicy Bypass -File Bootstrap.ps1 -adminUsername {0} -adminPassword {1} -spnClientId {2} -spnClientSecret {3} -spnTenantId {4} -spnAuthority {5} -subscriptionId {6} -resourceGroup {7} -acceptEula {8} -azureLocation {9} -stagingStorageAccountName {10} -workspaceName {11} -templateBaseUrl {12} -githubUser {13} -rdpPort {14} -sshPort {15}', parameters('windowsAdminUsername'), parameters('windowsAdminPassword'), parameters('spnClientId'), parameters('spnClientSecret'), parameters('spnTenantId'), parameters('spnAuthority'), subscription().subscriptionId, resourceGroup().name, parameters('acceptEula'), parameters('location'), parameters('stagingStorageAccountName'), parameters('workspaceName'), parameters('templateBaseUrl'), parameters('githubUser'), parameters('rdpPort'), parameters('sshPort'))]"
                 }
               },
               "dependsOn": [
