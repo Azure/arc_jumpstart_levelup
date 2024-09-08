@@ -15,7 +15,7 @@ $changeTrackingDCR = $env:changeTrackingDCR
 $vmInsightsDCR = $env:vmInsightsDCR
 
 # Moved VHD storage account details here to keep only in place to prevent duplicates.
-$vhdSourceFolder = "https://jumpstartprodsg.blob.core.windows.net/arcbox/*"
+$vhdSourceFolder = "https://jumpstartprodsg.blob.core.windows.net/arcbox/prod/*"
 $vhdSourceFolderESU = "https://jumpstartprodsg.blob.core.windows.net/scenarios/prod/*"
 
 # Archive exising log file and crate new one
@@ -97,19 +97,11 @@ if ($inernalSwitch.Name -ne $switchName) {
 Write-Host "Creating demo VM Credentials"
 # Hard-coded username and password for the nested demo VMs
 $nestedWindowsUsername = "Administrator"
-$nestedWindowsPassword = "ArcDemo123!!"
-
-# Hard-coded username and password for the nested demo 2012 VM
-$nestedWindows2k12Username = "Administrator"
-$nestedWindows2k12Password = "JS123!!"
+$nestedWindowsPassword = "JS123!!"
 
 # Create Windows credential object
 $secWindowsPassword = ConvertTo-SecureString $nestedWindowsPassword -AsPlainText -Force
 $winCreds = New-Object System.Management.Automation.PSCredential ($nestedWindowsUsername, $secWindowsPassword)
-
-# Create Windows credential object for 2012
-$secWindows2k12Password = ConvertTo-SecureString $nestedWindows2k12Password -AsPlainText -Force
-$win2k12Creds = New-Object System.Management.Automation.PSCredential ($nestedWindows2k12Username, $secWindows2k12Password)
 
 # Creating Hyper-V Manager desktop shortcut
 Write-Host "Creating Hyper-V Shortcut"
@@ -265,8 +257,8 @@ Set-Content -Path $file -Value $hostfile -Force
 
 Write-Host "Creating  demo VM Credentials"
 # Hard-coded username and password for the nested demo VMs
-$nestedLinuxUsername = "arcdemo"
-$nestedLinuxPassword = "ArcDemo123!!"
+$nestedLinuxUsername = "jumpstart"
+$nestedLinuxPassword = "JS123!!"
 
 # Create Linux credential object
 $secLinuxPassword = ConvertTo-SecureString $nestedLinuxPassword -AsPlainText -Force
@@ -277,7 +269,7 @@ Write-Host "Restarting Network Adapters"
 Start-Sleep -Seconds 30
 Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
 Invoke-Command -VMName $Win2k22vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
-$session = New-PSSession -ComputerName $Win2k12vmName -Credential $win2k12Creds
+$session = New-PSSession -ComputerName $Win2k12vmName -Credential $winCreds
 Invoke-Command -session $session -Script {Get-NetAdapter | Restart-NetAdapter} -AsJob | Receive-Job -Wait
 Exit-PSSession
 Invoke-Command -VMName $SQLvmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
@@ -285,7 +277,7 @@ Invoke-Command -VMName $SQLvmName -ScriptBlock { Get-NetAdapter | Restart-NetAda
 Start-Sleep -Seconds 10
 
 # Renaming 2012 machine
-Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { Rename-Computer -NewName $using:Win2k12MachineName -Restart} -Credential $win2k12Creds
+Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { Rename-Computer -NewName $using:Win2k12MachineName -Restart} -Credential $winCreds
 
 # Getting the Ubuntu nested VM IP address
 $Ubuntu01VmIp = Get-VM -Name $Ubuntu01vmName | Select-Object -ExpandProperty NetworkAdapters | Select-Object -ExpandProperty IPAddresses | Select-Object -Index 0
@@ -323,7 +315,7 @@ Write-Host "Onboarding Arc-enabled servers"
 $Ubuntu02vmvhdPath = "${Env:ArcBoxVMDir}\${Ubuntu02vmName}.vhdx"
 Write-Output "Onboarding the nested Windows VMs as Azure Arc-enabled servers"
 Invoke-Command -VMName $Win2k19vmName -ScriptBlock { powershell -File $Using:nestedVMArcBoxDir\installArcAgent.ps1  -accessToken $Using:accessToken, -spnTenantId $Using:spnTenantId, -subscriptionId $Using:subscriptionId, -resourceGroup $Using:resourceGroup, -azureLocation $Using:azureLocation } -Credential $winCreds
-Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { powershell -File $Using:nestedVMArcBoxDir\installArcAgent.ps1 -accessToken $Using:accessToken, -spnTenantId $Using:spnTenantId, -subscriptionId $Using:subscriptionId, -resourceGroup $Using:resourceGroup, -azureLocation $Using:azureLocation } -Credential $win2k12Creds
+Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { powershell -File $Using:nestedVMArcBoxDir\installArcAgent.ps1 -accessToken $Using:accessToken, -spnTenantId $Using:spnTenantId, -subscriptionId $Using:subscriptionId, -resourceGroup $Using:resourceGroup, -azureLocation $Using:azureLocation } -Credential $winCreds
 
 # Test Defender for Servers
 #Write-Host "Simulating threats to generate alerts from Defender for Cloud"
