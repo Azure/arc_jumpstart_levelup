@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.29.47.4906",
-      "templateHash": "387826031415377396"
+      "version": "0.30.3.12046",
+      "templateHash": "8899468810986225523"
     }
   },
   "parameters": {
@@ -44,14 +44,14 @@
     },
     "githubAccount": {
       "type": "string",
-      "defaultValue": "Azure",
+      "defaultValue": "basimolimajeed",
       "metadata": {
         "description": "Target GitHub account"
       }
     },
     "githubBranch": {
       "type": "string",
-      "defaultValue": "main",
+      "defaultValue": "SQL-Default-set-up",
       "metadata": {
         "description": "Target GitHub branch"
       }
@@ -65,7 +65,7 @@
     },
     "githubUser": {
       "type": "string",
-      "defaultValue": "microsoft",
+      "defaultValue": "basimolimajeed",
       "metadata": {
         "description": "User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps"
       }
@@ -161,8 +161,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.29.47.4906",
-              "templateHash": "12608631978629161702"
+              "version": "0.30.3.12046",
+              "templateHash": "1264513340559120819"
             }
           },
           "parameters": {
@@ -502,8 +502,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.29.47.4906",
-              "templateHash": "11385082066889669334"
+              "version": "0.30.3.12046",
+              "templateHash": "18272035174523507987"
             }
           },
           "parameters": {
@@ -581,8 +581,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.29.47.4906",
-              "templateHash": "2085767812996027554"
+              "version": "0.30.3.12046",
+              "templateHash": "15473648848796397950"
             }
           },
           "parameters": {
@@ -958,8 +958,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.29.47.4906",
-              "templateHash": "8390033641979162316"
+              "version": "0.30.3.12046",
+              "templateHash": "10762443507828808459"
             }
           },
           "parameters": {
@@ -4558,8 +4558,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.29.47.4906",
-              "templateHash": "17363404725474349468"
+              "version": "0.30.3.12046",
+              "templateHash": "7242597747798639024"
             }
           },
           "parameters": {
@@ -4744,8 +4744,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.29.47.4906",
-                      "templateHash": "8163039013467269509"
+                      "version": "0.30.3.12046",
+                      "templateHash": "13961679707339800097"
                     }
                   },
                   "parameters": {
@@ -4944,8 +4944,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.29.47.4906",
-              "templateHash": "6577703650894438968"
+              "version": "0.30.3.12046",
+              "templateHash": "7593202841589329950"
             }
           },
           "parameters": {
