@@ -171,7 +171,7 @@ $Win2k12vmName = "JSWin2K12Base"
 $Win2k12MachineName = "ArcBox-Win2k12"
 $win2k12vmvhdPath = "${Env:ArcBoxVMDir}\${Win2k12vmName}.vhdx"
 
-$SQLvmName = "ArcBox-SQL"
+$SQLvmName = "ArcBox-SQL-ENT"
 $SQLvmvhdPath = "$Env:ArcBoxVMDir\${SQLvmName}.vhdx"
 
 # Verify if VHD files already downloaded especially when re-running this script
