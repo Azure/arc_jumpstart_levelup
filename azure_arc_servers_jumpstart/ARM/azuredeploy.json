@@ -5,12 +5,13 @@
     "_generator": {
       "name": "bicep",
       "version": "0.30.3.12046",
-      "templateHash": "8899468810986225523"
+      "templateHash": "1961255815878017571"
     }
   },
   "parameters": {
     "spnTenantId": {
       "type": "string",
+      "defaultValue": "[tenant().tenantId]",
       "metadata": {
         "description": "Azure AD tenant id for your service principal"
       }

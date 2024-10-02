@@ -1,6 +1,6 @@
 @description('Azure AD tenant id for your service principal')
-param spnTenantId string
-
+//param spnTenantId string
+param spnTenantId string = tenant().tenantId
 @description('Username for Windows account')
 param windowsAdminUsername string
 
@@ -17,16 +17,16 @@ param vmAutologon bool = true
 param logAnalyticsWorkspaceName string
 
 @description('Target GitHub account')
-param githubAccount string = 'Azure'
+param githubAccount string = 'basimolimajeed'
 
 @description('Target GitHub branch')
-param githubBranch string = 'main'
+param githubBranch string = 'SQL-Default-set-up'
 
 @description('Choice to deploy Bastion to connect to the client VM')
 param deployBastion bool = false
 
 @description('User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps')
-param githubUser string = 'microsoft'
+param githubUser string = 'basimolimajeed'
 
 @description('Override default RDP port 3389 using this parameter. Default is 3389. No changes will be made to the client VM.')
 param rdpPort string = '3389'
