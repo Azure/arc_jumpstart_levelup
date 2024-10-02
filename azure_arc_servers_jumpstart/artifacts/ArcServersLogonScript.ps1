@@ -171,7 +171,7 @@ $Win2k12vmName = "JSWin2K12Base"
 $Win2k12MachineName = "ArcBox-Win2k12"
 $win2k12vmvhdPath = "${Env:ArcBoxVMDir}\${Win2k12vmName}.vhdx"
 
-$SQLvmName = "ArcBox-SQL-STD"
+$SQLvmName = "ArcBox-SQL-DEV"
 $SQLvmNameWSPLUS = "ArcBox-SQL"
 $SQLvmvhdPath = "$Env:ArcBoxVMDir\${SQLvmName}.vhdx"
 
