@@ -171,7 +171,7 @@ $Win2k12vmName = "JSWin2K12Base"
 $Win2k12MachineName = "ArcBox-Win2k12"
 $win2k12vmvhdPath = "${Env:ArcBoxVMDir}\${Win2k12vmName}.vhdx"
 
-$SQLvmName = "ArcBox-SQL-DEV"
+$SQLvmName = "ArcBox-SQL-STD"
 $SQLvmNameWSPLUS = "ArcBox-SQL"
 $SQLvmvhdPath = "$Env:ArcBoxVMDir\${SQLvmName}.vhdx"
 
@@ -313,7 +313,8 @@ Copy-VMFile $SQLvmName -SourcePath "$agentScript\SqlAdvancedThreatProtectionShel
 # Invoke-Command -VMName $SQLvmName -ScriptBlock {Restore-SqlDatabase -ServerInstance $Env:COMPUTERNAME -Database "AdventureWorksLT2019" -BackupFile C:\ArcBox\AdventureWorksLT2019.bak -PassThru -Verbose} -Credential $winCreds
 
 #Rename SQL VM to workshop plus name
-#Rename-VM ArcBox-SQL-ENT -NewName ArcBox-SQL
+Rename-VM $SQLvmName -NewName $SQLvmNameWSPLUS 
+
 
 # Copy installation script to nested Linux VMs
 Write-Output "Transferring installation script to nested Linux VMs..."
