@@ -225,8 +225,8 @@ Write-Header "Installing Hyper-V"
 
 # Install Hyper-V and reboot
 Write-Host "Installing Hyper-V and restart"
-Enable-WindowsOptionalFeature -Online -FeatureName Containers -All -NoRestart
-Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -NoRestart
+#Enable-WindowsOptionalFeature -Online -FeatureName Containers -All -NoRestart
+#Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -NoRestart
 Install-WindowsFeature -Name Hyper-V -IncludeAllSubFeature -IncludeManagementTools -Restart
 
 # Clean up Bootstrap.log
