@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.30.3.12046",
-      "templateHash": "1961255815878017571"
+      "templateHash": "6262654314775972153"
     }
   },
   "parameters": {
@@ -45,14 +45,14 @@
     },
     "githubAccount": {
       "type": "string",
-      "defaultValue": "basimolimajeed",
+      "defaultValue": "Azure",
       "metadata": {
         "description": "Target GitHub account"
       }
     },
     "githubBranch": {
       "type": "string",
-      "defaultValue": "SQL-Default-set-up",
+      "defaultValue": "main",
       "metadata": {
         "description": "Target GitHub branch"
       }
@@ -66,7 +66,7 @@
     },
     "githubUser": {
       "type": "string",
-      "defaultValue": "basimolimajeed",
+      "defaultValue": "microsoft",
       "metadata": {
         "description": "User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps"
       }
