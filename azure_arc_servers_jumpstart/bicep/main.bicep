@@ -1,6 +1,6 @@
 @description('Azure AD tenant id for your service principal')
-param spnTenantId string
-
+//param spnTenantId string
+param spnTenantId string = tenant().tenantId
 @description('Username for Windows account')
 param windowsAdminUsername string
 

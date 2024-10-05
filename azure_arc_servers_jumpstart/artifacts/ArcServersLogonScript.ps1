@@ -171,7 +171,8 @@ $Win2k12vmName = "JSWin2K12Base"
 $Win2k12MachineName = "ArcBox-Win2k12"
 $win2k12vmvhdPath = "${Env:ArcBoxVMDir}\${Win2k12vmName}.vhdx"
 
-$SQLvmName = "ArcBox-SQL"
+$SQLvmName = "ArcBox-SQL-STD"
+$SQLvmNameWSPLUS = "ArcBox-SQL"
 $SQLvmvhdPath = "$Env:ArcBoxVMDir\${SQLvmName}.vhdx"
 
 # Verify if VHD files already downloaded especially when re-running this script
@@ -305,11 +306,15 @@ Copy-VMFile $SQLvmName -SourcePath "$agentScript\SqlAdvancedThreatProtectionShel
 
 (Get-Content -path "$agentScript\installArcAgentUbuntu.sh" -Raw) -replace '\$accessToken', "'$accessToken'" -replace '\$resourceGroup', "'$Env:resourceGroup'" -replace '\$spnTenantId', "'$Env:spnTenantId'" -replace '\$azureLocation', "'$Env:azureLocation'" -replace '\$subscriptionId', "'$Env:subscriptionId'" | Set-Content -Path "$agentScript\installArcAgentModifiedUbuntu.sh"
 
-# Download and restore AdventureWorks Database to SQLvm
-Write-Host "Restoring AdventureWorks database"
-Copy-VMFile $SQLvmName -SourcePath "$Env:ArcBoxDir\AdventureWorksLT2019.bak" -DestinationPath "$Env:ArcBoxDir\AdventureWorksLT2019.bak" -CreateFullPath -FileSource Host -Force
-Start-Sleep -Seconds 3
-Invoke-Command -VMName $SQLvmName -ScriptBlock {Restore-SqlDatabase -ServerInstance $Env:COMPUTERNAME -Database "AdventureWorksLT2019" -BackupFile C:\ArcBox\AdventureWorksLT2019.bak -PassThru -Verbose} -Credential $winCreds
+# Download and restore AdventureWorks Database to SQLvm - No need in new image
+# Write-Host "Restoring AdventureWorks database"
+# Copy-VMFile $SQLvmName -SourcePath "$Env:ArcBoxDir\AdventureWorksLT2019.bak" -DestinationPath "$Env:ArcBoxDir\AdventureWorksLT2019.bak" -CreateFullPath -FileSource Host -Force
+# Start-Sleep -Seconds 3
+# Invoke-Command -VMName $SQLvmName -ScriptBlock {Restore-SqlDatabase -ServerInstance $Env:COMPUTERNAME -Database "AdventureWorksLT2019" -BackupFile C:\ArcBox\AdventureWorksLT2019.bak -PassThru -Verbose} -Credential $winCreds
+
+#Rename SQL VM to workshop plus name
+Rename-VM $SQLvmName -NewName $SQLvmNameWSPLUS 
+
 
 # Copy installation script to nested Linux VMs
 Write-Output "Transferring installation script to nested Linux VMs..."
