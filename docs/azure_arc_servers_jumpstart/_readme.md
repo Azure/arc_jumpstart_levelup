@@ -15,8 +15,8 @@ After completion of this session, you will be able to:
 - Configure your Azure Arc-enabled servers using Azure Automanage machine configuration
 - Manage your Arc-enabled Windows machines using the Windows Admin Center
 
-| Module | Duration | 
-|---------------|---------------|
+| Module | 
+|---------------|
 |[**Deploy ArcBox**](#lab-guidance) | 
 |[**1 - Onboard Windows and Linux servers running using different onboarding methods**](#module-1-on-boarding-to-azure-arc-enabled-servers) |
 |[**2 - Query and inventory your Azure Arc-enabled servers using Azure Resource Graph**](#module-2-query-and-inventory-your-azure-arc-enabled-servers-using-azure-resource-graph) | 
