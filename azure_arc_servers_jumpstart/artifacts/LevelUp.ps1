@@ -45,7 +45,7 @@ $(Invoke-SSHCommand -SSHSession $ubuntuSession -Command $Command -Timeout 600 -W
 # Adding desktop shortcut for lab instructions
 $WshShell = New-Object -comObject WScript.Shell
 $Shortcut = $WshShell.CreateShortcut("$Env:USERPROFILE\Desktop\Lab instructions.lnk")
-$Shortcut.TargetPath = "https://aka.ms/arc-follow-along"
+$Shortcut.TargetPath = "https://aka.ms/2024-nic-labs"
 $Shortcut.IconLocation = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
 $shortcut.WindowStyle = 3
 $shortcut.Save()
