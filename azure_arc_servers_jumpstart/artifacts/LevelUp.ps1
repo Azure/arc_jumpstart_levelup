@@ -57,16 +57,16 @@ Copy-Item -Path "$Env:USERPROFILE\AppData\Roaming\Microsoft\Windows\Start Menu\P
 Get-ChildItem "C:\Users\Public\Desktop\*Edge.lnk" | Remove-Item
 
 # Cloning the Azure Arc Jumpstart levelup repository
-git clone https://github.com/Azure/arc_jumpstart_levelup.git C:\PSConfEU
+git clone https://github.com/Azure/arc_jumpstart_levelup.git C:\NICConf
 
-Set-Location C:\PSConfEU
+Set-Location C:\NICConf
 
-git checkout psconfeu
+git checkout nicconf
 
 # Workaround for PowerShell modules installing into the wrong directory from Polyglot notebooks
 Get-Item C:\Users\arcdemo\Documents\WindowsPowerShell* | Remove-Item -Force -Recurse
 
-New-Item -Path C:\Users\arcdemo\Documents -ItemType SymbolicLink -Name WindowsPowerShell -Value C:\Users\arcdemo\Documents\PowerShell
+New-Item -Path C:\Users\student\Documents -ItemType SymbolicLink -Name WindowsPowerShell -Value C:\Users\student\Documents\PowerShell
 
 # Disable welcome-pane in VS Code
 @"
@@ -74,4 +74,4 @@ New-Item -Path C:\Users\arcdemo\Documents -ItemType SymbolicLink -Name WindowsPo
     "workbench.welcomePage.walkthroughs.openOnInstall": false,
     "workbench.startupEditor": "none"
 }
-"@ | Out-File -FilePath "C:\Users\arcdemo\AppData\Roaming\Code\User\settings.json" -Force
+"@ | Out-File -FilePath "C:\Users\student\AppData\Roaming\Code\User\settings.json" -Force
