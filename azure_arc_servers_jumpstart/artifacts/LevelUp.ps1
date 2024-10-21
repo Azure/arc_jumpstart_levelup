@@ -64,7 +64,7 @@ Set-Location C:\NICConf
 git checkout nicconf
 
 # Workaround for PowerShell modules installing into the wrong directory from Polyglot notebooks
-Get-Item C:\Users\arcdemo\Documents\WindowsPowerShell* | Remove-Item -Force -Recurse
+Get-Item C:\Users\student\Documents\WindowsPowerShell* | Remove-Item -Force -Recurse
 
 New-Item -Path C:\Users\student\Documents -ItemType SymbolicLink -Name WindowsPowerShell -Value C:\Users\student\Documents\PowerShell
 
