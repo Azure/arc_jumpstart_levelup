@@ -53,7 +53,7 @@
     },
     "githubBranch": {
       "type": "string",
-      "defaultValue": "psconfeu",
+      "defaultValue": "nicconf",
       "metadata": {
         "description": "Target GitHub branch"
       }
