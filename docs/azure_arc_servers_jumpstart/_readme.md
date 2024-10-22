@@ -127,7 +127,7 @@ If you have access to multiple tenants, use the `--tenant` switch.
 
   Set-Location -Path $folderPath
   git clone https://github.com/azure/arc_jumpstart_levelup.git
-  git checkout psconfeu
+  git checkout nicconf
   Set-Location -Path "azure_arc\azure_jumpstart_arcbox_servers_levelup\bicep"
   ```
 
@@ -137,7 +137,7 @@ If you have access to multiple tenants, use the `--tenant` switch.
   az bicep upgrade
   ```
 
-- Edit the [main.bicepparam](https://github.com/Azure/arc_jumpstart_levelup/blob/psconfeu/azure_arc_servers_jumpstart/bicep/main.bicepparam) template parameters file and supply some values for your environment.
+- Edit the [main.bicepparam](https://github.com/Azure/arc_jumpstart_levelup/blob/nicconf/azure_arc_servers_jumpstart/bicep/main.bicepparam) template parameters file and supply some values for your environment.
   - _`spnTenantId`_ - Your Azure tenant id
   - _`windowsAdminUsername`_ - Client Windows VM Administrator name
   - _`windowsAdminPassword`_ - Client Windows VM Password. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
@@ -148,7 +148,7 @@ Example parameters-file:
 
   ![Screenshot showing example parameters](./parameters_bicep.png)
 
-- Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/Azure/arc_jumpstart_levelup/blob/psconfeu/azure_arc_servers_jumpstart/bicep) and run the below command:
+- Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/Azure/arc_jumpstart_levelup/blob/nicconf/azure_arc_servers_jumpstart/bicep) and run the below command:
 
   ```shell
   az group create --name "<resource-group-name>" --location "<preferred-location>"
@@ -637,7 +637,7 @@ Open the created or modified SSH config file. The entry should have a similar fo
 Host rg-demo3-ArcBox-Ubuntu-01-student
    HostName ArcBox-Ubuntu-01
    User jumpstart
-   ProxyCommand "C:\Users\student\Documents\PowerShell\Modules\Az.Ssh.ArcProxy\1.0.0\sshProxy_windows_amd64_1.3.022941.exe" -r "C:\Users\student\az_ssh_config\rg-psconfeu-ArcBox-Ubuntu-01\rg-psconfeu-ArcBox-Ubuntu-01-relay_info"
+   ProxyCommand "C:\Users\student\Documents\PowerShell\Modules\Az.Ssh.ArcProxy\1.0.0\sshProxy_windows_amd64_1.3.022941.exe" -r "C:\Users\student\az_ssh_config\rg-nicconf-ArcBox-Ubuntu-01\rg-nicconf-ArcBox-Ubuntu-01-relay_info"
 ```
 
 #### Leveraging the -Options parameter
@@ -646,7 +646,7 @@ Levering the [options](https://learn.microsoft.com/powershell/module/microsoft.p
 Create the hashtable by following the below format. Be mindful of the locations of quotation marks.
 
 ```powershell
-$options = @{ProxyCommand = '"C:\Users\student\Documents\PowerShell\Modules\Az.Ssh.ArcProxy\1.0.0\sshProxy_windows_amd64_1.3.022941.exe -r C:\Users\student\az_ssh_config\rg-psconfeu-ArcBox-Ubuntu-01\rg-psconfeu-ArcBox-Ubuntu-01-relay_info"'}
+$options = @{ProxyCommand = '"C:\Users\student\Documents\PowerShell\Modules\Az.Ssh.ArcProxy\1.0.0\sshProxy_windows_amd64_1.3.022941.exe -r C:\Users\student\az_ssh_config\rg-nicconf-ArcBox-Ubuntu-01\rg-nicconf-ArcBox-Ubuntu-01-relay_info"'}
 ```
 
 Next leverage the options hashtable in a PowerShell remoting command.
@@ -966,7 +966,7 @@ In this module, you will learn to create and assign a custom Automanage Machine 
 >**Note:** This lab section is also available in notebook-format, which the presenter will use. Should you prefer that instead of copying/pasting commands from the lab instructions - run the following from Windows Terminal within the _ArcBox-Client_ VM:
 
 ```PowerShell
-code 'C:\PSConfEU\docs\azure_arc_servers_jumpstart\notebooks\module-6-machine-configuration.dib'
+code 'C:\NICConf\docs\azure_arc_servers_jumpstart\notebooks\module-6-machine-configuration.dib'
 ```
 
 #### Task 1: Create Automanage Machine Configuration custom configurations for Windows
