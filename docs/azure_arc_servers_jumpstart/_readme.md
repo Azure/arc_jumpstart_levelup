@@ -466,7 +466,7 @@ Get-Service sshd
 
   ```shell
     $serverName = "ArcBox-Ubuntu-01"
-    $localUser = "arcdemo"
+    $localUser = "jumpstart"
 
     az ssh arc --resource-group $Env:resourceGroup --name $serverName --local-user $localUser
   ```
@@ -476,7 +476,7 @@ or
 
   ```PowerShell
   $serverName = "ArcBox-Ubuntu-01"
-  $localUser = "arcdemo"
+  $localUser = "jumpstart"
   Enter-AzVM -ResourceGroupName $Env:resourceGroup -Name $serverName -LocalUser $localUser
   ```
 
@@ -616,7 +616,7 @@ Select either Azure CLI or Azure PowerShell:
 
 ```powershell
 $serverName = "ArcBox-Ubuntu-01"
-$localUser = "arcdemo"
+$localUser = "jumpstart"
 
 az ssh config --resource-group $Env:resourceGroup --name $serverName --local-user $localUser --resource-type Microsoft.HybridCompute --file ./sshconfig.config
 ```
@@ -625,7 +625,7 @@ az ssh config --resource-group $Env:resourceGroup --name $serverName --local-use
 
 ```powershell
 $serverName = "ArcBox-Ubuntu-01"
-$localUser = "arcdemo"
+$localUser = "jumpstart"
 
 Export-AzSshConfig -ResourceGroupName $Env:resourceGroup -Name $serverName -LocalUser $localUser -ResourceType Microsoft.HybridCompute/machines -ConfigFilePath ./sshconfig.config
 ```
@@ -634,10 +634,10 @@ Export-AzSshConfig -ResourceGroupName $Env:resourceGroup -Name $serverName -Loca
 Open the created or modified SSH config file. The entry should have a similar format to the following.
 
 ```powershell
-Host rg-psconfeu-demo3-ArcBox-Ubuntu-01-arcdemo
+Host rg-demo3-ArcBox-Ubuntu-01-student
    HostName ArcBox-Ubuntu-01
-   User arcdemo
-   ProxyCommand "C:\Users\arcdemo\Documents\PowerShell\Modules\Az.Ssh.ArcProxy\1.0.0\sshProxy_windows_amd64_1.3.022941.exe" -r "C:\Users\arcdemo\az_ssh_config\rg-psconfeu-ArcBox-Ubuntu-01\rg-psconfeu-ArcBox-Ubuntu-01-relay_info"
+   User jumpstart
+   ProxyCommand "C:\Users\student\Documents\PowerShell\Modules\Az.Ssh.ArcProxy\1.0.0\sshProxy_windows_amd64_1.3.022941.exe" -r "C:\Users\student\az_ssh_config\rg-psconfeu-ArcBox-Ubuntu-01\rg-psconfeu-ArcBox-Ubuntu-01-relay_info"
 ```
 
 #### Leveraging the -Options parameter
@@ -646,7 +646,7 @@ Levering the [options](https://learn.microsoft.com/powershell/module/microsoft.p
 Create the hashtable by following the below format. Be mindful of the locations of quotation marks.
 
 ```powershell
-$options = @{ProxyCommand = '"C:\Users\arcdemo\Documents\PowerShell\Modules\Az.Ssh.ArcProxy\1.0.0\sshProxy_windows_amd64_1.3.022941.exe -r C:\Users\arcdemo\az_ssh_config\rg-psconfeu-ArcBox-Ubuntu-01\rg-psconfeu-ArcBox-Ubuntu-01-relay_info"'}
+$options = @{ProxyCommand = '"C:\Users\student\Documents\PowerShell\Modules\Az.Ssh.ArcProxy\1.0.0\sshProxy_windows_amd64_1.3.022941.exe -r C:\Users\student\az_ssh_config\rg-psconfeu-ArcBox-Ubuntu-01\rg-psconfeu-ArcBox-Ubuntu-01-relay_info"'}
 ```
 
 Next leverage the options hashtable in a PowerShell remoting command.
