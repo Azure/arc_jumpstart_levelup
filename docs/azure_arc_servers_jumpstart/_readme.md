@@ -238,7 +238,7 @@ The deployment process that you have walked through in Lab01 should have set up 
 
 - Fill in the Resource Group, Region, Operating System (Windows), keep Connectivity as "Public endpoint". Then download the script to your local machine (or you can copy the content into the clipboard).
 
-- Go to the ArcBox-Client machine via RDP and from Hyper-V manager right-click on the ArcBox-Win2K22 VM and click "Connect" (Administrator default password is ArcDemo123!!). Then start PowerShell in the ArcBox-Win2K22 VM and copy the content of the onboarding script into the terminal.
+- Go to the ArcBox-Client machine via RDP and from Hyper-V manager right-click on the ArcBox-Win2K22 VM and click "Connect" (Administrator default password is JS123!!). Then start PowerShell in the ArcBox-Win2K22 VM and copy the content of the onboarding script into the terminal.
 
     ![Screenshot run onboard windows script](./run_windows_onboard_script.png)
 
@@ -419,7 +419,7 @@ or
 
 3. Right click _ArcBox-Win2K22_ and select Connect twice
 
-4. Login to the operating system using username Administrator and the password you used when deploying ArcBox, by default this is **ArcDemo123!!**
+4. Login to the operating system using username Administrator and the password you used when deploying ArcBox, by default this is **JS123!!**
 
 5. Open Windows PowerShell or PowerShell 7 and run the following to check if the SSH service is already installed
 
@@ -452,7 +452,7 @@ Get-Service sshd
 
 7. Right click _ArcBox-Ubuntu-01_ in Hyper-V Manager and select Connect
 
-8. Login to the operating system using username **arcdemo** and the password you used when deploying,  by default this is **ArcDemo123!!**
+8. Login to the operating system using username **jumpstart** and the password you used when deploying,  by default this is **JS123!!**
 
 9. Run the command `systemctl status sshd` to verify that the SSH service is active and running
 
@@ -787,7 +787,7 @@ As part of the ArcBox automation, some alerts and workbooks have been created to
 
 #### Task 5: Track changes in Windows services
 
-- Go to the ArcBox-Client machine via RDP and from Hyper-V manager right-click on one of the Arc-enabled VMs then click "Connect" (Administrator default password is ArcDemo123!!). Try stopping the "Print Spooler" service on the **Arc-enabled machine** using an administrative powershell session (or from the Services desktop application).
+- Go to the ArcBox-Client machine via RDP and from Hyper-V manager right-click on one of the Arc-enabled VMs then click "Connect" (Administrator default password is JS123!!). Try stopping the "Print Spooler" service on the **Arc-enabled machine** using an administrative powershell session (or from the Services desktop application).
 
   ```PowerShell
   Stop-Service spooler
