@@ -6,7 +6,6 @@ In this immersive lab, participants will embark on a hands-on journey to explore
 
 After completion of this session, you will be able to:
 
-- Deploy ArcBox
 - Onboard Windows and Linux servers running using different onboarding methods
 - Query and inventory your Azure Arc-enabled servers using Azure Resource Graph
 - SSH into your Azure Arc-enabled servers using SSH access
@@ -17,7 +16,6 @@ After completion of this session, you will be able to:
 
 | Module | 
 |---------------|
-|[**Deploy ArcBox**](#lab-guidance) | 
 |[**1 - Onboard Windows and Linux servers running using different onboarding methods**](#module-1-on-boarding-to-azure-arc-enabled-servers) |
 |[**2 - Query and inventory your Azure Arc-enabled servers using Azure Resource Graph**](#module-2-query-and-inventory-your-azure-arc-enabled-servers-using-azure-resource-graph) | 
 |[**3 - SSH into your Azure Arc-enabled servers using SSH access**](#module-3-ssh-into-your-azure-arc-enabled-servers-using-ssh-access) | 
