@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.30.3.12046",
-      "templateHash": "6262654314775972153"
+      "version": "0.30.23.60470",
+      "templateHash": "7690687807801524807"
     }
   },
   "parameters": {
@@ -14,6 +14,17 @@
       "defaultValue": "[tenant().tenantId]",
       "metadata": {
         "description": "Azure AD tenant id for your service principal"
+      }
+    },
+    "clientVmSku": {
+      "type": "string",
+      "allowedValues": [
+        "Standard_E8s_v5",
+        "Standard_E8s_v4",
+        "Standard_E8s_v3"
+      ],
+      "metadata": {
+        "description": "Client Machine SKU"
       }
     },
     "windowsAdminUsername": {
@@ -33,6 +44,9 @@
     "vmAutologon": {
       "type": "bool",
       "defaultValue": true,
+      "allowedValues": [
+        true
+      ],
       "metadata": {
         "description": "Enable automatic logon into ArcBox Virtual Machine"
       }
@@ -154,6 +168,9 @@
           },
           "vmInsightsDCR": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'dataCollectionRules'), '2022-09-01').outputs.vmInsightsDCR.value]"
+          },
+          "clientVmSku": {
+            "value": "[parameters('clientVmSku')]"
           }
         },
         "template": {
@@ -162,8 +179,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.3.12046",
-              "templateHash": "1264513340559120819"
+              "version": "0.30.23.60470",
+              "templateHash": "9827550231405597186"
             }
           },
           "parameters": {
@@ -172,6 +189,12 @@
               "defaultValue": "ArcBox-Client",
               "metadata": {
                 "description": "The name of your Virtual Machine"
+              }
+            },
+            "clientVmSku": {
+              "type": "string",
+              "metadata": {
+                "description": "Client Vm Sku"
               }
             },
             "windowsAdminUsername": {
@@ -362,7 +385,7 @@
               },
               "properties": {
                 "hardwareProfile": {
-                  "vmSize": "Standard_E8s_v5"
+                  "vmSize": "[parameters('clientVmSku')]"
                 },
                 "storageProfile": {
                   "osDisk": {
@@ -503,8 +526,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.3.12046",
-              "templateHash": "18272035174523507987"
+              "version": "0.30.23.60470",
+              "templateHash": "7371293657185833013"
             }
           },
           "parameters": {
@@ -582,8 +605,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.3.12046",
-              "templateHash": "15473648848796397950"
+              "version": "0.30.23.60470",
+              "templateHash": "1264326893524065001"
             }
           },
           "parameters": {
@@ -959,8 +982,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.3.12046",
-              "templateHash": "10762443507828808459"
+              "version": "0.30.23.60470",
+              "templateHash": "8439283899680804375"
             }
           },
           "parameters": {
@@ -4559,8 +4582,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.3.12046",
-              "templateHash": "7242597747798639024"
+              "version": "0.30.23.60470",
+              "templateHash": "9266753261100883948"
             }
           },
           "parameters": {
@@ -4745,8 +4768,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.30.3.12046",
-                      "templateHash": "13961679707339800097"
+                      "version": "0.30.23.60470",
+                      "templateHash": "2034124212146732552"
                     }
                   },
                   "parameters": {
@@ -4945,8 +4968,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.3.12046",
-              "templateHash": "7593202841589329950"
+              "version": "0.30.23.60470",
+              "templateHash": "16729304523736137038"
             }
           },
           "parameters": {
