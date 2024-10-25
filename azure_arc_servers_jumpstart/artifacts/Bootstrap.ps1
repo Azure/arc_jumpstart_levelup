@@ -205,6 +205,7 @@ Invoke-WebRequest ($templateBaseUrl + "artifacts/dsc/virtual_machines_sql.dsc.ym
 Invoke-WebRequest ($templateBaseUrl + "artifacts/tests/arcbox-bginfo.bgi") -OutFile $Env:ArcBoxTestsDir\arcbox-bginfo.bgi
 Invoke-WebRequest ($templateBaseUrl + "artifacts/tests/common.tests.ps1") -OutFile $Env:ArcBoxTestsDir\common.tests.ps1
 Invoke-WebRequest ($templateBaseUrl + "artifacts/tests/Invoke-Test.ps1") -OutFile $Env:ArcBoxTestsDir\Invoke-Test.ps1
+Invoke-WebRequest ($templateBaseUrl + "artifacts/tests/Send-PesterResult.ps1") -OutFile $Env:ArcBoxTestsDir\Send-PesterResult.ps1
 Invoke-WebRequest ($templateBaseUrl + "artifacts/WinGet.ps1") -OutFile $Env:ArcBoxDir\WinGet.ps1
 Invoke-WebRequest ($templateBaseUrl + "artifacts/LevelUp.ps1") -OutFile $Env:ArcBoxDir\LevelUp.ps1
 
@@ -279,7 +280,6 @@ if ($flavor -eq "DataOps") {
     Invoke-WebRequest ($templateBaseUrl + "artifacts/installArcAgentSQLSP.ps1") -OutFile $Env:ArcBoxDir\agentScript\installArcAgentSQLSP.ps1
     Invoke-WebRequest ($templateBaseUrl + "artifacts/testDefenderForSQL.ps1") -OutFile $Env:ArcBoxDir\testDefenderForSQL.ps1
     Invoke-WebRequest ($templateBaseUrl + "artifacts/tests/dataops.tests.ps1") -OutFile $Env:ArcBoxTestsDir\dataops.tests.ps1
-    Invoke-WebRequest ($templateBaseUrl + "artifacts/tests/Send-PesterResult.ps1") -OutFile $Env:ArcBoxTestsDir\Send-PesterResult.ps1
     Invoke-WebRequest ($templateBaseUrl + "artifacts/dsc/dataops.dsc.yml") -OutFile $Env:ArcBoxDscDir\dataops.dsc.yml
 }
 
