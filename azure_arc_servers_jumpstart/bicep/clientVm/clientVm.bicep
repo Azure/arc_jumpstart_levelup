@@ -246,5 +246,15 @@ resource vmRoleAssignment_Owner 'Microsoft.Authorization/roleAssignments@2022-04
   }
 }
 
+// Add role assignment for the VM: Storage Blob Data Contributor role
+resource vmRoleAssignment_StorageContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(vm.id, 'Microsoft.Authorization/roleAssignments', 'Storage Blob Data Contributor')
+  scope: resourceGroup()
+  properties: {
+    principalId: vm.identity.principalId
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')
+  }
+}
+
 output adminUsername string = windowsAdminUsername
 output publicIP string = deployBastion == false ? concat(publicIpAddress.properties.ipAddress) : ''
