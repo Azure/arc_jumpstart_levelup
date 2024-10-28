@@ -37,7 +37,7 @@ ArcBox NICConf edition is a special “flavor” of ArcBox that is intended for 
 
 #### Objective
 
-The deployment process that you have walked through in Lab01 should have set up four VMs running on Hyper-V in the ArcBox-Client machine. Two of these machines have been connected to Azure Arc for you by the set script. In this exercise you will verify that these two machines are indeed Arc-enabled and you will identify the other two machines that you will Arc-enable.
+The deployment process should have set up four VMs running on Hyper-V in the ArcBox-Client machine. Two of these machines have been connected to Azure Arc already. In this exercise you will verify that these two machines are indeed Arc-enabled and you will identify the other two machines that you will Arc-enable.
 
 ##### Task 1: Use the Azure portal to examine you Arc-enabled machines inventory
 
@@ -47,11 +47,11 @@ The deployment process that you have walked through in Lab01 should have set up 
 
 - You should see the machines that are connected to Arc already: Arcbox-Ubuntu-01 and ArcBox-Win2K19.
 
-    ![Screenshot showing existing Arc connected servers](./First_view_of_Arc_connected.png)
+  ![Screenshot showing existing Arc connected servers](./two-servers.png)
 
 ##### Task 2:  Examine the virtual machines that you will Arc-enable
 
-- For the follow-along session you want to connect one of the other available machines running as VMs in the ArcBox-Client. You can see these (ArcBox-Win2K22 and ArcBox-Ubuntu-02) by running the Hyper-V Manager in the ArcBox-Client (after you have connected to it with RDP as explained earlier in Lab01).
+- We want to connect the other 2 machines running as VMs in the ArcBox-Client. We can see these (ArcBox-Win2K22 and ArcBox-Ubuntu-02) by running the Hyper-V Manager in the ArcBox-Client (after we have connected to it with RDP as explained earlier in the setup).
 
     ![Screenshot of 4 machines on Hyper-v](./choose_Hyper-V.png)
 
@@ -71,7 +71,7 @@ The deployment process that you have walked through in Lab01 should have set up 
 
 - On successful completion a message is displayed to confirm the machine is connected to Azure Arc. We can also verify that our Windows machine is connected in the Azure portal (Machines - Azure Arc).
 
-    ![Screenshot confirm win machine on-boarded](./confirm_windows_machine_onboarding.png)
+    ![Screenshot confirm win machine on-boarded](./thre-servers.png)
 
 For more information about deployment options, see the following two articles:
 - [Azure Connected Machine agent deployment options](https://learn.microsoft.com/azure/azure-arc/servers/deployment-options)
@@ -586,7 +586,7 @@ As part of the ArcBox automation, some alerts and workbooks have been created to
 
     ![Screenshot showing opening the alerts page](./alerts_rules_open.png)
 
-- Explore the alert rules crated for you.
+- Explore the alert rules created for you.
 
     ![Screenshot showing opening one alert around processor time](./alerts_rules_rules.png)
 
@@ -1287,4 +1287,3 @@ By design, ArcBox does not open port 3389 on the network security group. Therefo
   ![Screenshot showing complete deployment](./arcbox_complete.png)
 
   ![Screenshot showing ArcBox resources in Azure portal](./rg_arc.png)
-
