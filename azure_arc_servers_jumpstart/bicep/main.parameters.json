@@ -11,6 +11,9 @@
         "windowsAdminPassword": {
             "value": "<your windows admin password>"
         },
+        "clientVmSku": {
+            "value": "<Choose the VM SKU for the client VM>" 
+        },
         "logAnalyticsWorkspaceName": {
             "value": "<your unique Log Analytics workspace name>"
         },
