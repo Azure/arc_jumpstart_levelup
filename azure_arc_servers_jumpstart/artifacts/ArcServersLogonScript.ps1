@@ -334,6 +334,8 @@ if ($Env:flavor -ne "DevOps") {
         $Win2k22vmName = "ArcBox-Win2K22"
         $Win2k22vmvhdPath = "${Env:ArcBoxVMDir}\${Win2k22vmName}.vhdx"
 
+        $Win2k25vmName = "ArcBox-Win2K25"
+
         $Ubuntu01vmName = "ArcBox-Ubuntu-01"
         $Ubuntu01vmvhdPath = "${Env:ArcBoxVMDir}\${Ubuntu01vmName}.vhdx"
 
@@ -348,6 +350,9 @@ if ($Env:flavor -ne "DevOps") {
                 # The "Full" ArcBox flavor has an azcopy network throughput capping
                 Write-Output "Downloading nested VMs VHDX files. This can take some time, hold tight..."
                 azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR
+
+                # Windows Server 2025
+                azcopy cp https://arcboxvhdsb24xrypx.blob.core.windows.net/vhds/ArcBox-Win2K25.vhdx $Env:ArcBoxVMDir --check-length=false --log-level=ERROR
             }
             else {
                 # Other ArcBox flavors does not have an azcopy network throughput capping
@@ -356,6 +361,8 @@ if ($Env:flavor -ne "DevOps") {
                 #azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR
             }
         }
+
+
 
         # Create the nested VMs if not already created
         Write-Header "Create Hyper-V VMs"
@@ -375,6 +382,7 @@ if ($Env:flavor -ne "DevOps") {
         Start-Sleep -Seconds 20
         Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
         Invoke-Command -VMName $Win2k22vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
+        Invoke-Command -VMName $Win2k25vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
         Start-Sleep -Seconds 5
 
         # Getting the Ubuntu nested VM IP address
@@ -385,6 +393,7 @@ if ($Env:flavor -ne "DevOps") {
         Write-Output "Transferring installation script to nested Windows VMs..."
         Copy-VMFile $Win2k19vmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
         Copy-VMFile $Win2k22vmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
+        Copy-VMFile $Win2k25vmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
 
         # Create appropriate onboard script to Ubuntu VMs depending on whether or not the Service Principal has permission to peroperly onboard it to Azure Arc
         (Get-Content -path "$agentScript\installArcAgentUbuntu.sh" -Raw) -replace '\$accessToken', "'$accessToken'" -replace '\$resourceGroup', "'$resourceGroup'" -replace '\$spnTenantId', "'$Env:spnTenantId'" -replace '\$azureLocation', "'$Env:azureLocation'" -replace '\$subscriptionId', "'$subscriptionId'" | Set-Content -Path "$agentScript\installArcAgentModifiedUbuntu.sh"
@@ -397,7 +406,7 @@ if ($Env:flavor -ne "DevOps") {
         Write-Header "Onboarding Arc-enabled servers"
         # Onboarding the nested VMs as Azure Arc-enabled servers
         Write-Output "Onboarding nested Windows VMs as Azure Arc-enabled servers"
-        $Win2k19vmName | ForEach-Object -Parallel {
+        $Win2k19vmName,$Win2k25vmName | ForEach-Object -Parallel {
 
             $nestedVMArcBoxDir = $Using:nestedVMArcBoxDir
             $accessToken = $using:accessToken
@@ -409,6 +418,35 @@ if ($Env:flavor -ne "DevOps") {
             Invoke-Command -VMName $PSItem -ScriptBlock { powershell -File $Using:nestedVMArcBoxDir\installArcAgent.ps1, -spnTenantId $Using:spnTenantId, -accessToken $using:accessToken -subscriptionId $Using:subscriptionId, -resourceGroup $Using:resourceGroup, -azureLocation $Using:azureLocation } -Credential $using:winCreds
 
         }
+
+
+        Invoke-Command -VMName $Win2k19vmName -ScriptBlock {
+
+                cscript C:\Windows\system32\slmgr.vbs -ipk N69G4-B89J2-4G8F4-WWYCC-J464C
+                cscript C:\Windows\system32\slmgr.vbs -skms kms.core.windows.net
+                cscript C:\Windows\system32\slmgr.vbs -ato
+                cscript C:\Windows\system32\slmgr.vbs -dlv
+
+         } -Credential $winCreds
+
+
+         Invoke-Command -VMName $Win2k22vmName -ScriptBlock {
+
+            cscript C:\Windows\system32\slmgr.vbs -ipk VDYBN-27WPP-V4HQT-9VMD4-VMK7H
+            cscript C:\Windows\system32\slmgr.vbs -skms kms.core.windows.net
+            cscript C:\Windows\system32\slmgr.vbs -ato
+            cscript C:\Windows\system32\slmgr.vbs -dlv
+
+         } -Credential $winCreds
+
+         Invoke-Command -VMName $Win2k25vmName -ScriptBlock {
+
+            cscript C:\Windows\system32\slmgr.vbs -ipk D764K-2NDRG-47T6Q-P8T8W-YP6DF
+            cscript C:\Windows\system32\slmgr.vbs -skms kms.core.windows.net
+            cscript C:\Windows\system32\slmgr.vbs -ato
+            cscript C:\Windows\system32\slmgr.vbs -dlv
+
+         } -Credential $winCreds
 
         Write-Output "Onboarding the nested Linux VMs as an Azure Arc-enabled servers"
         $ubuntuSession = New-SSHSession -ComputerName $Ubuntu01VmIp -Credential $linCreds -Force -WarningAction SilentlyContinue

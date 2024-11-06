@@ -3,6 +3,22 @@ properties:
 
   resources:
     - resource: HyperVDsc/VMHyperV
+      id: ArcBox-Win2K25
+      directives:
+        description: Configure VM ArcBox-Win2K25
+      settings:
+        Name: ArcBox-Win2K25
+        SwitchName: 'InternalNATSwitch'
+        VhdPath: F:\Virtual Machines\ArcBox-Win2K25.vhdx
+        ProcessorCount: 2
+        StartupMemory: '4GB'
+        RestartIfNeeded: true
+        State: Running
+        Generation: 2
+        Path: F:\Virtual Machines
+        EnableGuestService: true
+        SecureBoot: true
+    - resource: HyperVDsc/VMHyperV
       id: ArcBox-Win2K22
       directives:
         description: Configure VM ArcBox-Win2K22
