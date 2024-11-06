@@ -352,7 +352,7 @@ if ($Env:flavor -ne "DevOps") {
                 azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR
 
                 # Windows Server 2025
-                $Win2K25VhdxUri = '$Win2K25VhdxUri = 'https://arcboxvhdsb24xrypy.blob.core.windows.net/vhdx/ArcBox-Win2K25.vhdx''
+                $Win2K25VhdxUri = 'https://arcboxvhdsb24xrypy.blob.core.windows.net/vhdx/ArcBox-Win2K25.vhdx'
                 azcopy cp $Win2K25VhdxUri $Env:ArcBoxVMDir --check-length=false --log-level=ERROR
             }
             else {
