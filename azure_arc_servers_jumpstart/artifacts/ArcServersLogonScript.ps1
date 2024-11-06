@@ -335,6 +335,7 @@ if ($Env:flavor -ne "DevOps") {
         $Win2k22vmvhdPath = "${Env:ArcBoxVMDir}\${Win2k22vmName}.vhdx"
 
         $Win2k25vmName = "ArcBox-Win2K25"
+        $Win2k22vmvhdPath = "${Env:ArcBoxVMDir}\${Win2k25vmName}.vhdx"
 
         $Ubuntu01vmName = "ArcBox-Ubuntu-01"
         $Ubuntu01vmvhdPath = "${Env:ArcBoxVMDir}\${Ubuntu01vmName}.vhdx"
@@ -343,10 +344,10 @@ if ($Env:flavor -ne "DevOps") {
         $Ubuntu02vmvhdPath = "${Env:ArcBoxVMDir}\${Ubuntu02vmName}.vhdx"
 
         # Verify if VHD files already downloaded especially when re-running this script
-        if (!((Test-Path $win2k19vmvhdPath) -and (Test-Path $Win2k22vmvhdPath) -and (Test-Path $Ubuntu01vmvhdPath) -and (Test-Path $Ubuntu02vmvhdPath))) {
+        if (!((Test-Path $win2k19vmvhdPath) -and (Test-Path $Win2k22vmvhdPath) -and (Test-Path $Win2k25vmvhdPath) -and (Test-Path $Ubuntu01vmvhdPath) -and (Test-Path $Ubuntu02vmvhdPath))) {
             <# Action when all if and elseif conditions are false #>
             $Env:AZCOPY_BUFFER_GB = 4
-            if ($Env:flavor -eq "Full") {
+
                 # The "Full" ArcBox flavor has an azcopy network throughput capping
                 Write-Output "Downloading nested VMs VHDX files. This can take some time, hold tight..."
                 azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR
@@ -354,13 +355,7 @@ if ($Env:flavor -ne "DevOps") {
                 # Windows Server 2025
                 $Win2K25VhdxUri = 'https://arcboxvhdsb24xrypy.blob.core.windows.net/vhdx/ArcBox-Win2K25.vhdx'
                 azcopy cp $Win2K25VhdxUri $Env:ArcBoxVMDir --check-length=false --log-level=ERROR
-            }
-            else {
-                # Other ArcBox flavors does not have an azcopy network throughput capping
-                Write-Output "Downloading nested VMs VHDX files. This can take some time, hold tight..."
-                azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k22vmName}.vhdx;${Win2k19vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR
-                #azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR
-            }
+
         }
 
 
@@ -549,9 +544,13 @@ if ($Env:flavor -ne "DevOps") {
     az connectedmachine assess-patches --resource-group $resourceGroup --name $Win2k19vmName --no-wait
     az connectedmachine assess-patches --resource-group $resourceGroup --name $Ubuntu01vmName --no-wait
 
-    Write-Host "Installing the AdminCenter extension on the Arc-enabled windows machine"
+    Write-Host "Installing the AdminCenter extension on the Arc-enabled windows machines"
     $Setting = '{\"port\":\"6516\"}'
+
     az connectedmachine extension create --name AdminCenter --publisher Microsoft.AdminCenter --type AdminCenter --machine-name $Win2k19vmName --resource-group $resourceGroup --location $azureLocation --settings $Setting --enable-auto-upgrade --no-wait
+
+    az connectedmachine extension create --name AdminCenter --publisher Microsoft.AdminCenter --type AdminCenter --machine-name $Win2k25vmName --resource-group $resourceGroup --location $azureLocation --settings $Setting --enable-auto-upgrade --no-wait
+
     $putPayload = "{'properties': {'type': 'default'}}"
     Invoke-AzRestMethod -Method PUT -Uri "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.HybridConnectivity/endpoints/default?api-version=2023-03-15" -Payload $putPayload
     $patch = @{ "properties" =  @{ "serviceName" = "WAC"; "port" = 6516}}
