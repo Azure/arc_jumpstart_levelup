@@ -1,4 +1,4 @@
-# Azure Arc-enabled Servers labs - Nordic Infrastructure Conference 2024
+# Azure Arc Masterclass labs - Nordic Infrastructure Conference 2024
 
 ## Goals
 
@@ -11,18 +11,18 @@ After completion of this session, you will be able to:
 - SSH into your Azure Arc-enabled servers using SSH access
 - Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory
 - Keep your Azure Arc-enabled servers patched using Azure Update Manager
-- Configure your Azure Arc-enabled servers using Azure Automanage machine configuration
+- Configure your Azure Arc-enabled servers using Azure Automanage machine configuration (optional)
 - Manage your Arc-enabled Windows machines using the Windows Admin Center
 
-| Module | 
+| Module |
 |---------------|
 |[**1 - Onboard Windows and Linux servers running using different onboarding methods**](#module-1-on-boarding-to-azure-arc-enabled-servers) |
-|[**2 - Query and inventory your Azure Arc-enabled servers using Azure Resource Graph**](#module-2-query-and-inventory-your-azure-arc-enabled-servers-using-azure-resource-graph) | 
-|[**3 - SSH into your Azure Arc-enabled servers using SSH access**](#module-3-ssh-into-your-azure-arc-enabled-servers-using-ssh-access) | 
-|[**4 - Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory**](#module-4-monitor-your-azure-arc-enabled-servers-using-azure-monitor-change-tracking-and-inventory) | 
+|[**2 - Query and inventory your Azure Arc-enabled servers using Azure Resource Graph**](#module-2-query-and-inventory-your-azure-arc-enabled-servers-using-azure-resource-graph) |
+|[**3 - SSH into your Azure Arc-enabled servers using SSH access**](#module-3-ssh-into-your-azure-arc-enabled-servers-using-ssh-access) |
+|[**4 - Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory**](#module-4-monitor-your-azure-arc-enabled-servers-using-azure-monitor-change-tracking-and-inventory) |
 |[**5 - Keep your Azure Arc-enabled servers patched using Azure Update Manager**](#module-5-keep-your-azure-arc-enabled-servers-patched-using-azure-update-manager) |
 |[**6 - Configure your Azure Arc-enabled servers using Azure Automanage machine configuration**](#module-6-configure-your-azure-arc-enabled-servers-using-azure-automanage-machine-configuration) |
-|[**7 - Manage your Arc-enabled Windows machines using the Windows Admin Center**](#module-7-manage-your-arc-enabled-windows-machines-using-the-windows-admin-center) | 
+|[**7 - Manage your Arc-enabled Windows machines using the Windows Admin Center**](#module-7-manage-your-arc-enabled-windows-machines-using-the-windows-admin-center) |
 
 
 ## Lab Environment
@@ -237,14 +237,14 @@ or
 
 >We will use two Arc-enabled servers running in ArcBox for this module:
 
-- _ArcBox-Win2K22_
+- _ArcBox-Win2K25_
 - _ArcBox-Ubuntu-01_
 
 1. RDP into the _ArcBox-Client_ VM
 
 2. Open Hyper-V Manager
 
-3. Right click _ArcBox-Win2K22_ and select Connect twice
+3. Right click _ArcBox-Win2K25_ and select Connect twice
 
 4. Login to the operating system using username Administrator and the password you used when deploying ArcBox, by default this is **JS123!!**
 
@@ -254,7 +254,7 @@ or
 Get-Service sshd
 ```
 
-6. If not already in place, install OpenSSH for Windows by running the following:
+6. If step 5 shows no output, install OpenSSH for Windows by running the following:
 
   ```PowerShell
   # Install the OpenSSH Server
@@ -275,7 +275,7 @@ Get-Service sshd
   }
   ```
 
-6. Close the connection to _ArcBox-Win2K22_
+6. Close the connection to _ArcBox-Win2K25_
 
 7. Right click _ArcBox-Ubuntu-01_ in Hyper-V Manager and select Connect
 
@@ -322,7 +322,7 @@ or
 ##### Azure CLI
 
   ```shell
-  $serverName = "ArcBox-Win2K22"
+  $serverName = "ArcBox-Win2K25"
   $localUser = "Administrator"
   az ssh arc --resource-group $Env:resourceGroup --name $serverName --local-user $localUser
   ```
@@ -331,7 +331,7 @@ or
 ##### Azure PowerShell
 
   ```PowerShell
-  $serverName = "ArcBox-Win2K22"
+  $serverName = "ArcBox-Win2K25"
   $localUser = "Administrator"
   Enter-AzVM -ResourceGroupName $Env:resourceGroup -Name $serverName -LocalUser $localUser
   ```
@@ -345,7 +345,7 @@ or
 ##### Azure CLI
 
   ```shell
-  $serverName = "ArcBox-Win2K22"
+  $serverName = "ArcBox-Win2K25"
   $localUser = "Administrator"
   az ssh arc --resource-group $Env:resourceGroup --name $serverName --local-user $localUser --rdp
   ```
@@ -355,7 +355,7 @@ or
 ##### Azure PowerShell
 
   ```PowerShell
-  $serverName = "ArcBox-Win2K22"
+  $serverName = "ArcBox-Win2K25"
   $localUser = "Administrator"
   Enter-AzVM -ResourceGroupName $Env:resourceGroup -Name $serverName -LocalUser $localUser -Rdp
   ```
@@ -784,7 +784,9 @@ Note that there are a few views in there that show the total number of machines 
 
 Expand the rest of the views "Schedules/maintenance configurations" and "History of installation runs" to visualize the updates running in Azure Update manager.
 
-### Module 6: Configure your Azure Arc-enabled servers using Azure Automanage machine configuration
+### Module 6: Configure your Azure Arc-enabled servers using Azure Automanage machine configuration (optional)
+
+>**Note:** This lab is optional as it takes some time to go through all steps and there is some waiting for Azure Policy to converge. Feel free to try it out in your own ArcBox-environment after the conference (deployment-instructions in the Appendix).
 
 #### Objective
 
@@ -1082,9 +1084,11 @@ Pre-requisite: Azure permissions
 
     ![Screenshot showing how to display Arc connected servers in portal](./Arc_servers_search.png)
 
-- Click on the Windows 2019 Azure Arc-enabled **Windows** servers.
+- Click on the Windows 2019 Azure Arc-enabled **Windows** server.
 
-    ![Screenshot showing existing Arc connected servers](./click_on_any_arc_enabled_server.png)
+> Note: The Windows 2025 machine can also be used
+
+![Screenshot showing existing Arc connected servers](./click_on_any_arc_enabled_server.png)
 
 - From the selected Windows machine click "Access control (IAM)" then add the role "Admin Center Administrator Login" to your access.
 
