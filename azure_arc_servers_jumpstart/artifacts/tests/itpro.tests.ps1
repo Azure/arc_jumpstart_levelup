@@ -39,3 +39,31 @@ Describe "Arc-enabled Servers" {
         (Get-AzConnectedMachine -ResourceGroupName $env:resourceGroup -SubscriptionId $env:subscriptionId).count | Should -BeGreaterOrEqual 3
     }
 }
+
+
+Describe "ArcBox-Win2K19" {
+    BeforeAll {
+        $ResourceGroupName = $env:resourceGroup
+        $MachineExtension = Get-AzConnectedMachineExtension -MachineName ArcBox-Win2K19 -ResourceGroupName $env:resourceGroup | Where-Object Name -eq AdminCenter
+    }
+    It "should have AdminCenter extension installed" {
+        $MachineExtension.count | Should -BeExactly 1
+    }
+    It "should have AdminCenter extension successfully provisioned" {
+        $MachineExtension.ProvisioningState | Should -Be "Succeeded"
+    }
+}
+
+
+Describe "ArcBox-Win2K25" {
+    BeforeAll {
+        $ResourceGroupName = $env:resourceGroup
+        $MachineExtension = Get-AzConnectedMachineExtension -MachineName ArcBox-Win2K19 -ResourceGroupName $env:resourceGroup | Where-Object Name -eq AdminCenter
+    }
+    It "should have AdminCenter extension installed" {
+        $MachineExtension.count | Should -BeExactly 1
+    }
+    It "should have AdminCenter extension successfully provisioned" {
+        $MachineExtension.ProvisioningState | Should -Be "Succeeded"
+    }
+}
