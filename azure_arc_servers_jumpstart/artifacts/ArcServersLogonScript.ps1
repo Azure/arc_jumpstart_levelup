@@ -589,6 +589,27 @@ if ($Env:flavor -ne "DevOps") {
 
     az connectedmachine extension create --name AdminCenter --publisher Microsoft.AdminCenter --type AdminCenter --machine-name $Win2k25vmName --resource-group $resourceGroup --location $azureLocation --settings $Setting --enable-auto-upgrade --no-wait
 
+
+    $failed = Get-AzResourceGroup -Name $resourceGroup | ForEach-Object {Get-AzConnectedMachine -ResourceGroupName $PSItem.ResourceGroupName }| ForEach-Object {
+
+        Get-AzConnectedMachineExtension -MachineName $PSItem.Name -ResourceGroupName $PSItem.ResourceGroupName | Where-Object Name -eq AdminCenter | Where-Object ProvisioningState -eq Failed
+
+    }
+
+        $Setting = @{
+            port = "6516"
+        }
+
+
+        $failed | ForEach-Object {
+
+            Write-Output "Re-installing failed AdminCenter extension on $($PSItem.MachineName)"
+
+            Remove-AzConnectedMachineExtension -MachineName $PSItem.MachineName -ResourceGroupName $PSItem.ResourceGroupName -Name AdminCenter
+            New-AzConnectedMachineExtension -MachineName $PSItem.MachineName -ResourceGroupName $PSItem.ResourceGroupName -Name AdminCenter -Location $PSItem.Location -Publisher "Microsoft.AdminCenter" -ExtensionType "AdminCenter" -EnableAutomaticUpgrade -Setting  $Setting
+
+        }
+
     $putPayload = "{'properties': {'type': 'default'}}"
     Invoke-AzRestMethod -Method PUT -Uri "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.HybridConnectivity/endpoints/default?api-version=2023-03-15" -Payload $putPayload
     $patch = @{ "properties" =  @{ "serviceName" = "WAC"; "port" = 6516}}
