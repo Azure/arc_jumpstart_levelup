@@ -453,6 +453,44 @@ if ($Env:flavor -ne "DevOps") {
 
     Start-Sleep -Seconds 15
 
+    Invoke-Command -VMName $Win2k25vmName -ScriptBlock { winget install Microsoft.PowerShell -s winget } -Credential $winCreds
+    Invoke-Command -VMName $Win2k25vmName -ScriptBlock { Get-NetConnectionProfile | Set-NetConnectionProfile -NetworkCategory Private } -Credential $winCreds
+    Invoke-Command -VMName $Win2k25vmName -ScriptBlock {
+
+                    # Define the path to the sshd_config file
+        $sshdConfigPath = "C:\ProgramData\ssh\sshd_config"
+
+        # Define the line to add
+        $subsystemLine = "Subsystem powershell c:/progra~1/powershell/7/pwsh.exe -sshs -nologo"
+
+        # Check if the sshd_config file exists
+        if (Test-Path -Path $sshdConfigPath) {
+            # Read the content of the sshd_config file
+            $configContent = Get-Content -Path $sshdConfigPath
+
+            # Check if the Subsystem line already exists
+            if ($configContent -notcontains $subsystemLine) {
+                # Add the Subsystem line
+                Add-Content -Path $sshdConfigPath -Value $subsystemLine
+                Write-Output "Subsystem line added to sshd_config file."
+            } else {
+                Write-Output "Subsystem line already exists in sshd_config file."
+            }
+
+            # Restart the SSH service to apply changes
+            try {
+                Restart-Service -Name "sshd" -Force
+                Write-Output "SSH service restarted successfully."
+            } catch {
+                Write-Output "Failed to restart SSH service. Please check the service status."
+            }
+        } else {
+            Write-Output "sshd_config file not found at path $sshdConfigPath. Please ensure OpenSSH is installed."
+        }
+
+
+    } -Credential $winCreds
+
     <#Write-Header "Enabling Defender for Servers on the Arc-enabled machines"
     $windowsArcMachine = (Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Win2k19vmName).Id
     $linuxArcMachine = (Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Ubuntu01vmName).Id
