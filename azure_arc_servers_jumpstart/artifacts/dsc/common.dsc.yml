@@ -31,13 +31,6 @@ properties:
         id: Microsoft.PowerShell
         source: winget
     - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: kubectl
-      directives:
-        description: Install kubectl
-      settings:
-        id: Kubernetes.kubectl
-        source: winget
-    - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: edge
       directives:
         description: Install Microsoft Edge
@@ -52,18 +45,11 @@ properties:
         id: Microsoft.Azure.AZCopy.10
         source: winget
     - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: DotNetSDK7
+      id: DotNetSDK8
       directives:
-        description: Install Microsoft DotNet SDK 7
+        description: Install Microsoft DotNet SDK 8
       settings:
-        id: Microsoft.DotNet.SDK.7
-        source: winget
-    - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: helm
-      directives:
-        description: Install Helm
-      settings:
-        id: Helm.Helm
+        id: Microsoft.DotNet.SDK.8
         source: winget
     - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: Microsoft.Sysinternals.BGInfo
