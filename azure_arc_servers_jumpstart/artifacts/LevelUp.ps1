@@ -76,3 +76,22 @@ New-Item -Path C:\Users\student\Documents -ItemType SymbolicLink -Name WindowsPo
     "workbench.startupEditor": "none"
 }
 "@ | Out-File -FilePath "C:\Users\student\AppData\Roaming\Code\User\settings.json" -Force
+
+# Set Norwegian language and keyboard layout
+
+$LanguageList = New-WinUserLanguageList nb-NO
+Set-WinUserLanguageList $LanguageList -Force
+
+Set-WinUILanguageOverride -Language nb-NO
+Set-WinSystemLocale nb-NO
+Set-WinHomeLocation -GeoId 164
+
+$language = Get-WinUserLanguageList
+$language[0].InputMethodTips.Remove('0409:00000409')
+$language[0].InputMethodTips.Add('0414:00000414')
+
+Set-WinUserLanguageList $language -Force
+
+Set-Culture nb-NO
+
+Set-TimeZone -Id "W. Europe Standard Time"
