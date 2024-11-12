@@ -142,15 +142,15 @@ In this first step, you will assign Azure resource tags to some of your Azure Ar
 
 - Scroll to the right on the results pane and click "See Details" to see all the Azure Arc-enabled server metadata. Note for example the list of detected properties, we will be using these in the next task.
 
-- You can also run the same query using PowerShell (e.g. using Azure Cloud Shell) providing that you have added the required module "Az.ResourceGraph" as explained in [Run your first Resource Graph query using Azure PowerShell](https://learn.microsoft.com/azure/governance/resource-graph/first-query-powershell#add-the-resource-graph-module).
+- You can also run the same query using PowerShell providing that you have added the required module "Az.ResourceGraph" as explained in [Run your first Resource Graph query using Azure PowerShell](https://learn.microsoft.com/azure/governance/resource-graph/first-query-powershell#add-the-resource-graph-module).
 
-To install the PowerShell module, run the following command
+The module is pre-installed on the ArcBox-Client VM. For your information, this is the command to install the PowerShell module:
 
   ```powershell
   Install-Module -Name Az.ResourceGraph
   ```
 
-Then run the query in PowerShell
+Then open Windows Terminal from the desktop shortcut and run the following query in PowerShell
 
   ```powershell
   Search-AzGraph -Query "resources | where type =~ 'Microsoft.HybridCompute/machines'"
@@ -217,6 +217,34 @@ Then run the query in PowerShell
 - Running the same query in the portal should result in something like the following
 
     ![Screenshot of extra properties](./extra_properties.png)
+
+# Task 8: Copilot for Azure Arc
+
+- Go to the Azure portal and naviagte to the **Azure Arc Machines** view
+- Open **Copilot for Microsoft Azure**
+- Paste a prompt of your choice from the below table and press Enter
+
+    ![Screenshot of extra properties](./arc_copilot.png)
+
+## Azure Arc Prompts
+
+|Prompt | Query |
+|----------|----------|
+**How many windows Arc-servers do I have?** | resources<br>\| where type =~ 'microsoft.hybridcompute/machines' and properties.osType=="windows"<br>\| count |
+**How many linux Arc-servers do I have?** | resources<br>\| where type =~ 'microsoft.hybridcompute/machines' and properties.osType=="linux"<br>\| count |
+**How many of my Arc servers are connected?** | resources<br>\| where type =~ 'microsoft.hybridcompute/machines' and properties.status=="Connected"<br>\| count |
+**How many of my Arc servers are disconnected?** | resources<br>\| where type =~ 'microsoft.hybridcompute/machines' and properties.status=="Disconnected"<br>\| count |
+**What is the distribution of my Arc machines by status?** | resources<br>\| where type =~ 'microsoft.hybridcompute/machines'<br>\| summarize count() by tostring(properties.status) |
+**What is the distribution of my Arc machines by os?** | resources<br>\| where type =~ 'microsoft.hybridcompute/machines'<br>\| summarize count() by tostring(properties.osType) |
+**How many Arc servers do not have automatic agent upgrade turned on?** | resources<br>\| where type =~ 'microsoft.hybridcompute/machines' and properties.agentUpgrade.enableAutomaticUpgrade==false<br>\| count |
+**How many Arc servers have an esu license?** | resources<br>\| where type =~ 'microsoft.hybridcompute/machines' and properties.licenseProfile.esuProfile.licenseAssignmentState=="Assigned"<br>\| count |
+**How many Arc machines are eligibile for esu but do not have an esu applied?** | resources<br>\| where type =~ 'microsoft.hybridcompute/machines' and properties.licenseProfile.esuProfile.licenseAssignmentState!="Assigned"<br>and properties.licenseProfile.esuProfile.esuEligibility=="Eligible"<br>\| count |
+**What extensions are configured for this Arc server?** | resources<br>\| where ['type'] == "microsoft.hybridcompute/machines/extensions" and id contains "ServerName"<br>\| distinct name |
+**How many of my Arc servers have the azure monitoring agent installed?** | resources<br>\| where ['type'] == "microsoft.hybridcompute/machines/extensions" and (name == "AzureMonitorWindowsAgent" or name == "AzureMonitorLinuxAgent")<br>\| distinct id<br>\| count |
+**How many of my Arc servers have failed extensions?** | resources<br>\| where ['type'] == "microsoft.hybridcompute/machines/extensions" and properties.provisioningState=="Failed"<br>\| parse id with resourceId "/extensions" *<br>\| distinct resourceId<br>\| count |
+
+- Repeat and try out a couple more prompts you might find useful
+
 
 ### Module 3: SSH into your Azure Arc-enabled servers using SSH access
 
