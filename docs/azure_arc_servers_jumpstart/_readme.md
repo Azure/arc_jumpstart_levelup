@@ -417,11 +417,13 @@ or
   az connectedmachine extension create --machine-name $serverName --resource-group $Env:resourceGroup --publisher Microsoft.Azure.ActiveDirectory --name AADSSHLogin --type AADSSHLoginForLinux --location $env:azureLocation
   ```
 
-2. Configure role assignments for the Arc-enabled server _ArcBox-Ubuntu-01_ using the Azure portal.  Two Azure roles are used to authorize VM login:
+2. Verify role assignments for the Arc-enabled server _ArcBox-Ubuntu-01_ by using the Azure portal and navigating to the Access control menu option for that machine.  Two Azure roles are used to authorize VM login:
     - **Virtual Machine Administrator Login**: Users who have this role assigned can log in to an Azure virtual machine with administrator privileges.
     - **Virtual Machine User Login**: Users who have this role assigned can log in to an Azure virtual machine with regular user privileges.
 
-3. After assigning one of the two roles for your personal Azure AD/Entra ID user account, run the following command to connect to _ArcBox-Ubuntu-01_ using SSH and AAD/Entra ID-based authentication:
+>Note: The assignment of **Virtual Machine Administrator Login** is already performed for you in the NIC lab environment, but you should verify this before proceeding.
+
+3. After verifying that one of the two roles for your personal Entra ID lab user has been assigned, run the following command to connect to _ArcBox-Ubuntu-01_ using SSH and AAD/Entra ID-based authentication:
 
 #### Azure CLI
 
@@ -709,7 +711,7 @@ Pre-requisite: Azure permissions
 
 ### Module 7: Configure your Azure Arc-enabled servers using Azure Automanage machine configuration (optional)
 
->**Note:** This lab is optional as it takes some time to go through all steps and there is some waiting for Azure Policy to converge. Feel free to try it out in your own ArcBox-environment after the conference (deployment-instructions in the Appendix).
+>**Note:** This lab is optional as it takes some time to go through all steps and there is some waiting for Azure Policy to converge. In addition, permissions on Azure subscription level is required in order to create Azure Policy definitions. Feel free to try it out in your own ArcBox-environment after the conference (deployment-instructions in the Appendix).
 
 #### Objective
 
