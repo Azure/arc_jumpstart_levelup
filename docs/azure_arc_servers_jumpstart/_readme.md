@@ -487,6 +487,8 @@ As part of the automation, we deploy the Azure Monitor Agents to the Windows and
 
     ![Screenshot showing the extensions installed on the Arc-enabled server](./monitoring_extensions.png)
 
+> Note: The Dependency Agent is not supported on Ubuntu 22.04
+
 - Click on the **Insights** tab to view the different metrics of your servers.
 
     ![Screenshot showing existing Arc connected servers](./machine_vm_insights.png)
