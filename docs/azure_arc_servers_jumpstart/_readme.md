@@ -21,8 +21,8 @@ After completion of this session, you will be able to:
 |[**3 - SSH into your Azure Arc-enabled servers using SSH access**](#module-3-ssh-into-your-azure-arc-enabled-servers-using-ssh-access) |
 |[**4 - Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory**](#module-4-monitor-your-azure-arc-enabled-servers-using-azure-monitor-change-tracking-and-inventory) |
 |[**5 - Keep your Azure Arc-enabled servers patched using Azure Update Manager**](#module-5-keep-your-azure-arc-enabled-servers-patched-using-azure-update-manager) |
-|[**6 - Configure your Azure Arc-enabled servers using Azure Automanage machine configuration**](#module-6-configure-your-azure-arc-enabled-servers-using-azure-automanage-machine-configuration) |
-|[**7 - Manage your Arc-enabled Windows machines using the Windows Admin Center**](#module-7-manage-your-arc-enabled-windows-machines-using-the-windows-admin-center) |
+|[**6 - Manage your Arc-enabled Windows machines using the Windows Admin Center**](#module-6-manage-your-arc-enabled-windows-machines-using-the-windows-admin-center) |
+|[**7 - Optional: Configure your Azure Arc-enabled servers using Azure Automanage machine configuration**](#module-7-configure-your-azure-arc-enabled-servers-using-azure-automanage-machine-configuration) |
 
 
 ## Lab Environment
@@ -797,7 +797,57 @@ Note that there are a few views in there that show the total number of machines 
 
 Expand the rest of the views "Schedules/maintenance configurations" and "History of installation runs" to visualize the updates running in Azure Update manager.
 
-### Module 6: Configure your Azure Arc-enabled servers using Azure Automanage machine configuration (optional)
+### Module 6: Manage your Arc-enabled Windows machines using the Windows Admin Center
+
+#### Objective
+
+In this module you will learn how to use the Windows Admin Center in the Azure portal to manage the Windows operating system of your Arc-enabled servers, known as hybrid machines. You can securely manage hybrid machines from anywhere without needing a VPN, public IP address, or other inbound connectivity to your machine.
+
+#### Task 1: Pre-requisites
+
+Pre-requisite: Azure permissions
+
+- The Windows Admin Center extension is already installed for you on the Arc-enabled machines.
+
+- Connecting to Windows Admin Center requires you to have Reader and Windows Admin Center Administrator Login permissions at the Arc-enabled server resource. The following steps helps you to set these up.
+
+- Enter "Machines - Azure Arc" in the top search bar in the Azure portal and select it from the displayed services.
+
+    ![Screenshot showing how to display Arc connected servers in portal](./Arc_servers_search.png)
+
+- Click on the Windows 2019 Azure Arc-enabled **Windows** server.
+
+> Note: The Windows 2025 machine can also be used
+
+![Screenshot showing existing Arc connected servers](./click_on_any_arc_enabled_server.png)
+
+- From the selected Windows machine click "Access control (IAM)" then add the role "Admin Center Administrator Login" to your access.
+
+    ![Screenshot of required role for Admin Center](./Admin_centre_Add_Role_1.png)
+
+#### Task 2: Connect and explore Windows Admin Center (preview)
+
+- Once the role assignment is complete then you can connect to the Windows Admin Center.
+
+    ![Screenshot connecting to Admin Center](./Admin_Center_Connect.png)
+
+- Start exploring the capabilities offered by the Windows Admin Center to manage your Arc-enabled Windows machine.
+
+    ![Screenshot Admin Center overview](./Admin_Centre_Overview.png)
+
+- Let us use the Windows Admin Center to add a local user, a new group and assign the new user to the new group. From the left menu select "Local users & groups". Then from the "Users" tab click "New user". Enter the user details and click on "Submit". Verify that the user has been added.
+
+![Screenshot adding local user](./Admin_center_local_users_1.png)
+
+- Now select the "Groups" tab and click on "New Group". Enter the group details and click on "Submit". Verify that the group has been added.
+
+    ![Screenshot adding local group](./Admin_center_local_groups_1.png)
+
+- Back to the "Users" tab, select the new user you have added, then click "Manage membership". Add the selected user to the new group and save.
+
+    ![Screenshot Group membership](./Admin_centre_group_membership_1.png)
+
+### Module 7: Configure your Azure Arc-enabled servers using Azure Automanage machine configuration (optional)
 
 >**Note:** This lab is optional as it takes some time to go through all steps and there is some waiting for Azure Policy to converge. Feel free to try it out in your own ArcBox-environment after the conference (deployment-instructions in the Appendix).
 
@@ -1078,56 +1128,6 @@ Due to using MOF-based DSC resources for the Windows demo-configuration, we are 
 
 > **Bonus task**:
 If you are interested in custom configurations on Linux, check out the Azure Arc Jumpstart scenario [Create Automanage Machine Configuration custom configurations for Linux](https://azurearcjumpstart.com/azure_arc_jumpstart/azure_arc_servers/day2/arc_automanage/arc_automanage_machine_configuration_custom_linux) which you can run in your instance of ArcBox.
-
-### Module 7: Manage your Arc-enabled Windows machines using the Windows Admin Center
-
-#### Objective
-
-In this module you will learn how to use the Windows Admin Center in the Azure portal to manage the Windows operating system of your Arc-enabled servers, known as hybrid machines. You can securely manage hybrid machines from anywhere without needing a VPN, public IP address, or other inbound connectivity to your machine.
-
-#### Task 1: Pre-requisites
-
-Pre-requisite: Azure permissions
-
-- The Windows Admin Center extension is already installed for you on the Arc-enabled machines.
-
-- Connecting to Windows Admin Center requires you to have Reader and Windows Admin Center Administrator Login permissions at the Arc-enabled server resource. The following steps helps you to set these up.
-
-- Enter "Machines - Azure Arc" in the top search bar in the Azure portal and select it from the displayed services.
-
-    ![Screenshot showing how to display Arc connected servers in portal](./Arc_servers_search.png)
-
-- Click on the Windows 2019 Azure Arc-enabled **Windows** server.
-
-> Note: The Windows 2025 machine can also be used
-
-![Screenshot showing existing Arc connected servers](./click_on_any_arc_enabled_server.png)
-
-- From the selected Windows machine click "Access control (IAM)" then add the role "Admin Center Administrator Login" to your access.
-
-    ![Screenshot of required role for Admin Center](./Admin_centre_Add_Role_1.png)
-
-#### Task 2: Connect and explore Windows Admin Center (preview)
-
-- Once the role assignment is complete then you can connect to the Windows Admin Center.
-
-    ![Screenshot connecting to Admin Center](./Admin_Center_Connect.png)
-
-- Start exploring the capabilities offered by the Windows Admin Center to manage your Arc-enabled Windows machine.
-
-    ![Screenshot Admin Center overview](./Admin_Centre_Overview.png)
-
-- Let us use the Windows Admin Center to add a local user, a new group and assign the new user to the new group. From the left menu select "Local users & groups". Then from the "Users" tab click "New user". Enter the user details and click on "Submit". Verify that the user has been added.
-
-![Screenshot adding local user](./Admin_center_local_users_1.png)
-
-- Now select the "Groups" tab and click on "New Group". Enter the group details and click on "Submit". Verify that the group has been added.
-
-    ![Screenshot adding local group](./Admin_center_local_groups_1.png)
-
-- Back to the "Users" tab, select the new user you have added, then click "Manage membership". Add the selected user to the new group and save.
-
-    ![Screenshot Group membership](./Admin_centre_group_membership_1.png)
 
 # Appendix
 
