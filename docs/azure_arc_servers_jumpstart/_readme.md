@@ -65,13 +65,26 @@ The deployment process should have set up four VMs running on Hyper-V in the Arc
 
 - Fill in the Resource Group, Region, Operating System (Windows), keep Connectivity as "Public endpoint". Then download the script to your local machine (or you can copy the content into the clipboard).
 
-- Go to the ArcBox-Client machine via RDP and from Hyper-V manager right-click on the ArcBox-Win2K22 VM and click "Connect" (Administrator default password is JS123!!). Then start PowerShell in the ArcBox-Win2K22 VM and copy the content of the onboarding script into the terminal.
+- From Hyper-V Manager (shortcut on the desktop) right-click on the ArcBox-Win2K22 VM and click "Connect" (Administrator default password is JS123!!). Then start PowerShell in the ArcBox-Win2K22 VM and copy the content of the onboarding script into the terminal.
 
     ![Screenshot run onboard windows script](./run_windows_onboard_script.png)
 
 - On successful completion a message is displayed to confirm the machine is connected to Azure Arc. We can also verify that our Windows machine is connected in the Azure portal (Machines - Azure Arc).
 
     ![Screenshot confirm win machine on-boarded](./four-servers.png)
+
+- **Optional**: Repeat the process to onboard the ArcBox-Ubuntu-02 VM
+
+- From Hyper-V manager click on the ArcBox-Ubuntu-02 VM and navigate to the Networking tab to find its IP-address
+
+![Screenshot run onboard windows script](./Ubuntu_02_IP.png)
+
+- Start Windows Terminal from the desktop-shortcut and connect to the ArcBox-Ubuntu-02 VM via SSH
+```shell
+ssh jumpstart@10.10.1.104
+```
+- Password is JS123!!
+- Copy the content of the onboarding script generated in the portal into the terminal
 
 For more information about deployment options, see the following two articles:
 - [Azure Connected Machine agent deployment options](https://learn.microsoft.com/azure/azure-arc/servers/deployment-options)
