@@ -9,7 +9,7 @@ After completion of this session, you will be able to:
 - Onboard Windows and Linux servers running using different onboarding methods
 - Query and inventory your Azure Arc-enabled servers using Azure Resource Graph
 - SSH into your Azure Arc-enabled servers using SSH access
-- Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory
+- Monitor your Azure Arc-enabled servers using Azure Monitor
 - Keep your Azure Arc-enabled servers patched using Azure Update Manager
 - Manage your Arc-enabled Windows machines using the Windows Admin Center
 - Configure your Azure Arc-enabled servers using Azure Automanage machine configuration (optional)
@@ -19,7 +19,7 @@ After completion of this session, you will be able to:
 |[**1 - Onboard Windows and Linux servers running using different onboarding methods**](#module-1-on-boarding-to-azure-arc-enabled-servers) |
 |[**2 - Query and inventory your Azure Arc-enabled servers using Azure Resource Graph**](#module-2-query-and-inventory-your-azure-arc-enabled-servers-using-azure-resource-graph) |
 |[**3 - SSH into your Azure Arc-enabled servers using SSH access**](#module-3-ssh-into-your-azure-arc-enabled-servers-using-ssh-access) |
-|[**4 - Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory**](#module-4-monitor-your-azure-arc-enabled-servers-using-azure-monitor-change-tracking-and-inventory) |
+|[**4 - Monitor your Azure Arc-enabled servers using Azure Monitor**](#module-4-monitor-your-azure-arc-enabled-servers-using-azure-monitor-change-tracking-and-inventory) |
 |[**5 - Keep your Azure Arc-enabled servers patched using Azure Update Manager**](#module-5-keep-your-azure-arc-enabled-servers-patched-using-azure-update-manager) |
 |[**6 - Manage your Arc-enabled Windows machines using the Windows Admin Center**](#module-6-manage-your-arc-enabled-windows-machines-using-the-windows-admin-center) |
 |[**7 - Optional: Configure your Azure Arc-enabled servers using Azure Automanage machine configuration**](#module-7-configure-your-azure-arc-enabled-servers-using-azure-automanage-machine-configuration) |
