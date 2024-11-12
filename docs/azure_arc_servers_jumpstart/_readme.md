@@ -24,7 +24,6 @@ After completion of this session, you will be able to:
 |[**6 - Manage your Arc-enabled Windows machines using the Windows Admin Center**](#module-6-manage-your-arc-enabled-windows-machines-using-the-windows-admin-center) |
 |[**7 - Optional: Configure your Azure Arc-enabled servers using Azure Automanage machine configuration**](#module-7-configure-your-azure-arc-enabled-servers-using-azure-automanage-machine-configuration) |
 
-
 ## Lab Environment
 
 ArcBox NICConf edition is a special “flavor” of ArcBox that is intended for users who want to experience Azure Arc-enabled servers' capabilities in a sandbox environment. Screenshot below shows layout of the lab environment.
@@ -65,9 +64,15 @@ The deployment process should have set up four VMs running on Hyper-V in the Arc
 
 - Fill in the Resource Group, Region, Operating System (Windows), keep Connectivity as "Public endpoint". Then download the script to your local machine (or you can copy the content into the clipboard).
 
-- From Hyper-V Manager (shortcut on the desktop) right-click on the ArcBox-Win2K22 VM and click "Connect" (Administrator default password is JS123!!). Then start PowerShell in the ArcBox-Win2K22 VM and copy the content of the onboarding script into the terminal.
+- From Hyper-V Manager (shortcut on the desktop) right-click on the ArcBox-Win2K22 VM and click "Connect" (Administrator default password is JS123!!). Then start PowerShell in the ArcBox-Win2K22 VM and copy the content of the onboarding script into the terminal and press enter.
 
-    ![Screenshot run onboard windows script](./run_windows_onboard_script.png)
+When prompted to authenticate, logon using your assigned Entra ID user:
+
+![Screenshot run onboard windows script](./onboarding_authentication_prompt.png)
+
+Wait for the script to finish:
+
+![Screenshot run onboard windows script](./run_windows_onboard_script.png)
 
 - On successful completion a message is displayed to confirm the machine is connected to Azure Arc. We can also verify that our Windows machine is connected in the Azure portal (Machines - Azure Arc).
 
