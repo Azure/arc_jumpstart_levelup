@@ -89,7 +89,16 @@ Wait for the script to finish:
 ssh jumpstart@10.10.1.104
 ```
 - Password is JS123!!
-- Copy the content of the onboarding script generated in the portal into the terminal
+- Since the nested VM is running in Azure, we need to block access to the Azure IMDS endpoint for the installer to not detect it is running in an Azure VM (only supported for evaluation purposes). Paste and run the following commands:
+
+```shell
+sudo ufw --force enable
+sudo ufw deny out from any to 169.254.169.254
+sudo ufw default allow incoming
+```
+
+- Copy the content of the onboarding script generated in the portal into the terminal.
+- After successful execution, verify that the ArcBox-Ubuntu-02 is listed in the Azure portal as an Arc-enabled Server.
 
 For more information about deployment options, see the following two articles:
 - [Azure Connected Machine agent deployment options](https://learn.microsoft.com/azure/azure-arc/servers/deployment-options)
