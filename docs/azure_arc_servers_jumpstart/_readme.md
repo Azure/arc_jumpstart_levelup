@@ -516,11 +516,11 @@ Enter-PSSession -Session $ubuntu01
 
  ![Screenshot showing usage of PowerShell remoting tunnelled via SSH](./ps_remoting_usage_via_arc_agent.png)
 
-### Module 4: Monitor your Azure Arc-enabled servers using Azure Monitor, Change Tracking and Inventory
+### Module 4: Monitor your Azure Arc-enabled servers using Azure Monitor
 
 #### Objective
 
-In this module, you will learn how to deploy the Azure Monitor agent to your Arc-enabled Windows and Linux machines, how to deploy the dependency agent to your Arc-enabled Windows machines, how to enable the _VM Insights_ solution to start monitoring your machines using Azure Monitor, how to run queries on the Log analytics workspace and how to configure alerts. In addition, you will learn how to use the Change Tracking and Inventory features to track changes in your machine. Change Tracking and Inventory is an built-in Azure service, provided by Azure Automation. The new version uses the Azure Monitor Agent AMA as opposed to the Log Analytics Agent. You will be using the new version in this exercise.
+In this module, you will learn how to deploy the Azure Monitor agent to your Arc-enabled Windows and Linux machines, how to deploy the dependency agent to your Arc-enabled Windows machines, how to enable the _VM Insights_ solution to start monitoring your machines using Azure Monitor, how to run queries on the Log analytics workspace and how to configure alerts.
 
 #### Task 1: Monitor your Arc-enabled servers' performance using VMInsights
 
@@ -617,89 +617,6 @@ As part of the ArcBox automation, some alerts and workbooks have been created to
     ![Screenshot showing performance workbook](./alerts_workbooks_perf.png)
 
     ![Screenshot showing events workbook](./alerts_workbooks_events.png)
-
-#### Task 4: Enable Change Tracking and Inventory
-
-- From the "Change tracking" settings select "Windows Services" and change the "Collection Frequency" to 10 minutes.
-
-    ![Screenshot CT Windows Services settings](./CT_2_WinServices.png)
-
-- To enable these features you would need to set up a Data Collection Rule that would collect the right events and data for Change Tracking and Inventory and create an Azure policy to onboard your Arc-enabled machines to Change Tracking. **For the purposes of this workshop** - these tasks have all been done for you, so you do not need to do them manually. Follow the link [here](https://learn.microsoft.com/azure/automation/change-tracking/enable-vms-monitoring-agent?tabs=singlevm%2Carcvm#enable-change-tracking-at-scale-using-azure-monitoring-agent) to learn how to do these yourself in future.
-
-- Verify that Change Tracking and Inventory is now enabled and the Arc VMs are reporting status.
-
-    ![Screenshot showing Inventory](./CT_1_verify-.png)
-
-#### Task 5: Track changes in Windows services
-
-- Go to the ArcBox-Client machine via RDP and from Hyper-V manager right-click on one of the Arc-enabled VMs then click "Connect" (Administrator default password is JS123!!). Try stopping the "Print Spooler" service on the **Arc-enabled machine** using an administrative powershell session (or from the Services desktop application).
-
-  ```PowerShell
-  Stop-Service spooler
-  ```
-
-- The service changes will eventually show up in the "Change tracking" page for the Arc-enabled machine.
-(By default Windows services status are updated every 30 minutes but you changed that to 20 minutes earlier to speed up the result for this task).
-
-    ![Screenshot CT Spooler stopped](./CT_3_WinServices-spooler.png)
-
-- You can restart the spooler service on the server if you wish and change tracking will show the outcome in the portal after few minutes.
-
-  ```PowerShell
-  Start-Service spooler
-  ```
-
-#### Task 6: Track file changes
-
-- Navigate to one of the Arc-enabled Windows machines and select "Change tracking" then select "Settings" then select "Windows Files". You should see the "Add windows file setting" screen on the right hand side. Configure these settings to track the changes to the file "c:\windows\system32\drivers\etc\hosts" and to upload the file content.
-
-    ![Screenshot showing Edit windows file Settings](./CT_4_File-Settings.png)
-
-- Set the file location where changed files will be uploaded. You should have a storage account deployed in the resource group of this lab.
-
-    ![Screenshot showing Storage Account Settings](./CT_5_File-Location-1.png)
-
-- Navigate to the storage account. Click on "Containers" and you should see a container created automatically for you by Azure Change Tracking.
-
-    ![Screenshot storage container for CT](./CT_6_CT-Storage-Container.png)
-
-- Click on the "changetrackingblob" container, and in the next page select "Access Control (IAM)", then on "Add role assignment".
-
-    ![Screenshot blob IAM](./CT_7_CT-Storage-Container-Access.png)
-
-- Select the Storage Blob Data Contributor role then assign the role to the Windows Arc enabled machines managed identity.
-
-    ![Screenshot blob contributor](./CT_8_CT-BlobDataContributor.png)
-
-    ![Screenshot assign VM data contributor role](./CT_9_CT-BlobDataContributor-VM-1.png)
-
-- Modify the _hosts_ file on the Arc-enabled machine (c:\Windows\System32\Drivers\etc\hosts).
-
-**NOTE: To modify the hosts file, open _Notepad_ as administrator, select File>Open, and then browse to c:\Windows\System32\Drivers\etc\hosts file**
-
-- Add a line like this from an administrative notepad and save the file.
-
-  ```shell
-  1.1.1.1      www.fakehost.com
-  ```
-
-- Eventually, the file changes will show up in the change tracking page of the machine (it might take some time to show so move on to other tasks and come back to check later). The file changed content will also be uploaded to the "changetrackingblob" storage container.
-
-    ![Screenshot file in blob](./CT_11_File_in_Blob.png)
-
-#### Task 7: Query in Log Analytics
-
-- On the Change tracking page from your Arc-enabled machine, select _Log Analytics_.
-
-- In the Logs search, look for content changes to the _hosts_ file by entering and running the following query. The result should show information about the changes.
-
-```shell
-ConfigurationChange | where FieldsChanged contains "FileContentChecksum" and FileSystemPath == "c:\\windows\\system32\\drivers\\etc\\hosts"
-```
-
-  ![Screenshot CT results in Log Analytics](./CT_10_LogAnalyticsFile.png)
-
-  >**NOTE (Optional) In Log Analytics, alerts are always created based on log analytics query result. If you want to be alerted when someone changes the _hosts_ file on any one of your server, then you can configure an alert by referring to this [tutorial](https://learn.microsoft.com/azure/azure-monitor/alerts/tutorial-log-alert).**
 
 ### Module 5: Keep your Azure Arc-enabled servers patched using Azure Update Manager
 
