@@ -689,9 +689,14 @@ Pre-requisite: Azure permissions
 
     ![Screenshot of required role for Admin Center](./Admin_centre_Add_Role_1.png)
 
+- From the selected Windows machine, navigate to the Licences -> Windows Server menu blade, mark the checkbox "Activate Azure benefits" and press the Confirm-button.
+
+    ![Screenshot of enabling Azure Benefits](./azure_benefits.png)
+
+
 #### Task 2: Connect and explore Windows Admin Center (preview)
 
-- Once the role assignment is complete then you can connect to the Windows Admin Center.
+- Once the role assignment is complete and Azure benefits is enabled you can connect to the Windows Admin Center.
 
     ![Screenshot connecting to Admin Center](./Admin_Center_Connect.png)
 
