@@ -218,7 +218,7 @@ Then open Windows Terminal from the desktop shortcut and run the following query
 
     ![Screenshot of extra properties](./extra_properties.png)
 
-# Task 8: Copilot for Azure Arc
+#### Task 8: Copilot for Azure Arc
 
 - Go to the Azure portal and naviagte to the **Azure Arc Machines** view
 - Open **Copilot for Microsoft Azure**
