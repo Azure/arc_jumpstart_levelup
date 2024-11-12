@@ -45,9 +45,9 @@ The deployment process should have set up four VMs running on Hyper-V in the Arc
 
     ![Screenshot Arc_servers_search](./Arc_servers_search.png)
 
-- You should see the machines that are connected to Arc already: Arcbox-Ubuntu-01 and ArcBox-Win2K19.
+- You should see the machines that are connected to Arc already: Arcbox-Ubuntu-01, ArcBox-Win2K19 and ArcBox-Win2K25.
 
-  ![Screenshot showing existing Arc connected servers](./two-servers.png)
+  ![Screenshot showing existing Arc connected servers](./three-servers.png)
 
 ##### Task 2:  Examine the virtual machines that you will Arc-enable
 
@@ -71,7 +71,7 @@ The deployment process should have set up four VMs running on Hyper-V in the Arc
 
 - On successful completion a message is displayed to confirm the machine is connected to Azure Arc. We can also verify that our Windows machine is connected in the Azure portal (Machines - Azure Arc).
 
-    ![Screenshot confirm win machine on-boarded](./thre-servers.png)
+    ![Screenshot confirm win machine on-boarded](./four-servers.png)
 
 For more information about deployment options, see the following two articles:
 - [Azure Connected Machine agent deployment options](https://learn.microsoft.com/azure/azure-arc/servers/deployment-options)
@@ -362,7 +362,7 @@ or
 
   ![Screenshot showing usage of Remote Desktop tunnelled via SSH](./rdp_via_az_cli.png)
 
-##### Task 4 - Optional: Azure Entra ID based SSH Login
+##### Task 4 - Optional: Microsoft Entra ID based SSH Login
 
 1. The _Azure AD based SSH Login – Azure Arc VM extension_ can be added from the extensions menu of the Arc server in the Azure portal. The Azure AD login extension can also be installed locally via a package manager via: `apt-get install aadsshlogin` or the following command:
 
