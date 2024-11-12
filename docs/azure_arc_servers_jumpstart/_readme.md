@@ -683,7 +683,9 @@ Pre-requisite: Azure permissions
 
 ![Screenshot showing existing Arc connected servers](./click_on_any_arc_enabled_server.png)
 
-- From the selected Windows machine click "Access control (IAM)" then add the role "Admin Center Administrator Login" to your access.
+>Note: The assignment of **Admin Center Administrator Login** is already performed for you in the NIC lab environment, but you should verify this before proceeding.
+
+- From the selected Windows machine click "Access control (IAM)" then verify that the role "Admin Center Administrator Login" is assigned to your lab user.
 
     ![Screenshot of required role for Admin Center](./Admin_centre_Add_Role_1.png)
 
