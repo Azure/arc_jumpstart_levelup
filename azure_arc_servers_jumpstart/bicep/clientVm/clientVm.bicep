@@ -1,6 +1,9 @@
 @description('The name of your Virtual Machine')
 param vmName string = 'ArcBox-Client'
 
+@description('Client Vm Sku')
+param clientVmSku string 
+
 @description('Username for the Virtual Machine')
 param windowsAdminUsername string = 'arcdemo'
 
@@ -112,7 +115,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
   }
   properties: {
     hardwareProfile: {
-      vmSize: 'Standard_E8s_v5'
+      vmSize: clientVmSku
     }
     storageProfile: {
       osDisk: {

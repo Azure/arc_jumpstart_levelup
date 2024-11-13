@@ -1,6 +1,16 @@
 @description('Azure AD tenant id for your service principal')
 //param spnTenantId string
 param spnTenantId string = tenant().tenantId
+
+@description('Client Machine SKU')
+@allowed([
+  'Standard_E8s_v5'
+  'Standard_E8s_v4'
+  'Standard_E8s_v3'
+])
+param clientVmSku string
+
+
 @description('Username for Windows account')
 param windowsAdminUsername string
 
@@ -10,6 +20,9 @@ param windowsAdminUsername string
 @secure()
 param windowsAdminPassword string
 
+@allowed([
+  true
+])
 @description('Enable automatic logon into ArcBox Virtual Machine')
 param vmAutologon bool = true
 
@@ -59,6 +72,7 @@ module clientVmDeployment 'clientVm/clientVm.bicep' = {
     vmAutologon: vmAutologon
     changeTrackingDCR: dataCollectionRules.outputs.changeTrackingDCR
     vmInsightsDCR: dataCollectionRules.outputs.vmInsightsDCR
+    clientVmSku: clientVmSku
   }
 }
 
