@@ -1,7 +1,9 @@
 @description('Azure AD tenant id for your service principal')
 //param spnTenantId string
-param spnTenantId string = tenant().tenantId
+//param spnTenantId string = tenant().tenantId
 
+var spnTenantId = tenant().tenantId
+ 
 @description('Client Machine SKU')
 @allowed([
   'Standard_E8s_v5'
@@ -20,11 +22,11 @@ param windowsAdminUsername string
 @secure()
 param windowsAdminPassword string
 
-@allowed([
-  true
-])
-@description('Enable automatic logon into ArcBox Virtual Machine')
-param vmAutologon bool = true
+// @allowed([
+//   true
+// ])
+// @description('Enable automatic logon into ArcBox Virtual Machine')
+// param vmAutologon bool = true
 
 @description('Name for your log analytics workspace')
 param logAnalyticsWorkspaceName string
@@ -38,8 +40,8 @@ param githubBranch string = 'main'
 @description('Choice to deploy Bastion to connect to the client VM')
 param deployBastion bool = false
 
-@description('User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps')
-param githubUser string = 'microsoft'
+// @description('User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps')
+// param githubUser string = 'microsoft'
 
 @description('Override default RDP port 3389 using this parameter. Default is 3389. No changes will be made to the client VM.')
 param rdpPort string = '3389'
@@ -65,11 +67,11 @@ module clientVmDeployment 'clientVm/clientVm.bicep' = {
     templateBaseUrl: templateBaseUrl
     subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
     deployBastion: deployBastion
-    githubUser: githubUser
+//    githubUser: githubUser
     location: location
     rdpPort: rdpPort
     sshPort: sshPort
-    vmAutologon: vmAutologon
+//    vmAutologon: vmAutologon
     changeTrackingDCR: dataCollectionRules.outputs.changeTrackingDCR
     vmInsightsDCR: dataCollectionRules.outputs.vmInsightsDCR
     clientVmSku: clientVmSku
