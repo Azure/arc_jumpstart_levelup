@@ -13,8 +13,8 @@ param windowsAdminUsername string = 'arcdemo'
 @secure()
 param windowsAdminPassword string
 
-@description('Enable automatic logon into ArcBox Virtual Machine')
-param vmAutologon bool = true
+// @description('Enable automatic logon into ArcBox Virtual Machine')
+// param vmAutologon bool = true
 
 @description('The Windows version for the VM. This will pick a fully patched image of this given Windows version')
 param windowsOSVersion string = '2022-datacenter-g2'
@@ -48,8 +48,6 @@ param templateBaseUrl string
 @description('Choice to deploy Bastion to connect to the client VM')
 param deployBastion bool = false
 
-@description('User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps')
-param githubUser string
 
 @description('Override default RDP port 3389 using this parameter. Default is 3389. No changes will be made to the client VM.')
 param rdpPort string = '3389'
@@ -193,7 +191,7 @@ resource vmBootstrap 'Microsoft.Compute/virtualMachines/extensions@2022-03-01' =
       fileUris: [
         uri(templateBaseUrl, 'artifacts/Bootstrap.ps1')
       ]
-      commandToExecute: 'powershell.exe -ExecutionPolicy Bypass -File Bootstrap.ps1 -adminUsername ${windowsAdminUsername} -adminPassword ${windowsAdminPassword} -spnTenantId ${spnTenantId} -spnAuthority ${spnAuthority} -subscriptionId ${subscription().subscriptionId} -resourceGroup ${resourceGroup().name} -acceptEula ${acceptEula} -azureLocation ${location} -stagingStorageAccountName ${stagingStorageAccountName} -workspaceName ${workspaceName} -templateBaseUrl ${templateBaseUrl} -githubUser ${githubUser} -rdpPort ${rdpPort} -sshPort ${sshPort} -vmAutologon ${vmAutologon} -changeTrackingDCR ${changeTrackingDCR} -vmInsightsDCR ${vmInsightsDCR}'
+      commandToExecute: 'powershell.exe -ExecutionPolicy Bypass -File Bootstrap.ps1 -adminUsername ${windowsAdminUsername} -adminPassword ${windowsAdminPassword} -spnTenantId ${spnTenantId} -spnAuthority ${spnAuthority} -subscriptionId ${subscription().subscriptionId} -resourceGroup ${resourceGroup().name} -acceptEula ${acceptEula} -azureLocation ${location} -stagingStorageAccountName ${stagingStorageAccountName} -workspaceName ${workspaceName} -templateBaseUrl ${templateBaseUrl} -rdpPort ${rdpPort} -sshPort ${sshPort} -changeTrackingDCR ${changeTrackingDCR} -vmInsightsDCR ${vmInsightsDCR}'
     }
   }
 }

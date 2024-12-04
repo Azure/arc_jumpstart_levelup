@@ -99,31 +99,13 @@ Write-Host "Creating demo VM Credentials"
 $nestedWindowsUsername = "Administrator"
 $nestedWindowsPassword = "JS123!!"
 
-# Hard-coded username and password for the nested demo 2012 VM
-#$nestedWindows2k12Username = "Administrator"
-#$nestedWindows2k12Password = "JS123!!"
-
 # Create Windows credential object
 $secWindowsPassword = ConvertTo-SecureString $nestedWindowsPassword -AsPlainText -Force
 $winCreds = New-Object System.Management.Automation.PSCredential ($nestedWindowsUsername, $secWindowsPassword)
 
-# Create Windows credential object for 2012
-#$secWindows2k12Password = ConvertTo-SecureString $nestedWindows2k12Password -AsPlainText -Force
-#$win2k12Creds = New-Object System.Management.Automation.PSCredential ($nestedWindows2k12Username, $secWindows2k12Password)
-
 # Creating Hyper-V Manager desktop shortcut
 Write-Host "Creating Hyper-V Shortcut"
 Copy-Item -Path "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Administrative Tools\Hyper-V Manager.lnk" -Destination "C:\Users\All Users\Desktop" -Force
-
-# Configure the ArcBox Hyper-V host to allow the nested VMs onboard as Azure Arc-enabled servers
-<#Write-Host "Blocking IMDS"
-Write-Output "Configure the ArcBox VM to allow the nested VMs onboard as Azure Arc-enabled servers"
-Set-Service WindowsAzureGuestAgent -StartupType Disabled -Verbose
-Stop-Service WindowsAzureGuestAgent -Force -Verbose
-
-if (!(Get-NetFirewallRule -Name BlockAzureIMDS -ErrorAction SilentlyContinue).Enabled) {
-    New-NetFirewallRule -Name BlockAzureIMDS -DisplayName "Block access to Azure IMDS" -Enabled True -Profile Any -Direction Outbound -Action Block -RemoteAddress 169.254.169.254
-}#>
 
 $cliDir = New-Item -Path "$Env:ArcBoxDir\.cli\" -Name ".servers" -ItemType Directory -Force
 if (-not $($cliDir.Parent.Attributes.HasFlag([System.IO.FileAttributes]::Hidden))) {
@@ -167,10 +149,6 @@ $Ubuntu01vmvhdPath = "${Env:ArcBoxVMDir}\${Ubuntu01vmName}.vhdx"
 $Ubuntu02vmName = "ArcBox-Ubuntu-02"
 $Ubuntu02vmvhdPath = "${Env:ArcBoxVMDir}\${Ubuntu02vmName}.vhdx"
 
-#$Win2k12vmName = "JSWin2K12Base"
-#$Win2k12MachineName = "ArcBox-Win2k12"
-#$win2k12vmvhdPath = "${Env:ArcBoxVMDir}\${Win2k12vmName}.vhdx"
-
 $SQLvmName = "ArcBox-SQL-STD"
 $SQLvmNameWSPLUS = "ArcBox-SQL"
 $SQLvmvhdPath = "$Env:ArcBoxVMDir\${SQLvmName}.vhdx"
@@ -182,7 +160,7 @@ if (!([System.IO.File]::Exists($win2k19vmvhdPath) -and [System.IO.File]::Exists(
     # Other ArcBox flavors does not have an azcopy network throughput capping
     Write-Output "Downloading nested VMs VHDX files. This can take some time, hold tight..."
     azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;${SQLvmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR --check-md5 NoCheck
-    #azcopy cp $vhdSourceFolderESU $Env:ArcBoxVMDir --include-pattern "${Win2k12vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR --check-md5 NoCheck
+   
 }
 
 # Create the nested VMs if not already created
@@ -195,13 +173,6 @@ if ((Get-VM -Name $Win2k19vmName -ErrorAction SilentlyContinue).State -ne "Runni
     Set-VMProcessor -VMName $Win2k19vmName -Count 1
     Set-VM -Name $Win2k19vmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
 }
-
-# if ((Get-VM -Name $Win2k12MachineName -ErrorAction SilentlyContinue).State -ne "Running") {
-#     Remove-VM -Name $Win2k12MachineName -Force -ErrorAction SilentlyContinue
-#     New-VM -Name $Win2k12MachineName -MemoryStartupBytes 6GB -BootDevice VHD -VHDPath $win2k12vmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
-#     Set-VMProcessor -VMName $Win2k12MachineName -Count 1
-#     Set-VM -Name $Win2k12MachineName -AutomaticStartAction Start -AutomaticStopAction ShutDown
-# }
 
 
 if ((Get-VM -Name $Win2k22vmName -ErrorAction SilentlyContinue).State -ne "Running") {
@@ -246,23 +217,10 @@ Start-VM -Name $Win2k19vmName
 Start-VM -Name $Win2k22vmName
 Start-VM -Name $Ubuntu01vmName
 Start-VM -Name $Ubuntu02vmName
-#Start-VM -Name $Win2k12MachineName
 Start-VM -Name $SQLvmName
 
 
 Start-Sleep -seconds 20
-
-# Configure WinRM for 2012 machine
-# $2012Machine = Get-VM $Win2k12MachineName
-# $privateIpAddress = $2012Machine.networkAdapters.ipaddresses[0]
-# Enable-PSRemoting
-# set-item wsman:\localhost\client\trustedhosts -Concatenate -value $privateIpAddress -Force
-# set-item wsman:\localhost\client\trustedhosts -Concatenate -value "$Win2k12vmName" -Force
-# Restart-Service WinRm -Force
-# $file = "C:\Windows\System32\drivers\etc\hosts"
-# $hostfile = Get-Content $file
-# $hostfile += "$privateIpAddress $Win2k12vmName"
-# Set-Content -Path $file -Value $hostfile -Force
 
 Write-Host "Creating  demo VM Credentials"
 # Hard-coded username and password for the nested demo VMs
@@ -278,15 +236,10 @@ Write-Host "Restarting Network Adapters"
 Start-Sleep -Seconds 20
 Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
 Invoke-Command -VMName $Win2k22vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
-#$session = New-PSSession -ComputerName $Win2k12vmName -Credential $win2k12Creds
-#Invoke-Command -session $session -Script {Get-NetAdapter | Restart-NetAdapter} -AsJob | Receive-Job -Wait
-#Exit-PSSession
 Invoke-Command -VMName $SQLvmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
 
 Start-Sleep -Seconds 10
 
-# Renaming 2012 machine
-#Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { Rename-Computer -NewName $using:Win2k12MachineName -Restart} -Credential $win2k12Creds
 
 # Getting the Ubuntu nested VM IP address
 $Ubuntu01VmIp = Get-VM -Name $Ubuntu01vmName | Select-Object -ExpandProperty NetworkAdapters | Select-Object -ExpandProperty IPAddresses | Select-Object -Index 0
@@ -298,7 +251,6 @@ Start-Sleep -Seconds 20
 Write-Output "Transferring installation script to nested Windows VMs..."
 Copy-VMFile $Win2k19vmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
 Copy-VMFile $Win2k22vmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
-#Copy-VMFile $Win2k12MachineName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
 
 Copy-VMFile $SQLvmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
 Copy-VMFile $SQLvmName -SourcePath "$agentScript\testDefenderForSQL.ps1" -DestinationPath "$Env:ArcBoxDir\testDefenderForSQL.ps1" -CreateFullPath -FileSource Host -Force
@@ -306,11 +258,6 @@ Copy-VMFile $SQLvmName -SourcePath "$agentScript\SqlAdvancedThreatProtectionShel
 
 (Get-Content -path "$agentScript\installArcAgentUbuntu.sh" -Raw) -replace '\$accessToken', "'$accessToken'" -replace '\$resourceGroup', "'$Env:resourceGroup'" -replace '\$spnTenantId', "'$Env:spnTenantId'" -replace '\$azureLocation', "'$Env:azureLocation'" -replace '\$subscriptionId', "'$Env:subscriptionId'" | Set-Content -Path "$agentScript\installArcAgentModifiedUbuntu.sh"
 
-# Download and restore AdventureWorks Database to SQLvm - No need in new image
-# Write-Host "Restoring AdventureWorks database"
-# Copy-VMFile $SQLvmName -SourcePath "$Env:ArcBoxDir\AdventureWorksLT2019.bak" -DestinationPath "$Env:ArcBoxDir\AdventureWorksLT2019.bak" -CreateFullPath -FileSource Host -Force
-# Start-Sleep -Seconds 3
-# Invoke-Command -VMName $SQLvmName -ScriptBlock {Restore-SqlDatabase -ServerInstance $Env:COMPUTERNAME -Database "AdventureWorksLT2019" -BackupFile C:\ArcBox\AdventureWorksLT2019.bak -PassThru -Verbose} -Credential $winCreds
 
 #Rename SQL VM to workshop plus name
 Rename-VM $SQLvmName -NewName $SQLvmNameWSPLUS 
@@ -328,7 +275,6 @@ Write-Host "Onboarding Arc-enabled servers"
 $Ubuntu02vmvhdPath = "${Env:ArcBoxVMDir}\${Ubuntu02vmName}.vhdx"
 Write-Output "Onboarding the nested Windows VMs as Azure Arc-enabled servers"
 Invoke-Command -VMName $Win2k19vmName -ScriptBlock { powershell -File $Using:nestedVMArcBoxDir\installArcAgent.ps1  -accessToken $Using:accessToken, -spnTenantId $Using:spnTenantId, -subscriptionId $Using:subscriptionId, -resourceGroup $Using:resourceGroup, -azureLocation $Using:azureLocation } -Credential $winCreds
-#Invoke-Command -ComputerName $Win2k12vmName -ScriptBlock { powershell -File $Using:nestedVMArcBoxDir\installArcAgent.ps1 -accessToken $Using:accessToken, -spnTenantId $Using:spnTenantId, -subscriptionId $Using:subscriptionId, -resourceGroup $Using:resourceGroup, -azureLocation $Using:azureLocation } -Credential $win2k12Creds
 
 # Test Defender for Servers
 #Write-Host "Simulating threats to generate alerts from Defender for Cloud"
@@ -336,10 +282,6 @@ $remoteScriptFile = "$Env:ArcBoxDir\testDefenderForServers.cmd"
 Copy-VMFile $Win2k19vmName -SourcePath "$agentScript\testDefenderForServers.cmd" -DestinationPath $remoteScriptFile -CreateFullPath -FileSource Host -Force
 Copy-VMFile $Win2k22vmName -SourcePath "$agentScript\testDefenderForServers.cmd" -DestinationPath $remoteScriptFile -CreateFullPath -FileSource Host -Force
 
-#$cmdExePath = "C:\Windows\System32\cmd.exe"
-#$cmdArguments = "/C `"$remoteScriptFile`""
-
-#Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Start-Process -FilePath $Using:cmdExePath -ArgumentList $Using:cmdArguments } -Credential $winCreds
 
 Write-Output "Onboarding the nested Linux VMs as an Azure Arc-enabled servers"
 $ubuntuSession = New-SSHSession -ComputerName $Ubuntu01VmIp -Credential $linCreds -Force -WarningAction SilentlyContinue
@@ -413,25 +355,6 @@ az connectedmachine extension create --name ChangeTracking-Linux --publisher Mic
 Write-Host "Installing the Azure Update Manager agent on the Arc-enabled machines"
 az connectedmachine assess-patches --resource-group $resourceGroup --name $Win2k19vmName --no-wait
 az connectedmachine assess-patches --resource-group $resourceGroup --name $Ubuntu01vmName --no-wait
-
-# Write-Host "Installing the AdminCenter extension on the Arc-enabled windows machine"
-## $Setting = "{'port':'6516'}"
-#$Setting = '{\"port\":\"6516\"}'
-# az connectedmachine extension create --name AdminCenter --publisher Microsoft.AdminCenter --type AdminCenter --machine-name $Win2k19vmName --resource-group $resourceGroup --location $azureLocation --settings $Setting --enable-auto-upgrade --no-wait
-# $putPayload = "{'properties': {'type': 'default'}}"
-# Invoke-AzRestMethod -Method PUT -Uri "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.HybridConnectivity/endpoints/default?api-version=2023-03-15" -Payload $putPayload
-# $patch = @{ "properties" =  @{ "serviceName" = "WAC"; "port" = 6516}}
-# $patchPayload = ConvertTo-Json $patch
-# Invoke-AzRestMethod -Method PUT -Path /subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/WAC?api-version=2023-03-15 -Payload $patchPayload
-#$port = "6516"
-#$portint = 6516
-#$Setting = @{"port" = $port} 
-#New-AzConnectedMachineExtension -Name "AdminCenter" -ResourceGroupName $resourceGroup -MachineName $Win2k19vmName -Location $azureLocation -Publisher "Microsoft.AdminCenter" -Settings $Setting -ExtensionType "AdminCenter" -EnableAutomaticUpgrade -NoWait
-#$putPayload = "{'properties': {'type': 'default'}}"
-#Invoke-AzRestMethod -Method PUT -Uri "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.HybridConnectivity/endpoints/default?api-version=2023-03-15" -Payload $putPayload
-#$patch = @{ "properties" =  @{ "serviceName" = "WAC"; "port" = $portint}} 
-#$patchPayload = ConvertTo-Json $patch 
-#Invoke-AzRestMethod -Method PUT -Path /subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.HybridCompute/machines/$Win2k19vmName/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/WAC?api-version=2023-03-15 -Payload $patchPayload
 
 Write-Host "Installing the dependencyAgent extension on the Arc-enabled windows machine"
 $dependencyAgentSetting = '{\"enableAMA\":\"true\"}'
@@ -509,18 +432,5 @@ $imgPath = "$Env:ArcBoxDir\wallpaper.png"
 Add-Type $code
 [Win32.Wallpaper]::SetWallpaper($imgPath)
 
-<# Send telemtry
-$Url = "https://arcboxleveluptelemtry.azurewebsites.net/api/triggerDeployment?"
-$rowKey = -join ((97..122) | Get-Random -Count 10 | ForEach-Object { [char]$_ })
-$headers = @{
-    'Content-Type' = 'application/json'
-}
-$Body = @{
-    Location     = $azureLocation
-    PartitionKey = "Location"
-    RowKey       = $rowKey
-}
-$Body = $Body | ConvertTo-Json
-Invoke-RestMethod -Method 'Post' -Uri $url -Body $body -Headers $headers
-#>
+
 Stop-Transcript
