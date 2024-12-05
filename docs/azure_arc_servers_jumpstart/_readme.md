@@ -1,4 +1,4 @@
-# Azure Arc Masterclass labs - Nordic Infrastructure Conference 2024
+# Azure Arc Masterclass labs
 
 ## Goals
 
@@ -26,7 +26,7 @@ After completion of this session, you will be able to:
 
 ## Lab Environment
 
-ArcBox NICConf edition is a special “flavor” of ArcBox that is intended for users who want to experience Azure Arc-enabled servers' capabilities in a sandbox environment. Screenshot below shows layout of the lab environment.
+ArcBox Lab edition is a special “flavor” of ArcBox that is intended for users who want to experience Azure Arc-enabled servers' capabilities in a sandbox environment. Screenshot below shows layout of the lab environment.
 
   ![Screenshot showing ArcBox architecture](ArcBox-architecture.png)
 
@@ -430,7 +430,7 @@ or
     - **Virtual Machine Administrator Login**: Users who have this role assigned can log in to an Azure virtual machine with administrator privileges.
     - **Virtual Machine User Login**: Users who have this role assigned can log in to an Azure virtual machine with regular user privileges.
 
->Note: The assignment of **Virtual Machine Administrator Login** is already performed for you in the NIC lab environment, but you should verify this before proceeding.
+>Note: The assignment of **Virtual Machine Administrator Login** is already performed for you in the lab environment, but you should verify this before proceeding.
 
 3. After verifying that one of the two roles for your personal Entra ID lab user has been assigned, run the following command to connect to _ArcBox-Ubuntu-01_ using SSH and AAD/Entra ID-based authentication:
 
@@ -694,7 +694,7 @@ Pre-requisite: Azure permissions
 
 ![Screenshot showing existing Arc connected servers](./click_on_any_arc_enabled_server.png)
 
->Note: The assignment of **Admin Center Administrator Login** is already performed for you in the NIC lab environment, but you should verify this before proceeding.
+>Note: The assignment of **Admin Center Administrator Login** is already performed for you in the lab environment, but you should verify this before proceeding.
 
 - From the selected Windows machine click "Access control (IAM)" then verify that the role "Admin Center Administrator Login" is assigned to your lab user.
 
@@ -738,7 +738,7 @@ In this module, you will learn to create and assign a custom Automanage Machine 
 >**Note:** This lab section is also available in notebook-format, which the presenter will use. Should you prefer that instead of copying/pasting commands from the lab instructions - run the following from Windows Terminal within the _ArcBox-Client_ VM:
 
 ```PowerShell
-code 'C:\NICConf\docs\azure_arc_servers_jumpstart\notebooks\module-6-machine-configuration.dib'
+code 'C:\arc_master_class\docs\azure_arc_servers_jumpstart\notebooks\module-6-machine-configuration.dib'
 ```
 
 #### Task 1: Create Automanage Machine Configuration custom configurations for Windows
@@ -1087,7 +1087,7 @@ If you have access to multiple tenants, use the `--tenant` switch.
 
 #### Deployment Option 1: Azure portal
 
-- Click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Farc_jumpstart_levelup%2Fnicconf%2Fazure_arc_servers_jumpstart%2FARM%2Fazuredeploy.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters.
+- Click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Farc_jumpstart_levelup%2Farc_master_class%2Fazure_arc_servers_jumpstart%2FARM%2Fazuredeploy.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters.
 
   ![Screenshot showing Azure portal deployment of ArcBox](./portaldeploy.png)
 
@@ -1108,7 +1108,7 @@ If you have access to multiple tenants, use the `--tenant` switch.
 
   Set-Location -Path $folderPath
   git clone https://github.com/azure/arc_jumpstart_levelup.git
-  git checkout nicconf
+  git checkout arc_master_class
   Set-Location -Path "azure_arc\azure_jumpstart_arcbox_servers_levelup\bicep"
   ```
 
@@ -1118,7 +1118,7 @@ If you have access to multiple tenants, use the `--tenant` switch.
   az bicep upgrade
   ```
 
-- Edit the [main.bicepparam](https://github.com/Azure/arc_jumpstart_levelup/blob/nicconf/azure_arc_servers_jumpstart/bicep/main.bicepparam) template parameters file and supply some values for your environment.
+- Edit the [main.bicepparam](https://github.com/Azure/arc_jumpstart_levelup/blob/arc_master_class/azure_arc_servers_jumpstart/bicep/main.bicepparam) template parameters file and supply some values for your environment.
   - _`spnTenantId`_ - Your Azure tenant id
   - _`windowsAdminUsername`_ - Client Windows VM Administrator name
   - _`windowsAdminPassword`_ - Client Windows VM Password. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
@@ -1129,7 +1129,7 @@ Example parameters-file:
 
   ![Screenshot showing example parameters](./parameters_bicep.png)
 
-- Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/Azure/arc_jumpstart_levelup/blob/nicconf/azure_arc_servers_jumpstart/bicep) and run the below command:
+- Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/Azure/arc_jumpstart_levelup/blob/arc_master_class/azure_arc_servers_jumpstart/bicep) and run the below command:
 
   ```shell
   az group create --name "<resource-group-name>" --location "<preferred-location>"
