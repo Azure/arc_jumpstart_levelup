@@ -1,4 +1,4 @@
-# Azure Arc Masterclass - Nordic Infrastructure Conference 2024
+# Azure Arc Masterclass
 
 ## Resources
 
@@ -21,7 +21,6 @@
 - Communities
   - [https://aka.ms/AzureArcMonthlyMeetup](https://aka.ms/AzureArcMonthlyMeetup)
 - Misc
-  - [A Guide to Adaptive Cloud at Microsoft Ignite 2024](https://techcommunity.microsoft.com/blog/azurearcblog/a-guide-to-adaptive-cloud-at-microsoft-ignite-2024/4285028)
   - [Windows Server Update Services (WSUS) deprecation](https://techcommunity.microsoft.com/blog/windows-itpro-blog/windows-server-update-services-wsus-deprecation/4250436)
   - [Windows Server Management enabled by Azure Arc](https://learn.microsoft.com/azure/azure-arc/servers/windows-server-management-overview?tabs=portal)
   - [PowerShell remoting to Azure Arc-enabled servers](https://learn.microsoft.com/azure/azure-arc/servers/ssh-arc-powershell-remoting)
