@@ -43,6 +43,14 @@ param location string = resourceGroup().location
 @description('Your email address to configure alerts.')
 param emailAddress string
 
+@description('The availability zone for the Virtual Machine')
+@allowed([
+  '1'
+  '2'
+  '3'
+])
+param zones string = '1'
+
 var vmAutologon = true
 
 var githubUser = 'microsoft'
@@ -70,6 +78,7 @@ module clientVmDeployment 'clientVm/clientVm.bicep' = {
     rdpPort: rdpPort
     changeTrackingDCR: dataCollectionRules.outputs.changeTrackingDCR
     vmInsightsDCR: dataCollectionRules.outputs.vmInsightsDCR
+    zones: zones
   }
 }
 

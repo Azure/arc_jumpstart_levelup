@@ -17,7 +17,7 @@ param rdpPort string = '3389'
 param windowsAdminPassword string
 
 @description('The Windows version for the VM. This will pick a fully patched image of this given Windows version')
-param windowsOSVersion string = '2022-datacenter-g2'
+param windowsOSVersion string = '2025-datacenter-g2'
 
 @description('Location for all resources')
 param location string = resourceGroup().location
@@ -76,13 +76,21 @@ param deployBastion bool = false
 param githubUser string
 
 @description('The SKU of the VMs disk')
-param vmsDiskSku string = 'Premium_LRS'
+param vmsDiskSku string = 'PremiumV2_LRS'
 
 @description('ChangeTracking DCR Id')
 param changeTrackingDCR string = ''
 
 @description('VMInsights DCR Id')
 param vmInsightsDCR string = ''
+
+@description('The availability zone for the Virtual Machine')
+@allowed([
+  '1'
+  '2'
+  '3'
+])
+param zones string = '1'
 
 var bastionName = 'ArcBox-Bastion'
 var publicIpAddressName = deployBastion == false ? '${vmName}-PIP' : '${bastionName}-PIP'
@@ -114,19 +122,21 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2022-01-01' = {
 resource publicIpAddress 'Microsoft.Network/publicIpAddresses@2022-01-01' = if (deployBastion == false) {
   name: publicIpAddressName
   location: location
+  zones: [zones]
   properties: {
     publicIPAllocationMethod: 'Static'
     publicIPAddressVersion: 'IPv4'
     idleTimeoutInMinutes: 4
   }
   sku: {
-    name: 'Basic'
+    name: 'Standard'
   }
 }
 
 resource vmDisk 'Microsoft.Compute/disks@2023-04-02' = {
   location: location
   name: '${vmName}-VMsDisk'
+  zones: [zones]
   sku: {
     name: vmsDiskSku
   }
@@ -134,14 +144,16 @@ resource vmDisk 'Microsoft.Compute/disks@2023-04-02' = {
     creationData: {
       createOption: 'Empty'
     }
-    diskSizeGB: 1024
-    burstingEnabled: true
+    diskSizeGB: 256
+    diskMBpsReadWrite: 200
+    diskIOPSReadWrite: 3000
   }
 }
 
 resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
   name: vmName
   location: location
+  zones: [zones]
   tags: resourceTags
   identity: {
     type: 'SystemAssigned'
@@ -158,7 +170,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
         managedDisk: {
           storageAccountType: osDiskType
         }
-        diskSizeGB: 1024
+        diskSizeGB: 127
       }
       imageReference: {
         publisher: 'MicrosoftWindowsServer'

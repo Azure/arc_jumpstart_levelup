@@ -12,7 +12,5 @@ param deployBastion = false
 
 param rdpPort = '443'
 
-param emailAddress = 'nicconf@outlook.com'
-
-
+param emailAddress = 'user@contoso.com'
 
