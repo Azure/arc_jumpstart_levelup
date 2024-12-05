@@ -45,7 +45,7 @@ $(Invoke-SSHCommand -SSHSession $ubuntuSession -Command $Command -Timeout 600 -W
 # Adding desktop shortcut for lab instructions
 $WshShell = New-Object -comObject WScript.Shell
 $Shortcut = $WshShell.CreateShortcut("$Env:USERPROFILE\Desktop\Lab instructions.lnk")
-$Shortcut.TargetPath = "https://aka.ms/2024-nic-labs"
+$Shortcut.TargetPath = "https://aka.ms/arc-master-class-labs"
 $Shortcut.IconLocation = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
 $shortcut.WindowStyle = 3
 $shortcut.Save()
@@ -58,11 +58,11 @@ Get-ChildItem "C:\Users\Public\Desktop\*Edge.lnk" | Remove-Item
 Get-ChildItem "C:\Users\Student\Desktop\*Edge.lnk" | Remove-Item
 
 # Cloning the Azure Arc Jumpstart levelup repository
-git clone https://github.com/Azure/arc_jumpstart_levelup.git C:\NICConf
+git clone https://github.com/Azure/arc_jumpstart_levelup.git C:\arc_master_class
 
-Set-Location C:\NICConf
+Set-Location C:\arc_master_class
 
-git checkout nicconf
+git checkout arc_master_class
 
 # Workaround for PowerShell modules installing into the wrong directory from Polyglot notebooks
 Get-Item C:\Users\student\Documents\WindowsPowerShell* | Remove-Item -Force -Recurse
