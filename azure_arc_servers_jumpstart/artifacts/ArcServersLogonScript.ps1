@@ -137,6 +137,18 @@ if ($Env:flavor -ne "DevOps") {
     $null = Select-AzSubscription -SubscriptionId $subscriptionId
     $accessToken = (Get-AzAccessToken).Token
 
+    $DeploymentProgressString = "Started ArcServersLogonScript"
+
+    $tags = Get-AzResourceGroup -Name $env:resourceGroup | Select-Object -ExpandProperty Tags
+
+    if ($null -ne $tags) {
+        $tags["DeploymentProgress"] = $DeploymentProgressString
+    } else {
+        $tags = @{"DeploymentProgress" = $DeploymentProgressString}
+    }
+
+    $null = Set-AzResourceGroup -ResourceGroupName $env:resourceGroup -Tag $tags
+
     <# Register Azure providers - move to prerequisites script
     Write-Header "Registering Providers"
     @("Microsoft.HybridCompute","Microsoft.HybridConnectivity","Microsoft.GuestConfiguration","Microsoft.AzureArcData") | ForEach-Object -Parallel {
@@ -320,6 +332,18 @@ if ($Env:flavor -ne "DevOps") {
     if (($Env:flavor -eq "Full") -or ($Env:flavor -eq "ITPro")) {
         Write-Header "Fetching Nested VMs"
 
+        $DeploymentProgressString = "Downloading Nested VM disks"
+
+        $tags = Get-AzResourceGroup -Name $env:resourceGroup | Select-Object -ExpandProperty Tags
+
+        if ($null -ne $tags) {
+            $tags["DeploymentProgress"] = $DeploymentProgressString
+        } else {
+            $tags = @{"DeploymentProgress" = $DeploymentProgressString}
+        }
+
+        $null = Set-AzResourceGroup -ResourceGroupName $env:resourceGroup -Tag $tags
+
         $Win2k19vmName = "ArcBox-Win2K19"
         $win2k19vmvhdPath = "${Env:ArcBoxVMDir}\${Win2k19vmName}.vhdx"
 
@@ -346,7 +370,15 @@ if ($Env:flavor -ne "DevOps") {
 
         }
 
+        $DeploymentProgressString = "Configuring Nested VMs"
 
+        $tags = Get-AzResourceGroup -Name $env:resourceGroup | Select-Object -ExpandProperty Tags
+
+        if ($null -ne $tags) {
+            $tags["DeploymentProgress"] = $DeploymentProgressString
+        } else {
+            $tags = @{"DeploymentProgress" = $DeploymentProgressString}
+        }
 
         # Create the nested VMs if not already created
         Write-Header "Create Hyper-V VMs"

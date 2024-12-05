@@ -108,3 +108,13 @@ if (Get-ScheduledTask | Where-Object {$_.TaskName -eq $TaskName}) {
     logoff.exe
 
 }
+
+$DeploymentProgressString = "Completed"
+
+$tags = Get-AzResourceGroup -Name $env:resourceGroup | Select-Object -ExpandProperty Tags
+
+if ($null -ne $tags) {
+    $tags["DeploymentProgress"] = $DeploymentProgressString
+} else {
+    $tags = @{"DeploymentProgress" = $DeploymentProgressString}
+}
