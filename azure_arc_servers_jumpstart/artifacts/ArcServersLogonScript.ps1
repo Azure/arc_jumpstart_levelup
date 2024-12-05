@@ -15,7 +15,7 @@ $changeTrackingDCR = $env:changeTrackingDCR
 $vmInsightsDCR = $env:vmInsightsDCR
 
 # Moved VHD storage account details here to keep only in place to prevent duplicates.
-$vhdSourceFolder = "https://jumpstartprodsg.blob.core.windows.net/arcbox/prod/*"
+$vhdSourceFolder = "https://jumpstartprodsg.blob.core.windows.net/arcbox/preprod/*"
 $vhdSourceFolderESU = "https://jumpstartprodsg.blob.core.windows.net/scenarios/prod/*"
 
 # Archive existing log file and create new one
@@ -41,14 +41,6 @@ foreach ($key in $keys) {
         Write-Verbose "Key $key does not exist."
     }
 }
-
-# Create Windows Terminal desktop shortcut
-$WshShell = New-Object -comObject WScript.Shell
-$WinTerminalPath = (Get-ChildItem "C:\Program Files\WindowsApps" -Recurse | Where-Object { $_.name -eq "wt.exe" }).FullName
-$Shortcut = $WshShell.CreateShortcut("$Env:USERPROFILE\Desktop\Windows Terminal.lnk")
-$Shortcut.TargetPath = $WinTerminalPath
-$shortcut.WindowStyle = 3
-$shortcut.Save()
 
 # Configure Windows Terminal as the default terminal application
 $registryPath = "HKCU:\Console\%%Startup"
@@ -350,11 +342,7 @@ if ($Env:flavor -ne "DevOps") {
 
                 # The "Full" ArcBox flavor has an azcopy network throughput capping
                 Write-Output "Downloading nested VMs VHDX files. This can take some time, hold tight..."
-                azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR
-
-                # Windows Server 2025
-                $Win2K25VhdxUri = 'https://arcboxvhdsb24xrypy.blob.core.windows.net/vhdx/ArcBox-Win2K25.vhdx'
-                azcopy cp $Win2K25VhdxUri $Env:ArcBoxVMDir --check-length=false --log-level=ERROR
+                azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Win2k25vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR
 
         }
 
