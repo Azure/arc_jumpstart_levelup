@@ -75,6 +75,16 @@ if ($null -ne $tags) {
 
 $null = Set-AzResourceGroup -ResourceGroupName $env:resourceGroup -Tag $tags
 
+$DeploymentProgressString = "Completed"
+
+$tags = Get-AzResourceGroup -Name $env:resourceGroup | Select-Object -ExpandProperty Tags
+
+if ($null -ne $tags) {
+    $tags["DeploymentProgress"] = $DeploymentProgressString
+} else {
+    $tags = @{"DeploymentProgress" = $DeploymentProgressString}
+}
+
 # Setup scheduled task for running tests on each logon
 $TaskName = "ArcBox Pester tests"
 $ActionScript = "C:\ArcBox\Tests\Invoke-Test.ps1"
@@ -107,14 +117,4 @@ if (Get-ScheduledTask | Where-Object {$_.TaskName -eq $TaskName}) {
     # logoff the user to apply the wallpaper in proper scaling and refresh tests results at first logon
     logoff.exe
 
-}
-
-$DeploymentProgressString = "Completed"
-
-$tags = Get-AzResourceGroup -Name $env:resourceGroup | Select-Object -ExpandProperty Tags
-
-if ($null -ne $tags) {
-    $tags["DeploymentProgress"] = $DeploymentProgressString
-} else {
-    $tags = @{"DeploymentProgress" = $DeploymentProgressString}
 }
