@@ -149,6 +149,11 @@ if ($Env:flavor -ne "DevOps") {
 
     $null = Set-AzResourceGroup -ResourceGroupName $env:resourceGroup -Tag $tags
 
+    $existingVMDisk = Get-AzDisk -ResourceGroupName $env:resourceGroup | Where-Object name -like *VMsDisk
+
+    # Update disk IOPS and throughput before downloading nested VMs
+    az disk update --resource-group $env:resourceGroup --name $existingVMDisk.Name --disk-iops-read-write 80000 --disk-mbps-read-write 1200
+
     <# Register Azure providers - move to prerequisites script
     Write-Header "Registering Providers"
     @("Microsoft.HybridCompute","Microsoft.HybridConnectivity","Microsoft.GuestConfiguration","Microsoft.AzureArcData") | ForEach-Object -Parallel {
@@ -369,6 +374,9 @@ if ($Env:flavor -ne "DevOps") {
                 azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Win2k25vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR
 
         }
+
+        # Update disk IOPS and throughput after downloading nested VMs (note: a disk's performance tier can be downgraded only once every 12 hours)
+        az disk update --resource-group $env:resourceGroup --name $existingVMDisk.Name --disk-iops-read-write $existingVMDisk.DiskIOPSReadWrite --disk-mbps-read-write $existingVMDisk.DiskMBpsReadWrite
 
         $DeploymentProgressString = "Configuring Nested VMs"
 
