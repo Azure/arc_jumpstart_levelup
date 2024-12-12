@@ -2,7 +2,7 @@
 
 ## Resources
 
-- [Presentation](https://1drv.ms/b/s!ArK2eDJgoamhh6I8XmA5Srd1d5F-eA?e=eGec88)
+- [Presentation](https://1drv.ms/b/s!AuLRjpNjJWdOgaT5Ou0HGXETaIgxx5k?e=ii3NTz)
 - [Azure Arc Webpage](https://aka.ms/arc)
 - Technical documentation
   - [https://aka.ms/AzureArcDocs](https://aka.ms/AzureArcDocs)
