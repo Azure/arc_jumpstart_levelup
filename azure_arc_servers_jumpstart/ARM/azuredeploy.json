@@ -4,16 +4,22 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.30.23.60470",
-      "templateHash": "7690687807801524807"
+
+      "version": "0.31.34.60546",
+      "templateHash": "18096326906305942218"
+
     }
   },
   "parameters": {
-    "spnTenantId": {
+    "clientVmSku": {
       "type": "string",
-      "defaultValue": "[tenant().tenantId]",
+      "allowedValues": [
+        "Standard_E8s_v5",
+        "Standard_E8s_v4",
+        "Standard_E8s_v3"
+      ],
       "metadata": {
-        "description": "Azure AD tenant id for your service principal"
+        "description": "Client Machine SKU"
       }
     },
     "clientVmSku": {
@@ -41,16 +47,8 @@
         "description": "Password for Windows account. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long"
       }
     },
-    "vmAutologon": {
-      "type": "bool",
-      "defaultValue": true,
-      "allowedValues": [
-        true
-      ],
-      "metadata": {
-        "description": "Enable automatic logon into ArcBox Virtual Machine"
-      }
-    },
+
+
     "logAnalyticsWorkspaceName": {
       "type": "string",
       "metadata": {
@@ -76,13 +74,6 @@
       "defaultValue": false,
       "metadata": {
         "description": "Choice to deploy Bastion to connect to the client VM"
-      }
-    },
-    "githubUser": {
-      "type": "string",
-      "defaultValue": "microsoft",
-      "metadata": {
-        "description": "User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps"
       }
     },
     "rdpPort": {
@@ -111,6 +102,7 @@
     }
   },
   "variables": {
+    "spnTenantId": "[tenant().tenantId]",
     "templateBaseUrl": "[format('https://raw.githubusercontent.com/{0}/arc_jumpstart_levelup/{1}/azure_arc_servers_jumpstart/', parameters('githubAccount'), parameters('githubBranch'))]"
   },
   "resources": [
@@ -131,7 +123,7 @@
             "value": "[parameters('windowsAdminPassword')]"
           },
           "spnTenantId": {
-            "value": "[parameters('spnTenantId')]"
+            "value": "[variables('spnTenantId')]"
           },
           "workspaceName": {
             "value": "[parameters('logAnalyticsWorkspaceName')]"
@@ -148,9 +140,6 @@
           "deployBastion": {
             "value": "[parameters('deployBastion')]"
           },
-          "githubUser": {
-            "value": "[parameters('githubUser')]"
-          },
           "location": {
             "value": "[parameters('location')]"
           },
@@ -159,9 +148,6 @@
           },
           "sshPort": {
             "value": "[parameters('sshPort')]"
-          },
-          "vmAutologon": {
-            "value": "[parameters('vmAutologon')]"
           },
           "changeTrackingDCR": {
             "value": "[reference(resourceId('Microsoft.Resources/deployments', 'dataCollectionRules'), '2022-09-01').outputs.changeTrackingDCR.value]"
@@ -179,8 +165,10 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.23.60470",
-              "templateHash": "9827550231405597186"
+
+              "version": "0.31.34.60546",
+              "templateHash": "11393393397831237490"
+
             }
           },
           "parameters": {
@@ -210,13 +198,6 @@
               "maxLength": 123,
               "metadata": {
                 "description": "Password for Windows account. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long"
-              }
-            },
-            "vmAutologon": {
-              "type": "bool",
-              "defaultValue": true,
-              "metadata": {
-                "description": "Enable automatic logon into ArcBox Virtual Machine"
               }
             },
             "windowsOSVersion": {
@@ -282,12 +263,6 @@
               "defaultValue": false,
               "metadata": {
                 "description": "Choice to deploy Bastion to connect to the client VM"
-              }
-            },
-            "githubUser": {
-              "type": "string",
-              "metadata": {
-                "description": "User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps"
               }
             },
             "rdpPort": {
@@ -468,7 +443,7 @@
                   "fileUris": [
                     "[uri(parameters('templateBaseUrl'), 'artifacts/Bootstrap.ps1')]"
                   ],
-                  "commandToExecute": "[format('powershell.exe -ExecutionPolicy Bypass -File Bootstrap.ps1 -adminUsername {0} -adminPassword {1} -spnTenantId {2} -spnAuthority {3} -subscriptionId {4} -resourceGroup {5} -acceptEula {6} -azureLocation {7} -stagingStorageAccountName {8} -workspaceName {9} -templateBaseUrl {10} -githubUser {11} -rdpPort {12} -sshPort {13} -vmAutologon {14} -changeTrackingDCR {15} -vmInsightsDCR {16}', parameters('windowsAdminUsername'), parameters('windowsAdminPassword'), parameters('spnTenantId'), parameters('spnAuthority'), subscription().subscriptionId, resourceGroup().name, parameters('acceptEula'), parameters('location'), parameters('stagingStorageAccountName'), parameters('workspaceName'), parameters('templateBaseUrl'), parameters('githubUser'), parameters('rdpPort'), parameters('sshPort'), parameters('vmAutologon'), parameters('changeTrackingDCR'), parameters('vmInsightsDCR'))]"
+                  "commandToExecute": "[format('powershell.exe -ExecutionPolicy Bypass -File Bootstrap.ps1 -adminUsername {0} -adminPassword {1} -spnTenantId {2} -spnAuthority {3} -subscriptionId {4} -resourceGroup {5} -acceptEula {6} -azureLocation {7} -stagingStorageAccountName {8} -workspaceName {9} -templateBaseUrl {10} -rdpPort {11} -sshPort {12} -changeTrackingDCR {13} -vmInsightsDCR {14}', parameters('windowsAdminUsername'), parameters('windowsAdminPassword'), parameters('spnTenantId'), parameters('spnAuthority'), subscription().subscriptionId, resourceGroup().name, parameters('acceptEula'), parameters('location'), parameters('stagingStorageAccountName'), parameters('workspaceName'), parameters('templateBaseUrl'), parameters('rdpPort'), parameters('sshPort'), parameters('changeTrackingDCR'), parameters('vmInsightsDCR'))]"
                 }
               },
               "dependsOn": [
@@ -526,8 +501,10 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.23.60470",
-              "templateHash": "7371293657185833013"
+
+              "version": "0.31.34.60546",
+              "templateHash": "11943962765260910834"
+
             }
           },
           "parameters": {
@@ -605,8 +582,10 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.23.60470",
-              "templateHash": "1264326893524065001"
+
+              "version": "0.31.34.60546",
+              "templateHash": "6038047711933918586"
+
             }
           },
           "parameters": {
@@ -982,8 +961,10 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.23.60470",
-              "templateHash": "8439283899680804375"
+
+              "version": "0.31.34.60546",
+              "templateHash": "17776516872953848117"
+
             }
           },
           "parameters": {
@@ -4582,8 +4563,10 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.23.60470",
-              "templateHash": "9266753261100883948"
+
+              "version": "0.31.34.60546",
+              "templateHash": "14788681646923989692"
+
             }
           },
           "parameters": {
@@ -4768,8 +4751,10 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.30.23.60470",
-                      "templateHash": "2034124212146732552"
+
+                      "version": "0.31.34.60546",
+                      "templateHash": "6398268093527310672"
+
                     }
                   },
                   "parameters": {
@@ -4968,8 +4953,10 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.23.60470",
-              "templateHash": "16729304523736137038"
+
+              "version": "0.31.34.60546",
+              "templateHash": "13612379551106682197"
+
             }
           },
           "parameters": {
