@@ -19,11 +19,13 @@ param windowsAdminUsername string
 @secure()
 param windowsAdminPassword string
 
+
 // @allowed([
 //   true
 // ])
 // @description('Enable automatic logon into ArcBox Virtual Machine')
 // param vmAutologon bool = true
+
 
 @description('Name for your log analytics workspace')
 param logAnalyticsWorkspaceName string

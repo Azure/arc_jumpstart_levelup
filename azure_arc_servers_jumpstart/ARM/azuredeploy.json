@@ -4,11 +4,24 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
+
       "version": "0.31.34.60546",
       "templateHash": "18096326906305942218"
+
     }
   },
   "parameters": {
+    "clientVmSku": {
+      "type": "string",
+      "allowedValues": [
+        "Standard_E8s_v5",
+        "Standard_E8s_v4",
+        "Standard_E8s_v3"
+      ],
+      "metadata": {
+        "description": "Client Machine SKU"
+      }
+    },
     "clientVmSku": {
       "type": "string",
       "allowedValues": [
@@ -34,6 +47,8 @@
         "description": "Password for Windows account. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long"
       }
     },
+
+
     "logAnalyticsWorkspaceName": {
       "type": "string",
       "metadata": {
@@ -150,8 +165,10 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
+
               "version": "0.31.34.60546",
               "templateHash": "11393393397831237490"
+
             }
           },
           "parameters": {
@@ -484,8 +501,10 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
+
               "version": "0.31.34.60546",
               "templateHash": "11943962765260910834"
+
             }
           },
           "parameters": {
@@ -563,8 +582,10 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
+
               "version": "0.31.34.60546",
               "templateHash": "6038047711933918586"
+
             }
           },
           "parameters": {
@@ -940,8 +961,10 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
+
               "version": "0.31.34.60546",
               "templateHash": "17776516872953848117"
+
             }
           },
           "parameters": {
@@ -4540,8 +4563,10 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
+
               "version": "0.31.34.60546",
               "templateHash": "14788681646923989692"
+
             }
           },
           "parameters": {
@@ -4726,8 +4751,10 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
+
                       "version": "0.31.34.60546",
                       "templateHash": "6398268093527310672"
+
                     }
                   },
                   "parameters": {
@@ -4926,8 +4953,10 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
+
               "version": "0.31.34.60546",
               "templateHash": "13612379551106682197"
+
             }
           },
           "parameters": {
