@@ -44,6 +44,7 @@ $disk | Initialize-Disk -PartitionStyle MBR -PassThru | `
 # Creating ArcBox path
 Write-Output "Creating ArcBox path"
 $Env:ArcBoxDir = "C:\ArcBox"
+$Env:ArcBoxDscDir = "$Env:ArcBoxDir\DSC"
 $Env:ArcBoxLogsDir = "$Env:ArcBoxDir\Logs"
 $Env:ArcBoxVMDir = "F:\Virtual Machines"
 $Env:ArcBoxKVDir = "$Env:ArcBoxDir\KeyVault"
@@ -53,6 +54,7 @@ $Env:ToolsDir = "C:\Tools"
 $Env:tempDir = "C:\Temp"
 
 New-Item -Path $Env:ArcBoxDir -ItemType directory -Force
+New-Item -Path $Env:ArcBoxDscDir -ItemType directory -Force
 New-Item -Path $Env:ArcBoxLogsDir -ItemType directory -Force
 New-Item -Path $Env:ArcBoxVMDir -ItemType directory -Force
 New-Item -Path $Env:ArcBoxKVDir -ItemType directory -Force
