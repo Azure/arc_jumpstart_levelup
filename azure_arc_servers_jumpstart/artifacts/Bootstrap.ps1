@@ -91,7 +91,7 @@ Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 
 Install-Module -Name Microsoft.PowerShell.PSResourceGet -Force -Scope AllUsers
 #$modules = @("Az", "Az.ConnectedMachine", "Microsoft.PowerShell.SecretManagement", "Posh-SSH", "Pester")
-$modules = @("Az", "Az.ConnectedMachine", "Microsoft.PowerShell.SecretManagement", "Pester")
+$modules = @("Az", "Az.ConnectedMachine", "Microsoft.PowerShell.SecretManagement","Azure.Arc.Jumpstart.Common", "Pester")
 
 foreach ($module in $modules) {
 
