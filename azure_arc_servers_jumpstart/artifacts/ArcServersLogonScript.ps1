@@ -1,3 +1,4 @@
+$ErrorActionPreference = $env:ErrorActionPreference
 $Env:ArcBoxDir = "C:\ArcBox"
 $Env:ArcBoxLogsDir = "$Env:ArcBoxDir\Logs"
 $Env:ArcBoxVMDir = "F:\Virtual Machines"
@@ -199,14 +200,18 @@ Write-Host "Creating VM Credentials"
         # Automatically accept unseen keys but will refuse connections for changed or invalid hostkeys.
         Add-Content -Path "$Env:USERPROFILE\.ssh\config" -Value "StrictHostKeyChecking=accept-new"
 
-        Get-VM *Ubuntu* | Copy-VMFile -SourcePath "$Env:TEMP\authorized_keys" -DestinationPath "/home/$nestedLinuxUsername/.ssh/" -FileSource Host -Force -CreateFullPath
+      # Running twice due to a race condition where the target file is sometimes empty
+      Get-VM *Ubuntu* | Copy-VMFile -SourcePath "$($Env:ArcBoxDir)\authorized_keys" -DestinationPath "/home/$nestedLinuxUsername/.ssh/" -FileSource Host -Force -CreateFullPath
+      Get-VM *Ubuntu* | Copy-VMFile -SourcePath "$($Env:ArcBoxDir)\authorized_keys" -DestinationPath "/home/$nestedLinuxUsername/.ssh/" -FileSource Host -Force -CreateFullPath
 
+        # Remove the authorized_keys file from the local machine
+        Remove-Item -Path "$($Env:ArcBoxDir)\authorized_keys"
     
-        Get-VM *Ubuntu* | Wait-VM -For IPAddress
+        # Get-VM *Ubuntu* | Wait-VM -For IPAddress
 
-        Write-Host "Waiting for the nested Linux VMs to come back online...waiting for 10 seconds"
+        # Write-Host "Waiting for the nested Linux VMs to come back online...waiting for 10 seconds"
 
-        Start-Sleep -Seconds 10
+        # Start-Sleep -Seconds 10
 
         # Copy installation script to nested Windows VMs
         Write-Output "Transferring installation script to nested Windows VMs..."
@@ -230,6 +235,8 @@ Write-Host "Creating VM Credentials"
         # Onboarding the nested VMs as Azure Arc-enabled servers
         #Workshopplus only 2019 and ubuntu-01 are onboarded 
         Write-Output "Onboarding the nested Windows VMs as Azure Arc-enabled servers"
+        Write-Output "checking location variable is set up)"
+        Write-Output $azureLocation
         Invoke-Command -VMName $Win2k19vmName -ScriptBlock { powershell -File $Using:nestedVMArcBoxDir\installArcAgent.ps1 -accessToken $using:accessToken, -tenantId $Using:tenantId, -subscriptionId $Using:subscriptionId, -resourceGroup $Using:resourceGroup, -azureLocation $Using:azureLocation } -Credential $winCreds
 
         Write-Output "Onboarding the nested Linux VMs as an Azure Arc-enabled servers"
