@@ -18,6 +18,8 @@ properties:
         Path: F:\Virtual Machines
         EnableGuestService: true
         SecureBoot: true
+        AutomaticStartAction: Start 
+        AutomaticStopAction: ShutDown
     - resource: HyperVDsc/VMHyperV
       id: ArcBox-Win2K22
       directives:
@@ -34,6 +36,8 @@ properties:
         Path: F:\Virtual Machines
         EnableGuestService: true
         SecureBoot: true
+        AutomaticStartAction: Start 
+        AutomaticStopAction: ShutDown
     - resource: HyperVDsc/VMHyperV
       id: ArcBox-SQL
       directives:
@@ -50,6 +54,8 @@ properties:
         Path: F:\Virtual Machines
         EnableGuestService: true
         SecureBoot: true
+        AutomaticStartAction: Start 
+        AutomaticStopAction: ShutDown
     - resource: HyperVDsc/VMHyperV
       id: ArcBox-Ubuntu-01
       directives:
@@ -66,6 +72,8 @@ properties:
         Path: F:\Virtual Machines
         EnableGuestService: true
         SecureBoot: false
+        AutomaticStartAction: Start 
+        AutomaticStopAction: ShutDown
     - resource: HyperVDsc/VMHyperV
       id: ArcBox-Ubuntu-02
       directives:
@@ -82,4 +90,6 @@ properties:
         Path: F:\Virtual Machines
         EnableGuestService: true
         SecureBoot: false
+        AutomaticStartAction: Start 
+        AutomaticStopAction: ShutDown
   configurationVersion: 0.2.0
