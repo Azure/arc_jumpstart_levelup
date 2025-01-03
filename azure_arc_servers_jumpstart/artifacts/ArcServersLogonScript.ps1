@@ -135,6 +135,7 @@ Write-Header "Create Hyper-V VMs"
 Write-Header "Fetching Nested VMs"
 
 $SQLvmvhdPath = "$Env:ArcBoxVMDir\ArcBox-SQL.vhdx"
+$SQLvmName = "ArcBox-SQL"
         
 $Win2k19vmName = "ArcBox-Win2K19"
 $win2k19vmvhdPath = "${Env:ArcBoxVMDir}\ArcBox-Win2K19.vhdx"
@@ -164,6 +165,13 @@ $serversDscConfigurationFile = "$Env:ArcBoxDscDir\virtual_machines_itpro.dsc.yml
 #(Get-Content -Path $serversDscConfigurationFile) -replace 'namingPrefixStage', $namingPrefix | Set-Content -Path $serversDscConfigurationFile
 (Get-Content -Path $serversDscConfigurationFile) | Set-Content -Path $serversDscConfigurationFile
 winget configure --file C:\ArcBox\DSC\virtual_machines_itpro.dsc.yml --accept-configuration-agreements --disable-interactivity
+
+Set-VM -Name $Win2k19vmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
+Set-VM -Name $Win2k22vmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
+Set-VM -Name $Ubuntu01vmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
+Set-VM -Name $Ubuntu02vmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
+Set-VM -Name $SQLvmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
+
 
 Write-Header "Creating VM Credentials"
 # Hard-coded username and password for the nested VMs
