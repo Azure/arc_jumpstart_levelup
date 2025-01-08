@@ -118,7 +118,7 @@ Connect-AzAccount -Identity -Tenant $tenantId -Subscription $subscriptionId
 $workspaceResourceID = (az monitor log-analytics workspace show --resource-group $resourceGroup --workspace-name $Env:workspaceName --query "id" -o tsv)
 
 # Before deploying ArcBox SQL set resource group tag ArcSQLServerExtensionDeployment=Disabled to opt out of automatic SQL onboarding
-az tag create --resource-id "/subscriptions/$subscriptionId/resourceGroups/$resourceGroup" --tags ArcSQLServerExtensionDeployment=Disabled
+#az tag create --resource-id "/subscriptions/$subscriptionId/resourceGroups/$resourceGroup" --tags ArcSQLServerExtensionDeployment=Disabled
 
 $vhdImageToDownload = "ArcBox-SQL-DEV.vhdx"
 if ($Env:sqlServerEdition -eq "Standard") {
@@ -186,7 +186,7 @@ Start-Sleep -Seconds 10
 
 # Getting the Ubuntu nested VM IP address
 $Ubuntu01VmIp = Get-VM -Name $Ubuntu01vmName | Select-Object -ExpandProperty NetworkAdapters | Select-Object -ExpandProperty IPAddresses | Select-Object -Index 0
-$Ubuntu02VmIp = Get-VM -Name $Ubuntu02vmName | Select-Object -ExpandProperty NetworkAdapters | Select-Object -ExpandProperty IPAddresses | Select-Object -Index 0
+#$Ubuntu02VmIp = Get-VM -Name $Ubuntu02vmName | Select-Object -ExpandProperty NetworkAdapters | Select-Object -ExpandProperty IPAddresses | Select-Object -Index 0
 
 # Configuring SSH for accessing Linux VMs
 Write-Output "Generating SSH key for accessing nested Linux VMs"

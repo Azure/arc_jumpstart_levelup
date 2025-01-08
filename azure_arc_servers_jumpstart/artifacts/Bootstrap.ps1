@@ -119,27 +119,6 @@ Remove-Item .\PowerShell7.msi
 
 Copy-Item $PsHome\Profile.ps1 -Destination "C:\Program Files\PowerShell\7\"
 
-
-# Write-Header "Installing Chocolatey Apps"
-# $chocolateyAppList = 'powershell-core,azure-cli,az.powershell,vcredist140,microsoft-edge,azcopy10,vscode,git,7zip,putty.install,zoomit,openssl.light'
-
-# try {
-#     choco config get cacheLocation
-# }
-# catch {
-#     Write-Output "Chocolatey not detected, trying to install now"
-#     Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-# }
-
-# Write-Host "Chocolatey Apps Specified"
-
-# $appsToInstall = $chocolateyAppList -split "," | ForEach-Object { "$($_.Trim())" }
-
-# foreach ($app in $appsToInstall) {
-#     Write-Host "Installing $app"
-#     & choco install $app /y -Force | Write-Output
-# }
-
 Write-Header "Fetching GitHub Artifacts"
 
 # All flavors
@@ -222,10 +201,6 @@ if (($rdpPort -ne $null) -and ($rdpPort -ne "") -and ($rdpPort -ne "3389")) {
 
 Write-Header "Configuring Logon Scripts"
 
-# $Trigger = New-ScheduledTaskTrigger -AtLogOn
-# $Action = New-ScheduledTaskAction -Execute "pwsh.exe" -Argument $Env:ArcBoxDir\ArcServersLogonScript.ps1
-# Register-ScheduledTask -TaskName "ArcServersLogonScript" -Trigger $Trigger -User $adminUsername -Action $Action -RunLevel "Highest" -Force
-
 $ScheduledTaskExecutable = "pwsh.exe"
 # Creating scheduled task for MonitorWorkbookLogonScript.ps1
 # Creating scheduled task for WinGet.ps1
@@ -246,8 +221,6 @@ Get-ScheduledTask -TaskName ServerManager | Disable-ScheduledTask
 Write-Header "Installing Hyper-V"
 
 # Install Hyper-V and reboot
-#Write-Host "Installing Hyper-V and restart"
-#Install-WindowsFeature -Name Hyper-V -IncludeAllSubFeature -IncludeManagementTools -Restart
 Write-Host "Installing Hyper-V and restart"
 Enable-WindowsOptionalFeature -Online -FeatureName Containers -All -NoRestart
 Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -NoRestart
