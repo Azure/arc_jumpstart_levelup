@@ -19,14 +19,6 @@ param windowsAdminUsername string
 @secure()
 param windowsAdminPassword string
 
-
-// @allowed([
-//   true
-// ])
-// @description('Enable automatic logon into ArcBox Virtual Machine')
-// param vmAutologon bool = true
-
-
 @description('Name for your log analytics workspace')
 param logAnalyticsWorkspaceName string
 
@@ -36,8 +28,7 @@ param githubAccount string = 'Azure'
 @description('Target GitHub branch')
 param githubBranch string = 'main'
 
-@description('Choice to deploy Bastion to connect to the client VM')
-param deployBastion bool = false
+var deployBastion = false
 
 @description('Override default RDP port 3389 using this parameter. Default is 3389. No changes will be made to the client VM.')
 param rdpPort string = '3389'
@@ -102,7 +93,7 @@ module monitoringResources 'mgmt/monitoringResources.bicep' = {
 module policyDeployment 'mgmt/policyAzureArc.bicep' = {
   name: 'policyDeployment'
   dependsOn: [
-    mgmtArtifactsAndPolicyDeployment
+//    mgmtArtifactsAndPolicyDeployment
   ]
   params: {
     azureLocation: location
