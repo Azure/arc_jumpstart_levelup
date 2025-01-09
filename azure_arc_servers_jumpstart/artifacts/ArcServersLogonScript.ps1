@@ -166,11 +166,11 @@ $serversDscConfigurationFile = "$Env:ArcBoxDscDir\virtual_machines_itpro.dsc.yml
 (Get-Content -Path $serversDscConfigurationFile) | Set-Content -Path $serversDscConfigurationFile
 winget configure --file C:\ArcBox\DSC\virtual_machines_itpro.dsc.yml --accept-configuration-agreements --disable-interactivity
 
-Set-VM -Name $Win2k19vmName -AutomaticStartAction Start #-AutomaticStopAction ShutDown
-Set-VM -Name $Win2k22vmName -AutomaticStartAction Start #-AutomaticStopAction ShutDown
-Set-VM -Name $Ubuntu01vmName -AutomaticStartAction Start #-AutomaticStopAction ShutDown
-Set-VM -Name $Ubuntu02vmName -AutomaticStartAction Start #-AutomaticStopAction ShutDown
-Set-VM -Name $SQLvmName -AutomaticStartAction Start #-AutomaticStopAction ShutDown
+#Set-VM -Name $Win2k19vmName -AutomaticStartAction Start #-AutomaticStopAction ShutDown
+#Set-VM -Name $Win2k22vmName -AutomaticStartAction Start #-AutomaticStopAction ShutDown
+#Set-VM -Name $Ubuntu01vmName -AutomaticStartAction Start #-AutomaticStopAction ShutDown
+#Set-VM -Name $Ubuntu02vmName -AutomaticStartAction Start #-AutomaticStopAction ShutDown
+#Set-VM -Name $SQLvmName -AutomaticStartAction Start #-AutomaticStopAction ShutDown
 
 
 Write-Header "Creating VM Credentials"
