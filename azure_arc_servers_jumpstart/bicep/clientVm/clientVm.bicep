@@ -197,12 +197,22 @@ resource vmBootstrap 'Microsoft.Compute/virtualMachines/extensions@2022-03-01' =
 }
 
 // Add role assignment for the VM: Owner role
-resource vmRoleAssignment_Owner 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(vm.id, 'Microsoft.Authorization/roleAssignments', 'Owner')
+// resource vmRoleAssignment_Owner 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+//   name: guid(vm.id, 'Microsoft.Authorization/roleAssignments', 'Owner')
+//   scope: resourceGroup()
+//   properties: {
+//     principalId: vm.identity.principalId
+//     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
+//   }
+// }
+
+// Add role assignment for the VM: Owner role
+resource vmRoleAssignment_Contributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(vm.id, 'Microsoft.Authorization/roleAssignments', 'Contributor')
   scope: resourceGroup()
   properties: {
     principalId: vm.identity.principalId
-    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
   }
 }
 
