@@ -1,22 +1,22 @@
+$ErrorActionPreference = $env:ErrorActionPreference
 $Env:ArcBoxDir = "C:\ArcBox"
 $Env:ArcBoxLogsDir = "$Env:ArcBoxDir\Logs"
 $Env:ArcBoxVMDir = "F:\Virtual Machines"
 $Env:ArcBoxIconDir = "$Env:ArcBoxDir\Icons"
+$Env:ArcBoxDscDir = "$Env:ArcBoxDir\DSC"
 $agentScript = "$Env:ArcBoxDir\agentScript"
 
 # Set variables to execute remote powershell scripts on guest VMs
 $nestedVMArcBoxDir = $Env:ArcBoxDir
-$spnTenantId = $env:spnTenantId
+$tenantId = $env:spnTenantId
 $subscriptionId = $env:subscriptionId
 $azureLocation = $env:azureLocation
 $resourceGroup = $env:resourceGroup
-
 $changeTrackingDCR = $env:changeTrackingDCR
 $vmInsightsDCR = $env:vmInsightsDCR
 
 # Moved VHD storage account details here to keep only in place to prevent duplicates.
 $vhdSourceFolder = "https://jumpstartprodsg.blob.core.windows.net/arcbox/prod/*"
-$vhdSourceFolderESU = "https://jumpstartprodsg.blob.core.windows.net/scenarios/prod/*"
 
 # Archive exising log file and crate new one
 $logFilePath = "$Env:ArcBoxLogsDir\ArcServersLogonScript.log"
@@ -36,7 +36,8 @@ foreach ($key in $keys) {
         $property = Get-ItemProperty -Path $registryPath -Name $key -ErrorAction Stop
         Remove-ItemProperty -Path $registryPath -Name $key
         Write-Host "Removed registry key that are used to automatically logon the user: $key"
-    } catch {
+    }
+    catch {
         Write-Verbose "Key $key does not exist."
     }
 }
@@ -75,27 +76,8 @@ if ($netNat.Name -ne $natName) {
     New-NetNat -Name $natName -InternalIPInterfaceAddressPrefix 10.10.1.0/24
 }
 
-# Create an internal switch with NAT
-Write-Host "Creating Internal vSwitch"
-$switchName = 'InternalNATSwitch'
-
-# Verify if internal switch is already created, if not create a new switch
-$inernalSwitch = Get-VMSwitch
-if ($inernalSwitch.Name -ne $switchName) {
-    New-VMSwitch -Name $switchName -SwitchType Internal
-    $adapter = Get-NetAdapter | Where-Object { $_.Name -like "*" + $switchName + "*" }
-
-    # Create an internal network (gateway first)
-    Write-Host "Creating Gateway"
-    New-NetIPAddress -IPAddress 10.10.1.1 -PrefixLength 24 -InterfaceIndex $adapter.ifIndex
-
-    # Enable Enhanced Session Mode on Host
-    Write-Host "Enabling Enhanced Session Mode"
-    Set-VMHost -EnableEnhancedSessionMode $true
-}
-
-Write-Host "Creating demo VM Credentials"
-# Hard-coded username and password for the nested demo VMs
+Write-Host "Creating VM Credentials"
+# Hard-coded username and password for the nested VMs
 $nestedWindowsUsername = "Administrator"
 $nestedWindowsPassword = "JS123!!"
 
@@ -113,229 +95,143 @@ if (-not $($cliDir.Parent.Attributes.HasFlag([System.IO.FileAttributes]::Hidden)
     $folder.Attributes += [System.IO.FileAttributes]::Hidden
 }
 
-$Env:AZURE_CONFIG_DIR = $cliDir.FullName
-
 # Install Azure CLI extensions
-Write-Host "Az CLI extensions"
-az extension add --name ssh --yes --only-show-errors
-az extension add --name log-analytics-solution --yes --only-show-errors
-az extension add --name connectedmachine --yes --only-show-errors
-az extension add --name monitor-control-service --yes --only-show-errors
+Write-Header "Az CLI extensions"
+
+az config set extension.use_dynamic_install=yes_without_prompt --only-show-errors
+
+@("ssh", "log-analytics-solution", "connectedmachine", "monitor-control-service") |
+ForEach-Object -Parallel {
+    az extension add --name $PSItem --yes --only-show-errors
+}
 
 # Required for CLI commands
-Write-Host "Az CLI Login"
+Write-Header "Az CLI Login"
 az login --identity
-
 az account set -s $subscriptionId
 
-# Connect to azure using azure powershell
-$null = Connect-AzAccount -Identity -Tenant $spnTenantId
-$null = Select-AzSubscription -SubscriptionId $subscriptionId
-$accessToken = ConvertFrom-SecureString ((Get-AzAccessToken -AsSecureString).Token) -AsPlainText
+Write-Header "Az PowerShell Login"
+Connect-AzAccount -Identity -Tenant $tenantId -Subscription $subscriptionId
 
-Set-AzContext -Subscription $subscriptionId -tenant $spnTenantId
+# Enable defender for cloud for SQL Server
+# Get workspace information
+$workspaceResourceID = (az monitor log-analytics workspace show --resource-group $resourceGroup --workspace-name $Env:workspaceName --query "id" -o tsv)
 
-Write-Host "Fetching Nested VMs"
+# Before deploying ArcBox SQL set resource group tag ArcSQLServerExtensionDeployment=Disabled to opt out of automatic SQL onboarding
+#az tag create --resource-id "/subscriptions/$subscriptionId/resourceGroups/$resourceGroup" --tags ArcSQLServerExtensionDeployment=Disabled
 
-$Win2k19vmName = "ArcBox-Win2K19"
-$win2k19vmvhdPath = "${Env:ArcBoxVMDir}\${Win2k19vmName}.vhdx"
-
-$Win2k22vmName = "ArcBox-Win2K22"
-$Win2k22vmvhdPath = "${Env:ArcBoxVMDir}\${Win2k22vmName}.vhdx"
-
-$Ubuntu01vmName = "ArcBox-Ubuntu-01"
-$Ubuntu01vmvhdPath = "${Env:ArcBoxVMDir}\${Ubuntu01vmName}.vhdx"
-
-$Ubuntu02vmName = "ArcBox-Ubuntu-02"
-$Ubuntu02vmvhdPath = "${Env:ArcBoxVMDir}\${Ubuntu02vmName}.vhdx"
-
-$SQLvmName = "ArcBox-SQL-STD"
-$SQLvmNameWSPLUS = "ArcBox-SQL"
-$SQLvmvhdPath = "$Env:ArcBoxVMDir\${SQLvmName}.vhdx"
-
-# Verify if VHD files already downloaded especially when re-running this script
-if (!([System.IO.File]::Exists($win2k19vmvhdPath) -and [System.IO.File]::Exists($Win2k22vmvhdPath) -and [System.IO.File]::Exists($Ubuntu01vmvhdPath) -and [System.IO.File]::Exists($Ubuntu02vmvhdPath))) {
-    <# Action when all if and elseif conditions are false #>
-    $Env:AZCOPY_BUFFER_GB = 4
-    # Other ArcBox flavors does not have an azcopy network throughput capping
-    Write-Output "Downloading nested VMs VHDX files. This can take some time, hold tight..."
-    azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "${Win2k19vmName}.vhdx;${Win2k22vmName}.vhdx;${Ubuntu01vmName}.vhdx;${Ubuntu02vmName}.vhdx;${SQLvmName}.vhdx;" --recursive=true --check-length=false --log-level=ERROR --check-md5 NoCheck
-   
+$vhdImageToDownload = "ArcBox-SQL-DEV.vhdx"
+if ($Env:sqlServerEdition -eq "Standard") {
+    $vhdImageToDownload = "ArcBox-SQL-STD.vhdx"
+}
+elseif ($Env:sqlServerEdition -eq "Enterprise") {
+    $vhdImageToDownload = "ArcBox-SQL-ENT.vhdx"
 }
 
 # Create the nested VMs if not already created
-Write-Host "Create Hyper-V VMs"
+Write-Header "Create Hyper-V VMs"
 
-# Check if VM already exists
-if ((Get-VM -Name $Win2k19vmName -ErrorAction SilentlyContinue).State -ne "Running") {
-    Remove-VM -Name $Win2k19vmName -Force -ErrorAction SilentlyContinue
-    New-VM -Name $Win2k19vmName -MemoryStartupBytes 8GB -BootDevice VHD -VHDPath $win2k19vmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
-    Set-VMProcessor -VMName $Win2k19vmName -Count 1
-    Set-VM -Name $Win2k19vmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
+# Onboard nested Windows and Linux VMs to Azure Arc
+Write-Header "Fetching Nested VMs"
+
+$SQLvmvhdPath = "$Env:ArcBoxVMDir\ArcBox-SQL.vhdx"
+$SQLvmName = "ArcBox-SQL"
+        
+$Win2k19vmName = "ArcBox-Win2K19"
+$win2k19vmvhdPath = "${Env:ArcBoxVMDir}\ArcBox-Win2K19.vhdx"
+
+$Win2k22vmName = "ArcBox-Win2K22"
+$Win2k22vmvhdPath = "${Env:ArcBoxVMDir}\ArcBox-Win2K22.vhdx"
+
+$Ubuntu01vmName = "ArcBox-Ubuntu-01"
+$Ubuntu01vmvhdPath = "${Env:ArcBoxVMDir}\ArcBox-Ubuntu-01.vhdx"
+
+$Ubuntu02vmName = "ArcBox-Ubuntu-02"
+$Ubuntu02vmvhdPath = "${Env:ArcBoxVMDir}\ArcBox-Ubuntu-02.vhdx"
+
+# Verify if VHD files already downloaded especially when re-running this script
+if (!(Test-Path $SQLvmvhdPath) -and !((Test-Path $win2k19vmvhdPath) -and (Test-Path $Win2k22vmvhdPath) -and (Test-Path $Ubuntu01vmvhdPath) -and (Test-Path $Ubuntu02vmvhdPath))) {
+    <# Action when all if and elseif conditions are false #>
+    $Env:AZCOPY_BUFFER_GB = 8
+    Write-Output "Downloading nested VMs VHDX files. This can take some time, hold tight..."
+    azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "$vhdImageToDownload;ArcBox-Win2K19.vhdx;ArcBox-Win2K22.vhdx;ArcBox-Ubuntu-01.vhdx;ArcBox-Ubuntu-02.vhdx;" --recursive=true --check-length=false --log-level=ERROR
+    # Rename SQL VHD file
+    Rename-Item -Path "$Env:ArcBoxVMDir\$vhdImageToDownload" -NewName  $SQLvmvhdPath -Force
 }
 
+# Create the nested VMs if not already created
+Write-Header "Create Hyper-V VMs"
+$serversDscConfigurationFile = "$Env:ArcBoxDscDir\virtual_machines_itpro.dsc.yml"
+#(Get-Content -Path $serversDscConfigurationFile) -replace 'namingPrefixStage', $namingPrefix | Set-Content -Path $serversDscConfigurationFile
+(Get-Content -Path $serversDscConfigurationFile) | Set-Content -Path $serversDscConfigurationFile
+winget configure --file C:\ArcBox\DSC\virtual_machines_itpro.dsc.yml --accept-configuration-agreements --disable-interactivity
 
-if ((Get-VM -Name $Win2k22vmName -ErrorAction SilentlyContinue).State -ne "Running") {
-    Remove-VM -Name $Win2k22vmName -Force -ErrorAction SilentlyContinue
-    New-VM -Name $Win2k22vmName -MemoryStartupBytes 10GB -BootDevice VHD -VHDPath $Win2k22vmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
-    Set-VMProcessor -VMName $Win2k22vmName -Count 2
-    Set-VM -Name $Win2k22vmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
-}
-
-if ((Get-VM -Name $Ubuntu01vmName -ErrorAction SilentlyContinue).State -ne "Running") {
-    Remove-VM -Name $Ubuntu01vmName -Force -ErrorAction SilentlyContinue
-    New-VM -Name $Ubuntu01vmName -MemoryStartupBytes 4GB -BootDevice VHD -VHDPath $Ubuntu01vmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
-    Set-VMFirmware -VMName $Ubuntu01vmName -EnableSecureBoot On -SecureBootTemplate 'MicrosoftUEFICertificateAuthority'
-    Set-VMProcessor -VMName $Ubuntu01vmName -Count 1
-    Set-VM -Name $Ubuntu01vmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
-}
-
-if ((Get-VM -Name $Ubuntu02vmName -ErrorAction SilentlyContinue).State -ne "Running") {
-    Remove-VM -Name $Ubuntu02vmName -Force -ErrorAction SilentlyContinue
-    New-VM -Name $Ubuntu02vmName -MemoryStartupBytes 2GB -BootDevice VHD -VHDPath $Ubuntu02vmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
-    Set-VMFirmware -VMName $Ubuntu02vmName -EnableSecureBoot On -SecureBootTemplate 'MicrosoftUEFICertificateAuthority'
-    Set-VMProcessor -VMName $Ubuntu02vmName -Count 1
-    Set-VM -Name $Ubuntu02vmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
-}
+#Set-VM -Name $Win2k19vmName -AutomaticStartAction Start #-AutomaticStopAction ShutDown
+#Set-VM -Name $Win2k22vmName -AutomaticStartAction Start #-AutomaticStopAction ShutDown
+#Set-VM -Name $Ubuntu01vmName -AutomaticStartAction Start #-AutomaticStopAction ShutDown
+#Set-VM -Name $Ubuntu02vmName -AutomaticStartAction Start #-AutomaticStopAction ShutDown
+#Set-VM -Name $SQLvmName -AutomaticStartAction Start #-AutomaticStopAction ShutDown
 
 
-if ((Get-VM -Name $SQLvmName -ErrorAction SilentlyContinue).State -ne "Running") {
-    Remove-VM -Name $SQLvmName -Force -ErrorAction SilentlyContinue
-    New-VM -Name $SQLvmName -MemoryStartupBytes 10GB -BootDevice VHD -VHDPath $SQLvmvhdPath -Path $Env:ArcBoxVMDir -Generation 2 -Switch $switchName
-    Set-VMProcessor -VMName $SQLvmName -Count 2
-    Set-VM -Name $SQLvmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
-}
-
-Write-Host "Enabling Guest Integration Service"
-Get-VM | Get-VMIntegrationService | Where-Object { -not($_.Enabled) } | Enable-VMIntegrationService -Verbose
-
-Start-Sleep -seconds 20
-
-# Start all the VMs
-Write-Host "Starting VMs"
-Start-VM -Name $Win2k19vmName
-Start-VM -Name $Win2k22vmName
-Start-VM -Name $Ubuntu01vmName
-Start-VM -Name $Ubuntu02vmName
-Start-VM -Name $SQLvmName
-
-
-Start-Sleep -seconds 20
-
-Write-Host "Creating  demo VM Credentials"
-# Hard-coded username and password for the nested demo VMs
+Write-Header "Creating VM Credentials"
+# Hard-coded username and password for the nested VMs
 $nestedLinuxUsername = "jumpstart"
-$nestedLinuxPassword = "JS123!!"
-
-# Create Linux credential object
-$secLinuxPassword = ConvertTo-SecureString $nestedLinuxPassword -AsPlainText -Force
-$linCreds = New-Object System.Management.Automation.PSCredential ($nestedLinuxUsername, $secLinuxPassword)
 
 # Restarting Windows VM Network Adapters
-Write-Host "Restarting Network Adapters"
-Start-Sleep -Seconds 20
+Write-Header "Restarting Network Adapters"
+Start-Sleep -Seconds 5
 Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
 Invoke-Command -VMName $Win2k22vmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
-Invoke-Command -VMName $SQLvmName -ScriptBlock { Get-NetAdapter | Restart-NetAdapter } -Credential $winCreds
-
 Start-Sleep -Seconds 10
-
 
 # Getting the Ubuntu nested VM IP address
 $Ubuntu01VmIp = Get-VM -Name $Ubuntu01vmName | Select-Object -ExpandProperty NetworkAdapters | Select-Object -ExpandProperty IPAddresses | Select-Object -Index 0
-$Ubuntu02VmIp = Get-VM -Name $Ubuntu02vmName | Select-Object -ExpandProperty NetworkAdapters | Select-Object -ExpandProperty IPAddresses | Select-Object -Index 0
+#$Ubuntu02VmIp = Get-VM -Name $Ubuntu02vmName | Select-Object -ExpandProperty NetworkAdapters | Select-Object -ExpandProperty IPAddresses | Select-Object -Index 0
 
-Start-Sleep -Seconds 20
+# Configuring SSH for accessing Linux VMs
+Write-Output "Generating SSH key for accessing nested Linux VMs"
 
+$null = New-Item -Path ~ -Name .ssh -ItemType Directory
+ssh-keygen -t rsa -N '' -f $Env:USERPROFILE\.ssh\id_rsa
+
+Copy-Item -Path "$Env:USERPROFILE\.ssh\id_rsa.pub" -Destination "$Env:TEMP\authorized_keys"
+
+# Automatically accept unseen keys but will refuse connections for changed or invalid hostkeys.
+Add-Content -Path "$Env:USERPROFILE\.ssh\config" -Value "StrictHostKeyChecking=accept-new"
+
+# Running twice due to a race condition where the target file is sometimes empty
+Get-VM *Ubuntu* | Copy-VMFile -SourcePath "$($Env:TEMP)\authorized_keys" -DestinationPath "/home/$nestedLinuxUsername/.ssh/" -FileSource Host -Force -CreateFullPath
+Get-VM *Ubuntu* | Copy-VMFile -SourcePath "$($Env:TEMP)\authorized_keys" -DestinationPath "/home/$nestedLinuxUsername/.ssh/" -FileSource Host -Force -CreateFullPath
+
+# Remove the authorized_keys file from the local machine
+Remove-Item -Path "$($Env:TEMP)\authorized_keys"
+    
 # Copy installation script to nested Windows VMs
 Write-Output "Transferring installation script to nested Windows VMs..."
 Copy-VMFile $Win2k19vmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
-Copy-VMFile $Win2k22vmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
-
-Copy-VMFile $SQLvmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
-Copy-VMFile $SQLvmName -SourcePath "$agentScript\testDefenderForSQL.ps1" -DestinationPath "$Env:ArcBoxDir\testDefenderForSQL.ps1" -CreateFullPath -FileSource Host -Force
-Copy-VMFile $SQLvmName -SourcePath "$agentScript\SqlAdvancedThreatProtectionShell.psm1" -DestinationPath "$Env:ArcBoxDir\SqlAdvancedThreatProtectionShell.psm1" -CreateFullPath -FileSource Host -Force
-
-(Get-Content -path "$agentScript\installArcAgentUbuntu.sh" -Raw) -replace '\$accessToken', "'$accessToken'" -replace '\$resourceGroup', "'$Env:resourceGroup'" -replace '\$spnTenantId', "'$Env:spnTenantId'" -replace '\$azureLocation', "'$Env:azureLocation'" -replace '\$subscriptionId', "'$Env:subscriptionId'" | Set-Content -Path "$agentScript\installArcAgentModifiedUbuntu.sh"
-
-
-#Rename SQL VM to workshop plus name
-Rename-VM $SQLvmName -NewName $SQLvmNameWSPLUS 
-
+    
+# Update Linux VM onboarding script connect toAzure Arc, get new token as it might have been expired by the time execution reached this line.
+$accessToken = ConvertFrom-SecureString ((Get-AzAccessToken -AsSecureString).Token) -AsPlainText
+        (Get-Content -path "$agentScript\installArcAgentUbuntu.sh" -Raw) -replace '\$accessToken', "'$accessToken'" -replace '\$resourceGroup', "'$resourceGroup'" -replace '\$spnTenantId', "'$tenantId'" -replace '\$azureLocation', "'$Env:azureLocation'" -replace '\$subscriptionId', "'$subscriptionId'" | Set-Content -Path "$agentScript\installArcAgentModifiedUbuntu.sh"
 
 # Copy installation script to nested Linux VMs
 Write-Output "Transferring installation script to nested Linux VMs..."
-Set-SCPItem -ComputerName $Ubuntu01VmIp -Credential $linCreds -Destination "/home/$nestedLinuxUsername" -Path "$agentScript\installArcAgentModifiedUbuntu.sh" -Force
-Set-SCPItem -ComputerName $Ubuntu02VmIp -Credential $linCreds -Destination "/home/$nestedLinuxUsername" -Path "$agentScript\installArcAgentModifiedUbuntu.sh" -Force
 
-Write-Host "Onboarding Arc-enabled servers"
+#WorkshopPlus: only ubuntu-01 is onboarded
+Get-VM *Ubuntu-01* | Copy-VMFile -SourcePath "$agentScript\installArcAgentModifiedUbuntu.sh" -DestinationPath "/home/$nestedLinuxUsername" -FileSource Host -Force
+        
+Write-Header "Onboarding Arc-enabled servers"
 
 # Onboarding the nested VMs as Azure Arc-enabled servers
-
-$Ubuntu02vmvhdPath = "${Env:ArcBoxVMDir}\${Ubuntu02vmName}.vhdx"
 Write-Output "Onboarding the nested Windows VMs as Azure Arc-enabled servers"
-Invoke-Command -VMName $Win2k19vmName -ScriptBlock { powershell -File $Using:nestedVMArcBoxDir\installArcAgent.ps1  -accessToken $Using:accessToken, -spnTenantId $Using:spnTenantId, -subscriptionId $Using:subscriptionId, -resourceGroup $Using:resourceGroup, -azureLocation $Using:azureLocation } -Credential $winCreds
 
-# Test Defender for Servers
-#Write-Host "Simulating threats to generate alerts from Defender for Cloud"
-$remoteScriptFile = "$Env:ArcBoxDir\testDefenderForServers.cmd"
-Copy-VMFile $Win2k19vmName -SourcePath "$agentScript\testDefenderForServers.cmd" -DestinationPath $remoteScriptFile -CreateFullPath -FileSource Host -Force
-Copy-VMFile $Win2k22vmName -SourcePath "$agentScript\testDefenderForServers.cmd" -DestinationPath $remoteScriptFile -CreateFullPath -FileSource Host -Force
-
+Invoke-Command -VMName $Win2k19vmName -ScriptBlock { powershell -File $Using:nestedVMArcBoxDir\installArcAgent.ps1 -accessToken $using:accessToken, -spnTenantId $Using:tenantId, -subscriptionId $Using:subscriptionId, -resourceGroup $Using:resourceGroup, -azureLocation $Using:azureLocation } -Credential $winCreds
 
 Write-Output "Onboarding the nested Linux VMs as an Azure Arc-enabled servers"
-$ubuntuSession = New-SSHSession -ComputerName $Ubuntu01VmIp -Credential $linCreds -Force -WarningAction SilentlyContinue
-$Command = "sudo sh /home/$nestedLinuxUsername/installArcAgentModifiedUbuntu.sh"
-$(Invoke-SSHCommand -SSHSession $ubuntuSession -Command $Command -Timeout 600 -WarningAction SilentlyContinue).Output
-$command = "curl -o ~/Downloads/eicar.com.txt"
-$(Invoke-SSHCommand -SSHSession $ubuntuSession -Command $Command -Timeout 600 -WarningAction SilentlyContinue).Output
+$UbuntuSessions = New-PSSession -HostName $Ubuntu01VmIp -KeyFilePath "$Env:USERPROFILE\.ssh\id_rsa" -UserName $nestedLinuxUsername
+Invoke-JSSudoCommand -Session $UbuntuSessions -Command "sh /home/$nestedLinuxUsername/installArcAgentModifiedUbuntu.sh"
 
-#############################################################
-# Install VSCode extensions
-#############################################################
-Write-Host "Installing VSCode extensions"
-# Install VSCode extensions
-$VSCodeExtensions = @(
-    'ms-vscode.powershell',
-    'esbenp.prettier-vscode',
-    'ms-vscode-remote.remote-ssh'
-)
-
-foreach ($extension in $VSCodeExtensions) {
-    code --install-extension $extension
-}
-
-#############################################################
-# Install PowerShell 7
-#############################################################
-Write-Host "Installing PowerShell 7 on the client VM"
-
-Start-Process msiexec.exe -ArgumentList "/I $Env:ArcBoxDir\PowerShell-7.4.1-win-x64.msi /quiet"
-
-Write-Host "Installing PowerShell 7 on the ArcBox-Win2K22 machine"
-Copy-VMFile $Win2k22vmName -SourcePath "$Env:ArcBoxDir\PowerShell-7.4.1-win-x64.msi" -DestinationPath "$Env:ArcBoxDir\PowerShell-7.4.1-win-x64.msi" -CreateFullPath -FileSource Host -Force
-Invoke-Command -VMName $Win2k22vmName -ScriptBlock { Start-Process msiexec.exe -ArgumentList "/I C:\ArcBox\PowerShell-7.4.1-win-x64.msi /quiet" } -Credential $winCreds
-
-Write-Host "Installing PowerShell 7 on the ArcBox-Win2K19 machine"
-Copy-VMFile $Win2k19vmName -SourcePath "$Env:ArcBoxDir\PowerShell-7.4.1-win-x64.msi" -DestinationPath "$Env:ArcBoxDir\PowerShell-7.4.1-win-x64.msi" -CreateFullPath -FileSource Host -Force
-Invoke-Command -VMName $Win2k19vmName -ScriptBlock { Start-Process msiexec.exe -ArgumentList "/I C:\ArcBox\PowerShell-7.4.1-win-x64.msi /quiet" } -Credential $winCreds
-
-Write-Host "Installing PowerShell 7 on the nested ArcBox-Ubuntu-01 VM"
-$ubuntuSession = New-SSHSession -ComputerName $Ubuntu01VmIp -Credential $linCreds -Force -WarningAction SilentlyContinue
-$Command = "wget https://github.com/PowerShell/PowerShell/releases/download/v7.3.3/powershell_7.3.3-1.deb_amd64.deb;sudo dpkg -i /home/jumpstart/powershell_7.3.3-1.deb_amd64.deb"
-$(Invoke-SSHCommand -SSHSession $ubuntuSession -Command $Command -Timeout 600 -WarningAction SilentlyContinue).Output
-
-Write-Host "Installing PSWSMan on the Linux VM"
-$ubuntuSession = New-SSHSession -ComputerName $Ubuntu01VmIp -Credential $linCreds -Force -WarningAction SilentlyContinue
-$Command = "sudo pwsh -command 'Install-Module -Force -PassThru -Name PSWSMan'"
-$(Invoke-SSHCommand -SSHSession $ubuntuSession -Command $Command -Timeout 600 -WarningAction SilentlyContinue).Output
-
-Write-Host "Configuring PSWSMan on the Linux VM"
-$ubuntuSession = New-SSHSession -ComputerName $Ubuntu01VmIp -Credential $linCreds -Force -WarningAction SilentlyContinue
-$Command = "sudo pwsh -command 'Install-WSMan'"
-$(Invoke-SSHCommand -SSHSession $ubuntuSession -Command $Command -Timeout 600 -WarningAction SilentlyContinue).Output
-
-#---
+#WorkshopPlus: adding DCRs and extensins for 2019 and Ubuntu-1
 Write-Host "Assigning Data collection rules to Arc-enabled machines"
 $windowsArcMachine = (Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Win2k19vmName).Id
 $linuxArcMachine = (Get-AzConnectedMachine -ResourceGroupName $resourceGroup -Name $Ubuntu01vmName).Id
@@ -355,82 +251,32 @@ az connectedmachine extension create --name ChangeTracking-Linux --publisher Mic
 Write-Host "Installing the Azure Update Manager agent on the Arc-enabled machines"
 az connectedmachine assess-patches --resource-group $resourceGroup --name $Win2k19vmName --no-wait
 az connectedmachine assess-patches --resource-group $resourceGroup --name $Ubuntu01vmName --no-wait
-
 Write-Host "Installing the dependencyAgent extension on the Arc-enabled windows machine"
 $dependencyAgentSetting = '{\"enableAMA\":\"true\"}'
 az connectedmachine extension create --name DependencyAgent --publisher Microsoft.Azure.Monitoring.DependencyAgent --type-handler-version 9.10 --type DependencyAgentWindows --machine-name $Win2k19vmName --settings $dependencyAgentSetting --resource-group $resourceGroup --location $azureLocation --enable-auto-upgrade --no-wait
 
-Write-Host "Enabling SSH access to Arc-enabled servers"
-$VMs = @("ArcBox-Ubuntu-01", "ArcBox-Win2K19")
-$VMs | ForEach-Object -Parallel {
-    $spnTenantId  =  $Using:spnTenantId
-    $subscriptionId  =  $Using:subscriptionId
-    $resourceGroup  =  $Using:resourceGroup
-
-    $null = Connect-AzAccount -Identity -Tenant $spntenantId -Subscription $subscriptionId -Scope Process -WarningAction SilentlyContinue
-    $null = Select-AzSubscription -SubscriptionId $subscriptionId
-
-    $vm = $PSItem
-    $connectedMachine = Get-AzConnectedMachine -Name $vm -ResourceGroupName $resourceGroup -SubscriptionId $subscriptionId
-
-    $connectedMachineEndpoint = (Invoke-AzRestMethod -Method get -Path "$($connectedMachine.Id)/providers/Microsoft.HybridConnectivity/endpoints/default?api-version=2023-03-15").Content | ConvertFrom-Json
-
-    if (-not ($connectedMachineEndpoint.properties | Where-Object { $_.type -eq "default" -and $_.provisioningState -eq "Succeeded" })) {
-        Write-Output "Creating default endpoint for $($connectedMachine.Name)"
-        $null = Invoke-AzRestMethod -Method put -Path "$($connectedMachine.Id)/providers/Microsoft.HybridConnectivity/endpoints/default?api-version=2023-03-15" -Payload '{"properties": {"type": "default"}}'
-    }
-    $connectedMachineSshEndpoint = (Invoke-AzRestMethod -Method get -Path "$($connectedMachine.Id)/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/SSH?api-version=2023-03-15").Content | ConvertFrom-Json
-
-    if (-not ($connectedMachineSshEndpoint.properties | Where-Object { $_.serviceName -eq "SSH" -and $_.provisioningState -eq "Succeeded" })) {
-        Write-Output "Enabling SSH on $($connectedMachine.Name)"
-        $null = Invoke-AzRestMethod -Method put -Path "$($connectedMachine.Id)/providers/Microsoft.HybridConnectivity/endpoints/default/serviceconfigurations/SSH?api-version=2023-03-15" -Payload '{"properties": {"serviceName": "SSH", "port": 22}}'
-    }
-    else {
-        Write-Output "SSH already enabled on $($connectedMachine.Name)"
-    }
-
-}
-
 # Removing the LogonScript Scheduled Task so it won't run on next reboot
-Write-Host "Removing Logon Task"
+Write-Header "Removing Logon Task"
 if ($null -ne (Get-ScheduledTask -TaskName "ArcServersLogonScript" -ErrorAction SilentlyContinue)) {
     Unregister-ScheduledTask -TaskName "ArcServersLogonScript" -Confirm:$false
 }
 
-# Executing the deployment logs bundle PowerShell script in a new window
-Write-Host "Uploading Log Bundle"
-Invoke-Expression 'cmd /c start Powershell -Command {
-$RandomString = -join ((48..57) + (97..122) | Get-Random -Count 6 | % {[char]$_})
-Write-Host "Sleeping for 5 seconds before creating deployment logs bundle..."
-Start-Sleep -Seconds 5
-Write-Host "`n"
-Write-Host "Creating deployment logs bundle"
-7z a $Env:ArcBoxLogsDir\LogsBundle-"$RandomString".zip $Env:ArcBoxLogsDir\*.log
-}'
+#Changing to Jumpstart ArcBox wallpaper
+Write-Header "Changing wallpaper"
 
-# Changing to Jumpstart ArcBox wallpaper
-# Changing to Client VM wallpaper
-$imgPath = "$Env:ArcBoxDir\wallpaper.png"
-$code = @' 
-using System.Runtime.InteropServices; 
-namespace Win32{ 
-    
-    public class Wallpaper{ 
-        [DllImport("user32.dll", CharSet=CharSet.Auto)] 
-        static extern int SystemParametersInfo (int uAction , int uParam , string lpvParam , int fuWinIni) ; 
-        
-        public static void SetWallpaper(string thePath){
-            SystemParametersInfo(20,0,thePath,3);
-        }
-    }
-}
-'@
+# bmp file is required for BGInfo
+Convert-JSImageToBitMap -SourceFilePath "$Env:ArcBoxDir\wallpaper.png" -DestinationFilePath "$Env:ArcBoxDir\wallpaper.bmp"
 
-# Set wallpaper image based on the ArcBox Flavor deployed
-Write-Host "Changing Wallpaper"
-$imgPath = "$Env:ArcBoxDir\wallpaper.png"
-Add-Type $code
-[Win32.Wallpaper]::SetWallpaper($imgPath)
+Set-JSDesktopBackground -ImagePath "$Env:ArcBoxDir\wallpaper.bmp"
 
+Write-Header "Creating deployment logs bundle"
+
+$RandomString = -join ((48..57) + (97..122) | Get-Random -Count 6 | % { [char]$_ })
+$LogsBundleTempDirectory = "$Env:windir\TEMP\LogsBundle-$RandomString"
+$null = New-Item -Path $LogsBundleTempDirectory -ItemType Directory -Force
+
+#required to avoid "file is being used by another process" error when compressing the logs
+Copy-Item -Path "$Env:ArcBoxLogsDir\*.log" -Destination $LogsBundleTempDirectory -Force -PassThru
+Compress-Archive -Path "$LogsBundleTempDirectory\*.log" -DestinationPath "$Env:ArcBoxLogsDir\LogsBundle-$RandomString.zip" -PassThru
 
 Stop-Transcript
