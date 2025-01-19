@@ -57,7 +57,6 @@ module clientVmDeployment 'clientVm/clientVm.bicep' = {
     location: location
     rdpPort: rdpPort
     sshPort: sshPort
-//    vmAutologon: vmAutologon
     changeTrackingDCR: dataCollectionRules.outputs.changeTrackingDCR
     vmInsightsDCR: dataCollectionRules.outputs.vmInsightsDCR
     clientVmSku: clientVmSku
