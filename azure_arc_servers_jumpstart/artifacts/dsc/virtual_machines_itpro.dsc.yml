@@ -13,7 +13,7 @@ properties:
         ProcessorCount: 1
         StartupMemory: '8GB'
         RestartIfNeeded: true
-        State: Running
+        State: Off
         Generation: 2
         Path: F:\Virtual Machines
         EnableGuestService: true
@@ -29,7 +29,7 @@ properties:
         ProcessorCount: 1
         StartupMemory: '8GB'
         RestartIfNeeded: true
-        State: Running
+        State: Off
         Generation: 2
         Path: F:\Virtual Machines
         EnableGuestService: true
@@ -45,7 +45,7 @@ properties:
         ProcessorCount: 2
         StartupMemory: '8GB'
         RestartIfNeeded: true
-        State: Running
+        State: Off
         Generation: 2
         Path: F:\Virtual Machines
         EnableGuestService: true
@@ -61,7 +61,7 @@ properties:
         ProcessorCount: 1
         StartupMemory: '4GB'
         RestartIfNeeded: true
-        State: Running
+        State: Off
         Generation: 2
         Path: F:\Virtual Machines
         EnableGuestService: true
@@ -77,7 +77,7 @@ properties:
         ProcessorCount: 1
         StartupMemory: '2GB'
         RestartIfNeeded: true
-        State: Running
+        State: Off
         Generation: 2
         Path: F:\Virtual Machines
         EnableGuestService: true
