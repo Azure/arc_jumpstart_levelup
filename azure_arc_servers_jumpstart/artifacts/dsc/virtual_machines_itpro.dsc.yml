@@ -3,13 +3,13 @@ properties:
 
   resources:
     - resource: HyperVDsc/VMHyperV
-      id: ArcBox-Win2K19
+      id: ArcBox-Win2K25
       directives:
-        description: Configure VM ArcBox-Win2K19
+        description: Configure VM ArcBox-Win2K25
       settings:
-        Name: ArcBox-Win2K19
+        Name: ArcBox-Win2K25
         SwitchName: 'InternalNATSwitch'
-        VhdPath: F:\Virtual Machines\ArcBox-Win2K19.vhdx
+        VhdPath: F:\Virtual Machines\ArcBox-Win2K25.vhdx
         ProcessorCount: 1
         StartupMemory: '8GB'
         RestartIfNeeded: true
