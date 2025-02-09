@@ -89,7 +89,7 @@ properties:
       settings:
         Name: ArcBox-Proxy
         SwitchName: 'InternalNATSwitch'
-        VhdPath: F:\Virtual Machines\ArcBox-Ubuntu-02.vhdx
+        VhdPath: F:\Virtual Machines\ArcBox-Proxy.vhdx
         ProcessorCount: 1
         StartupMemory: '2GB'
         RestartIfNeeded: true

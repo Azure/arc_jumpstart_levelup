@@ -160,7 +160,8 @@ if (!(Test-Path $SQLvmvhdPath) -and !((Test-Path $win2k25vmvhdPath) -and (Test-P
     azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "$vhdImageToDownload;ArcBox-Win2K25.vhdx;ArcBox-Win2K22.vhdx;ArcBox-Ubuntu-01.vhdx;ArcBox-Ubuntu-02.vhdx;" --recursive=true --check-length=false --log-level=ERROR
     # Rename SQL VHD file
     Rename-Item -Path "$Env:ArcBoxVMDir\$vhdImageToDownload" -NewName  $SQLvmvhdPath -Force
-
+    # Copy the ubuntu-02.vhdx to Proxy.vhdx
+    Copy-Item -Path "$Env:ArcBoxVMDir\ArcBox-Ubuntu-02.vhdx" -Destination $ProxyvmvhdPath -Force
 }
 
 # Create the nested VMs if not already created
