@@ -149,6 +149,9 @@ $Ubuntu01vmvhdPath = "${Env:ArcBoxVMDir}\ArcBox-Ubuntu-01.vhdx"
 $Ubuntu02vmName = "ArcBox-Ubuntu-02"
 $Ubuntu02vmvhdPath = "${Env:ArcBoxVMDir}\ArcBox-Ubuntu-02.vhdx"
 
+$ProxyvmName = "ArcBox-Proxy"
+$ProxyvmvhdPath = "${Env:ArcBoxVMDir}\ArcBox-Proxy.vhdx"
+
 # Verify if VHD files already downloaded especially when re-running this script
 if (!(Test-Path $SQLvmvhdPath) -and !((Test-Path $win2k25vmvhdPath) -and (Test-Path $Win2k22vmvhdPath) -and (Test-Path $Ubuntu01vmvhdPath) -and (Test-Path $Ubuntu02vmvhdPath))) {
     <# Action when all if and elseif conditions are false #>
@@ -157,6 +160,7 @@ if (!(Test-Path $SQLvmvhdPath) -and !((Test-Path $win2k25vmvhdPath) -and (Test-P
     azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "$vhdImageToDownload;ArcBox-Win2K25.vhdx;ArcBox-Win2K22.vhdx;ArcBox-Ubuntu-01.vhdx;ArcBox-Ubuntu-02.vhdx;" --recursive=true --check-length=false --log-level=ERROR
     # Rename SQL VHD file
     Rename-Item -Path "$Env:ArcBoxVMDir\$vhdImageToDownload" -NewName  $SQLvmvhdPath -Force
+
 }
 
 # Create the nested VMs if not already created
@@ -171,8 +175,9 @@ Set-VM -Name $Win2k22vmName -AutomaticStartAction Start -AutomaticStopAction Shu
 Set-VM -Name $Ubuntu01vmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
 Set-VM -Name $Ubuntu02vmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
 Set-VM -Name $SQLvmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
+Set-VM -Name $ProxyvmName -AutomaticStartAction Start -AutomaticStopAction ShutDown
 
-Start-Sleep -seconds 10
+Start-Sleep -seconds 15
 
 # Start all the VMs
 Write-Host "Starting VMs"
@@ -181,8 +186,9 @@ Start-VM -Name $Win2k22vmName
 Start-VM -Name $Ubuntu01vmName
 Start-VM -Name $Ubuntu02vmName
 Start-VM -Name $SQLvmName
+Start-VM -Name $ProxyvmName
 
-Start-Sleep -seconds 10
+Start-Sleep -seconds 15
 
 
 Write-Header "Creating VM Credentials"
@@ -199,7 +205,8 @@ Start-Sleep -Seconds 10
 
 # Getting the Ubuntu nested VM IP address
 $Ubuntu01VmIp = Get-VM -Name $Ubuntu01vmName | Select-Object -ExpandProperty NetworkAdapters | Select-Object -ExpandProperty IPAddresses | Select-Object -Index 0
-#$Ubuntu02VmIp = Get-VM -Name $Ubuntu02vmName | Select-Object -ExpandProperty NetworkAdapters | Select-Object -ExpandProperty IPAddresses | Select-Object -Index 0
+$Ubuntu02VmIp = Get-VM -Name $Ubuntu02vmName | Select-Object -ExpandProperty NetworkAdapters | Select-Object -ExpandProperty IPAddresses | Select-Object -Index 0
+$ProxyVmIp = Get-VM -Name $ProxyvmName | Select-Object -ExpandProperty NetworkAdapters | Select-Object -ExpandProperty IPAddresses | Select-Object -Index 0
 
 # Configuring SSH for accessing Linux VMs
 Write-Output "Generating SSH key for accessing nested Linux VMs"
@@ -215,6 +222,7 @@ Add-Content -Path "$Env:USERPROFILE\.ssh\config" -Value "StrictHostKeyChecking=a
 # Running twice due to a race condition where the target file is sometimes empty
 Get-VM *Ubuntu* | Copy-VMFile -SourcePath "$($Env:TEMP)\authorized_keys" -DestinationPath "/home/$nestedLinuxUsername/.ssh/" -FileSource Host -Force -CreateFullPath
 Get-VM *Ubuntu* | Copy-VMFile -SourcePath "$($Env:TEMP)\authorized_keys" -DestinationPath "/home/$nestedLinuxUsername/.ssh/" -FileSource Host -Force -CreateFullPath
+Get-VM *Proxy* | Copy-VMFile -SourcePath "$($Env:TEMP)\authorized_keys" -DestinationPath "/home/$nestedLinuxUsername/.ssh/" -FileSource Host -Force -CreateFullPath
 
 # Remove the authorized_keys file from the local machine
 Remove-Item -Path "$($Env:TEMP)\authorized_keys"
@@ -232,7 +240,15 @@ Write-Output "Transferring installation script to nested Linux VMs..."
 
 #WorkshopPlus: only ubuntu-01 is onboarded
 Get-VM *Ubuntu-01* | Copy-VMFile -SourcePath "$agentScript\installArcAgentModifiedUbuntu.sh" -DestinationPath "/home/$nestedLinuxUsername" -FileSource Host -Force
-        
+
+#Installing Squid proxy on the Proxy VM
+Write-Output "Installing Squid proxy on the Proxy VM"
+
+$ProxySessions = New-PSSession -HostName $ProxyVmIp -KeyFilePath "$Env:USERPROFILE\.ssh\id_rsa" -UserName $nestedLinuxUsername
+Invoke-JSSudoCommand -Session $ProxySessions -Command "sudo apt update sudo apt install squid "
+#do later copy the squid config file to the proxy vm
+#Get-VM *Proxy* | Copy-VMFile -SourcePath "$agentScript\installArcAgentModifiedUbuntu.sh" -DestinationPath "/home/$nestedLinuxUsername" -FileSource Host -Force
+
 Write-Header "Onboarding Arc-enabled servers"
 
 # Onboarding the nested VMs as Azure Arc-enabled servers

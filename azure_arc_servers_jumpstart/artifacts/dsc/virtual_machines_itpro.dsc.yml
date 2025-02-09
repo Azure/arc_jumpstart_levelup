@@ -82,4 +82,20 @@ properties:
         Path: F:\Virtual Machines
         EnableGuestService: true
         SecureBoot: false
+    - resource: HyperVDsc/VMHyperV
+      id: ArcBox-Proxy
+      directives:
+        description: Configure VM ArcBox-Proxy
+      settings:
+        Name: ArcBox-Proxy
+        SwitchName: 'InternalNATSwitch'
+        VhdPath: F:\Virtual Machines\ArcBox-Ubuntu-02.vhdx
+        ProcessorCount: 1
+        StartupMemory: '2GB'
+        RestartIfNeeded: true
+        State: Off
+        Generation: 2
+        Path: F:\Virtual Machines
+        EnableGuestService: true
+        SecureBoot: false
   configurationVersion: 0.2.0
