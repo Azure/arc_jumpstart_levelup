@@ -252,6 +252,7 @@ Invoke-JSSudoCommand -Session $ProxySessions -Command "sudo apt-get update && su
 Invoke-JSSudoCommand -Session $ProxySessions -Command "sudo cp /etc/squid/squid.conf /etc/squid/squid.conf.default"
 Invoke-JSSudoCommand -Session $ProxySessions -Command "sudo rm /etc/squid/squid.conf"
 Get-VM *Proxy* | Copy-VMFile -SourcePath "$Env:ArcBoxDir\squid.conf" -DestinationPath "/etc/squid" -FileSource Host -Force
+Get-VM *Proxy* | Copy-VMFile -SourcePath "$Env:ArcBoxDir\whitelist.txt" -DestinationPath "/etc/squid" -FileSource Host -Force
 
 Write-Header "Onboarding Arc-enabled servers"
 
