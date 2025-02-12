@@ -246,9 +246,12 @@ Get-VM *Ubuntu-01* | Copy-VMFile -SourcePath "$agentScript\installArcAgentModifi
 Write-Output "Installing Squid proxy on the Proxy VM"
 
 $ProxySessions = New-PSSession -HostName $ProxyVmIp -KeyFilePath "$Env:USERPROFILE\.ssh\id_rsa" -UserName $nestedLinuxUsername
-Invoke-JSSudoCommand -Session $ProxySessions -Command "sudo apt update sudo apt install squid "
-#do later copy the squid config file to the proxy vm
-#Get-VM *Proxy* | Copy-VMFile -SourcePath "$agentScript\installArcAgentModifiedUbuntu.sh" -DestinationPath "/home/$nestedLinuxUsername" -FileSource Host -Force
+Invoke-JSSudoCommand -Session $ProxySessions -Command 'hostnamectl set-hostname "proxy"'
+Invoke-JSSudoCommand -Session $ProxySessions -Command "apt-get update && apt-get install squid -y"
+#Copy the squid config file to the proxy vm
+Invoke-JSSudoCommand -Session $ProxySessions -Command "cp /etc/squid/squid.conf /etc/squid/squid.conf.default"
+Invoke-JSSudoCommand -Session $ProxySessions -Command "rm /etc/squid/squid.conf"
+Get-VM *Proxy* | Copy-VMFile -SourcePath "$Env:ArcBoxDir\squid.conf" -DestinationPath "/etc/squid" -FileSource Host -Force
 
 Write-Header "Onboarding Arc-enabled servers"
 
@@ -285,6 +288,8 @@ az connectedmachine assess-patches --resource-group $resourceGroup --name $Ubunt
 Write-Host "Installing the dependencyAgent extension on the Arc-enabled windows machine"
 $dependencyAgentSetting = '{\"enableAMA\":\"true\"}'
 az connectedmachine extension create --name DependencyAgent --publisher Microsoft.Azure.Monitoring.DependencyAgent --type-handler-version 9.10 --type DependencyAgentWindows --machine-name $Win2k25vmName --settings $dependencyAgentSetting --resource-group $resourceGroup --location $azureLocation --enable-auto-upgrade --no-wait
+
+
 
 # Removing the LogonScript Scheduled Task so it won't run on next reboot
 Write-Header "Removing Logon Task"
