@@ -209,6 +209,9 @@ $Ubuntu01VmIp = Get-VM -Name $Ubuntu01vmName | Select-Object -ExpandProperty Net
 $Ubuntu02VmIp = Get-VM -Name $Ubuntu02vmName | Select-Object -ExpandProperty NetworkAdapters | Select-Object -ExpandProperty IPAddresses | Select-Object -Index 0
 $ProxyVmIp = Get-VM -Name $ProxyvmName | Select-Object -ExpandProperty NetworkAdapters | Select-Object -ExpandProperty IPAddresses | Select-Object -Index 0
 
+#Reserve IP address for proxy so it does not change
+Get-DhcpServerv4Lease -IPAddress $ProxyVmIp| Add-DhcpServerv4Reservation
+
 # Configuring SSH for accessing Linux VMs
 Write-Output "Generating SSH key for accessing nested Linux VMs"
 
