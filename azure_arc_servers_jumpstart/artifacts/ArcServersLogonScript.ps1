@@ -294,7 +294,7 @@ Write-Host "Installing the dependencyAgent extension on the Arc-enabled windows 
 $dependencyAgentSetting = '{\"enableAMA\":\"true\"}'
 az connectedmachine extension create --name DependencyAgent --publisher Microsoft.Azure.Monitoring.DependencyAgent --type-handler-version 9.10 --type DependencyAgentWindows --machine-name $Win2k25vmName --settings $dependencyAgentSetting --resource-group $resourceGroup --location $azureLocation --enable-auto-upgrade --no-wait
 
-az connectedmachine extension create --name MDE.Windows --machine-name $machine.name $Win2k25vmName --resource-group $resourceGroup --publisher "Microsoft.Azure.Security" --type "MDE.Windows" --type-handler-version "1.0" --location $azureLocation --enable-auto-upgrade --no-wait
+#az connectedmachine extension create --name MDE.Windows --machine-name $machine.name $Win2k25vmName --resource-group $resourceGroup --publisher "Microsoft.Azure.Security" --type "MDE.Windows" --type-handler-version "1.0" --location $azureLocation --enable-auto-upgrade --no-wait
 
 # Removing the LogonScript Scheduled Task so it won't run on next reboot
 Write-Header "Removing Logon Task"
