@@ -250,7 +250,8 @@ Write-Output "Installing Squid proxy on the Proxy VM"
 
 $ProxySessions = New-PSSession -HostName $ProxyVmIp -KeyFilePath "$Env:USERPROFILE\.ssh\id_rsa" -UserName $nestedLinuxUsername
 Invoke-JSSudoCommand -Session $ProxySessions -Command 'sudo hostnamectl set-hostname "proxy"'
-Invoke-JSSudoCommand -Session $ProxySessions -Command "sudo apt-get update && sudo apt-get install squid -y"
+Invoke-JSSudoCommand -Session $ProxySessions -Command "sudo apt-get update"
+Invoke-JSSudoCommand -Session $ProxySessions -Command "sudo apt-get install squid -y"
 #Copy the squid config file to the proxy vm
 Invoke-JSSudoCommand -Session $ProxySessions -Command "sudo cp /etc/squid/squid.conf /etc/squid/squid.conf.default"
 Invoke-JSSudoCommand -Session $ProxySessions -Command "sudo rm /etc/squid/squid.conf"
