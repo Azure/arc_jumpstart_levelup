@@ -1,4 +1,4 @@
-<*INSERT Arc Gateway URL here>
+<INSERT Arc Gateway URL here>
 management.azure.com
 login.microsoftonline.com
 gbl.his.arc.azure.com
