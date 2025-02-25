@@ -43,6 +43,7 @@
     },
     "logAnalyticsWorkspaceName": {
       "type": "string",
+      "defaultValue": "arcbox-la",
       "metadata": {
         "description": "Name for your log analytics workspace"
       }
@@ -56,7 +57,7 @@
     },
     "githubBranch": {
       "type": "string",
-      "defaultValue": "main",
+      "defaultValue": "temp",
       "metadata": {
         "description": "Target GitHub branch"
       }
