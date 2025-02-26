@@ -161,6 +161,7 @@ if (!(Test-Path $SQLvmvhdPath) -and !((Test-Path $win2k25vmvhdPath) -and (Test-P
     # Rename SQL VHD file
     Rename-Item -Path "$Env:ArcBoxVMDir\$vhdImageToDownload" -NewName  $SQLvmvhdPath -Force
     # Copy the ubuntu-02.vhdx to Proxy.vhdx
+    Write-Host "Creating proxy VHDX file"
     Copy-Item -Path "$Env:ArcBoxVMDir\ArcBox-Ubuntu-02.vhdx" -Destination $ProxyvmvhdPath -Force
 }
 
