@@ -31,13 +31,6 @@ properties:
         id: Microsoft.PowerShell
         source: winget
     - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: edge
-      directives:
-        description: Install Microsoft Edge
-      settings:
-        id: Microsoft.Edge
-        source: winget
-    - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: azcopy
       directives:
         description: Install azcopy
@@ -47,9 +40,16 @@ properties:
     - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: DotNetSDK8
       directives:
-        description: Install Microsoft DotNet SDK 8
+        description: Install Microsoft DotNet SDK 9
       settings:
-        id: Microsoft.DotNet.SDK.8
+        id: Microsoft.DotNet.SDK.9
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      id: kubectl
+      directives:
+        description: Install kubectl
+      settings:
+        id: Kubernetes.kubectl
         source: winget
     - resource: Microsoft.WinGet.DSC/WinGetPackage
       id: Microsoft.Sysinternals.BGInfo
@@ -57,13 +57,6 @@ properties:
         description: Install Sysinternals BGInfo
       settings:
         id: Microsoft.Sysinternals.BGInfo
-        source: winget
-    - resource: Microsoft.WinGet.DSC/WinGetPackage
-      id: OpenSSL
-      directives:
-        description: Install OpenSSL
-      settings:
-        id: FireDaemon.OpenSSL
         source: winget
     - resource: PSDscResources/WindowsFeature
       id: Hyper-V
