@@ -1,4 +1,4 @@
-# Azure Arc Masterclass labs
+# Lab track 1 - Arc-enabled Servers
 
 ## Goals
 

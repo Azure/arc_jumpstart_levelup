@@ -1,4 +1,4 @@
-# Azure Arc Masterclass labs
+# Lab track 2 - Azure Local
 
 ## Goals
 
