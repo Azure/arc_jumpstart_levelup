@@ -2,7 +2,7 @@
 
 ## Goals
 
-In this immersive lab, participants will embark on a hands-on journey to explore the capabilities of Azure Arc. Utilizing the Azure Arc Jumpstart resources, attendees will gain a deep understanding of how Azure Arc functions and its applications in a real-world scenario. The session is crafted to encourage active participation, enabling attendees to not only listen but also engage directly with the material through hands-on labs.
+In this immersive lab, participants will embark on a hands-on journey to explore the capabilities of Azure Arc & Azure Local. Utilizing the Azure Arc Jumpstart resources, attendees will gain a deep understanding of how Azure Arc functions and its applications in a real-world scenario. The workshop is crafted to encourage active participation, enabling attendees to not only listen but also engage directly with the material through hands-on labs.
 
 ## Lab track 1 - Arc-enabled Servers
 
@@ -19,6 +19,6 @@ You will have access to a shared Azure Local cluster where you can explore the a
 
 ## Lab track 3 - Miscellenous
 
-These labs are optional based on available time and your interests, where you can get hands-on experience with Azure Kubernetes Services (AKS) on top of Azure Local or explorer further capabilities for Arc-enabled Servers.
+These labs are optional based on available time and your interests, where you can get hands-on experience with Azure Kubernetes Services (AKS) on top of Azure Local or explore further capabilities for Arc-enabled Servers.
 
 [Access the content here.](./_labs_miscellenous.md)
