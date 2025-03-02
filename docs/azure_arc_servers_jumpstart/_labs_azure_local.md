@@ -10,7 +10,7 @@ After completion of this session, you will be able to:
 | Module |
 |---------------|
 |[**1 - Explore Azure Local administrative tools**](#module-1-explore-azure-local-administrative-tools) |
-|[**2 - Create and manage Azure Arc-enabled servers running on Azure Local**](#module-2-create-and-manage-azure-arc-enabled-servers-running-on-azure-local) |
+|[**2 - Create Azure Arc-enabled servers running on Azure Local**](#module-2-create--azure-arc-enabled-servers-running-on-azure-local) |
 
 ## Lab Environment
 
@@ -54,9 +54,11 @@ The objective of this module is to familiarize you with the administrative tools
 
 By completing this task, you will gain a better understanding of how to use the Azure Portal and Windows Admin Center to manage your Azure Local environment.
 
-### Module 2: Create and manage Azure Arc-enabled servers running on Azure Local
+### Module 2: Create Azure Arc-enabled servers running on Azure Local
 
 #### Objective
+
+The objective of this module is to guide you through the process of creating Azure Arc-enabled servers running on Azure Local. You will learn how to use the Azure Portal to provision and configure virtual machines in your Azure Local environment.
 
 ##### Task 1: Create a virtual machine
 
@@ -134,3 +136,70 @@ Add_Azure_Local_vm1b.png
 
 By completing this task, you will learn how to create and configure a virtual machine in your Azure Local environment using the Azure Portal.
 
+### **Bonus task**
+
+Review the [documentation](https://learn.microsoft.com/azure/azure-local/manage/create-arc-virtual-machines?view=azloc-24113&tabs=biceptemplate) for creating virtual machines in Azure Local and explore the options available in addition to using the Azure portal, such as Bicep templates:
+
+- ![Screenshot of new VM Bicep parameter file](./Add_Azure_Local_vm6.png)
+
+For reference, here is a valid `.bicepparam` file for use in the lab-environment should you want to test the option to use Bicep for creating a VM:
+
+```bicep
+using 'main.bicep'
+
+param name = 'mgmt02-qa'
+
+param location = 'australiaeast'
+
+param adminUsername = 'labadmin'
+
+param adminPassword = 'ArcPassword123!'
+
+param vCPUCount = 4
+
+param memoryMB = 4096
+
+param imageName = '2025-datacenter'
+
+param isMarketplaceImage = false
+
+param hciLogicalNetworkName = 'lnet-vms'
+
+param customLocationName = 'jumpstart'
+```
+
+### Module 3: Manage virtual machines running on Azure Local
+
+#### Objective
+
+The objective of this module is to guide you through the process of managing virtual machines running on Azure Local.
+
+##### Task 1: Connect to a virtual machine
+
+1. **Log in to the Azure Portal**:
+    - Open your web browser and navigate to the [Azure Portal](https://portal.azure.com).
+    - Enter your student-credentials to log in.
+
+2. **Navigate to Azure Arc**:
+    - In the left-hand menu, select **Azure Arc**.
+
+3. **Select the virtual machine**:
+    - Under **Azure Arc**, expand **Host environments**, select **Azure Local** and navigate to the tab **All systems** to view the list of Azure Local systems available.
+    - Click on the Azure Local system named **hciboxcluster**.
+    - Expand **Resources** in the menu on the left-hand side, click **Virtual machines**.
+    - Select the virtual machine you want to connect to.
+
+4. **Connect to the virtual machine**:
+    - Expand **Settings** and click on **Connect**
+    - Select **Password** and type in the username you specified when creating the virtual machine
+- ![Screenshot of new VM Bicep parameter file](./Manage_Azure_Local_vm1.png)
+
+
+- ![Screenshot of new VM Bicep parameter file](./Manage_Azure_Local_vm2.png)
+
+- ![Screenshot of new VM Bicep parameter file](./Manage_Azure_Local_vm3.png)
+- ![Screenshot of new VM Bicep parameter file](./Manage_Azure_Local_vm4.png)
+- ![Screenshot of new VM Bicep parameter file](./Manage_Azure_Local_vm5.png)
+- ![Screenshot of new VM Bicep parameter file](./Manage_Azure_Local_vm6.png)
+
+By completing this task, you will learn how to connect to a virtual machine running on Azure Local using the Azure Portal.
