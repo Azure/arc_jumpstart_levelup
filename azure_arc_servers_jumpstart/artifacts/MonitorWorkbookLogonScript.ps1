@@ -4,7 +4,7 @@ $ArcBoxLogsDir = "$ArcBoxDir\Logs"
 Start-Transcript -Path $ArcBoxLogsDir\MonitorWorkbookLogonScript.log
 
 # Required for CLI commands
-az login --service-principal --username $Env:spnClientID --password $Env:spnClientSecret --tenant $Env:spnTenantId
+az login --identity
 
 az account set -s $Env:subscriptionId
 
