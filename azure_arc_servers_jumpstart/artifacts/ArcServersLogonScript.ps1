@@ -5,7 +5,7 @@ $Env:ArcBoxDscDir = "$Env:ArcBoxDir\DSC"
 $Env:ArcBoxIconDir = "$Env:ArcBoxDir\Icons"
 $Env:ArcBoxTestsDir = "$Env:ArcBoxDir\Tests"
 $agentScript = "$Env:ArcBoxDir\agentScript"
-$deploySQL = $true
+$deploySQL = $false
 $namingPrefix = "ArcBox"
 
 # Set variables to execute remote powershell scripts on guest VMs
