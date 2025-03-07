@@ -59,7 +59,7 @@ properties:
         SwitchName: 'InternalNATSwitch'
         VhdPath: F:\Virtual Machines\ArcBox-Ubuntu-01.vhdx
         ProcessorCount: 2
-        StartupMemory: '4GB'
+        StartupMemory: '3GB'
         RestartIfNeeded: true
         State: Running
         Generation: 2
@@ -75,7 +75,7 @@ properties:
         SwitchName: 'InternalNATSwitch'
         VhdPath: F:\Virtual Machines\ArcBox-Ubuntu-02.vhdx
         ProcessorCount: 2
-        StartupMemory: '4GB'
+        StartupMemory: '3GB'
         RestartIfNeeded: true
         State: Running
         Generation: 2
