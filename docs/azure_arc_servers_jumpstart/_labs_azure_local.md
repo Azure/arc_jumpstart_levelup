@@ -226,7 +226,7 @@ In this task you are going to simulate a connection failure which requires conso
   - Go to the **Virtual machines** menu item, select your virtual machine and click **Connect**
     - ![Screenshot of VM](./Manage_Azure_Local_vm8.png)
   - Specify the same credentials as you used to logon to the ArcBox Client VM
-  - Select desired Keyboard layout, check the box **Automatically connect with the certificate presented by this machine' is required**
+  - Select desired Keyboard layout, check the box **Automatically connect with the certificate presented by this machine**
     - ![Screenshot of VM](./Manage_Azure_Local_vm9.png)
   - Select **Confirm** to accept the certificate
     - ![Screenshot of VM](./Manage_Azure_Local_vm10.png)
