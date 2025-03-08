@@ -219,7 +219,7 @@ In this task you are going to simulate a connection failure which requires conso
 
 - If you provisioned a Linux VM:
   - Run the following command when connected via SSH
-  - `sudo nmcli device disconnect eth0`
+    - `sudo ip link set eth0 down`
   - You should now loose access to the SSH session
 
   - In the Azure portal, navigate to the Azure Local system named **hciboxcluster**, expand **Settings** and select **Windows Admin Center** connect to the Azure Local cluster.
