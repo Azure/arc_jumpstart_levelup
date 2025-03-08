@@ -731,20 +731,33 @@ Pre-requisite: Azure permissions
 
 #### Objective
 
-In this module, you will learn to configure an Arc-enabled Server to use Arc Gateway during onboarding.
+In this module, you will learn to configure an existing Arc-enabled Server to use Arc Gateway.
 
+#### Task 1: Associate Arc-enabled Server to Arc Gateway
 
-#### Task 1: Get the resource ID for the Arc Gateway
+- Verify the existing connection details for ArcBox-Win2k25
+  - On the ArcBox Client VM, open Hyper-V Manager and connect to the machine using the password **JS123!!*
+  - Right click on the Start-menu inside the VM and select **Terminal**
+  - Type `azcmagent show` and press enter
+    - ![Screenshot Arc Gateway resource](./arc_gateway_connect_1.png)
 
-Navigate to Azure Arc in the Azure Portal and find the shared Arc gateway to use for this task:
-![Screenshot Arc Gateway resource](./arc_gateway_resource_1.png)
+- Navigate to Azure Arc in the Azure Portal and find the shared Arc gateway to use for this task:
+  - ![Screenshot Arc Gateway resource](./arc_gateway_resource_1.png)
+- Click on **arc-gateway-shared** and go to **Associated resources** and click **Add**
+  - Select the ArcBox-Win2k25 machine and click **Apply**
+  - ![Screenshot Arc Gateway resource](./arc_gateway_connect_2.png)
+- Update the Arc-enabled server to use Arc gateway by running `azcmagent config set connection.type gateway` in the Terminal window
+  - ![Screenshot Arc Gateway resource](./arc_gateway_connect_3.png)
+- Re-run the following command: `azcmagent show`
+  - ![Screenshot Arc Gateway resource](./arc_gateway_connect_4.png)
+- Run the following command: `azcmagent check`
+  - ![Screenshot Arc Gateway resource](./arc_gateway_connect_5.png)
 
-Copy the Resource ID for use in the next step:
-![Screenshot Arc Gateway resource](./arc_gateway_resource_2.png)
+The result should indicate that the connection.type is set to **gateway**, and the **Reachable** column should indicate true for all URLs.
 
+Review the [Arc Gateway documentation](https://learn.microsoft.com/azure/azure-arc/servers/arc-gateway?tabs=portal#how-to-use-the-arc-gateway-public-preview) to explore how the Arc Gateway is created and how to onboard new machines to use the gateway directly.
 
-Module 1: On-boarding to Azure Arc-enabled servers
-
+*Note: Due to the limit of 5 Arc gateway resources per subscription, this lab is using a shared gateway for all students.*
 
 # Appendix
 
