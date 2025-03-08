@@ -5,12 +5,12 @@
 After completion of this session, you will be able to:
 
 - Use the Azure Portal and Windows Admin Center to manage an Azure Local cluster
-- Create Azure Arc-enabled servers running on Azure Local
+- Create and Manage virtual machines running on Azure Local
 
 | Module |
 |---------------|
 |[**1 - Explore Azure Local administrative tools**](#module-1-explore-azure-local-administrative-tools) |
-|[**2 - Create Azure Arc-enabled servers running on Azure Local**](#module-2-create--azure-arc-enabled-servers-running-on-azure-local) |
+|[**2 - Create and Manage virtual machines running on Azure Local**](#module-2-create--azure-arc-enabled-servers-running-on-azure-local) |
 
 ## Lab Environment
 
@@ -54,7 +54,7 @@ The objective of this module is to familiarize you with the administrative tools
 
 By completing this task, you will gain a better understanding of how to use the Azure Portal and Windows Admin Center to manage your Azure Local environment.
 
-### Module 2: Create Azure Arc-enabled servers running on Azure Local
+### Module 2: Manage and Manage virtual machines running on Azure Local
 
 ### Objective
 
