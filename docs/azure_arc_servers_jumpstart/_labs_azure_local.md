@@ -222,7 +222,7 @@ In this task you are going to simulate a connection failure which requires conso
     - `sudo ip link set eth0 down`
   - You should now loose access to the SSH session
 
-  - In the Azure portal, navigate to the Azure Local system named **hciboxcluster**, expand **Settings** and select **Windows Admin Center** connect to the Azure Local cluster.
+- In the Azure portal, navigate to the Azure Local system named **hciboxcluster**, expand **Settings** and select **Windows Admin Center** connect to the Azure Local cluster.
   - Go to the **Virtual machines** menu item, select your virtual machine and click **Connect**
     - ![Screenshot of VM](./Manage_Azure_Local_vm8.png)
   - Specify the same credentials as you used to logon to the ArcBox Client VM
