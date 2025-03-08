@@ -73,11 +73,11 @@ The objective of this module is to guide you through the process of creating Azu
    - There are two ways to access virtual machine provisioning on Azure Local in the Azure portal - you can select either one
        1) Under **Azure Arc resources**, select **Machines**.
            - Click on **+ Add/Create** and select **Create a machine in a connected host environment**.
- ![Screenshot of Add/Create option](./Add_Azure_Local_vm1a.png)
+     - ![Screenshot of Add/Create option](./Add_Azure_Local_vm1a.png)
    - Under **Azure Arc**, expand **Host environments**, select **Azure Local** and navigate to the tab **All systems** to view the list of Azure Local systems available.
        - Click on the Azure Local system named **hciboxcluster**
        - Expand **Resources** in the menu on the left hand-side, click **Virtual machines** and select **Create VM**
-   - ![Screenshot of Add/Create option](./Add_Azure_Local_vm1b.png)
+         - ![Screenshot of Add/Create option](./Add_Azure_Local_vm1b.png)
 
 4. **Configure the virtual machine**:
    - Fill in the required details for your virtual machine:
@@ -97,13 +97,13 @@ The objective of this module is to guide you through the process of creating Azu
          - **Virtual processor count**: 2
          - **Memory (MB)**: 4096
          - **Memory type**: Static
-    - **VM Extensions**
+     - **VM Extensions**
         - Leave the option **Enable guest management** selected
-    - **VM proxy configuration**: Leave default/blank values
-    - **Administrator account**: Specify credentials you decide
-    - **Domain join**: Leave this option unchecked
+     - **VM proxy configuration**: Leave default/blank values
+     - **Administrator account**: Specify credentials you decide
+     - **Domain join**: Leave this option unchecked
 
-    - Click **Next**.
+     - Click **Next**.
 
 5. **Configure storage**:
    - By default, the virtual machine will be created with one OS disk and no data disks.
@@ -115,22 +115,22 @@ The objective of this module is to guide you through the process of creating Azu
        - Network: Select **lnet-vms**.
    - **Allocation Method**: Leave **Automatic** selected
        - The VM will get a static IP address from a pre-defined IP pool assigned.
-   - ![Screenshot of Add NIC](./Add_Azure_Local_vm3.png)
+         - ![Screenshot of Add NIC](./Add_Azure_Local_vm3.png)
    - Click **Add**.
    - Click **Next**.
    - On the **Tags** tab, click **Next**.
 
 7. **Review and create**:
    - Review the configuration settings.
-   - ![Screenshot of Add NIC](./Add_Azure_Local_vm4.png)
+     - ![Screenshot of Add NIC](./Add_Azure_Local_vm4.png)
    - Click on **Create** to deploy the virtual machine.
        - This will take approximately 5 minutes while the virtual machine is being provisioned from the selected image.
 
 8. **Verify the deployment**:
    - Once the deployment is complete, Click **Go to resource** or navigate to the **Virtual Machines** section in the Azure Local cluster.
        - Verify that the new virtual machine is listed and check its status.
-       - ![Screenshot of new VM](./Add_Azure_Local_vm5.png)
-       - ![Screenshot of new VM](./Add_Azure_Local_vm7.png)
+         - ![Screenshot of new VM](./Add_Azure_Local_vm5.png)
+         - ![Screenshot of new VM](./Add_Azure_Local_vm7.png)
 
 By completing this task, you will learn how to create and configure a virtual machine in your Azure Local environment using the Azure Portal.
 
@@ -191,15 +191,15 @@ The objective of this module is to guide you through the process of managing vir
     - Expand **Settings** and click on **Connect**
     - Select **Password** and type in the username you specified when creating the virtual machine
     - Click on the copy-button in the right hand-side
-    - ![Screenshot of VM](./Manage_Azure_Local_vm1.png)
+      - ![Screenshot of VM](./Manage_Azure_Local_vm1.png)
     - Right click on the Start-menu inside the ArcBox Client VM (your student VM) and select **Terminal**
     - Paste the command you copied from the portal
     - If you chose to create a Windows machine, add **--rdp** to the pasted command
-    - ![Screenshot of VM](./Manage_Azure_Local_vm7.png)
+      - ![Screenshot of VM](./Manage_Azure_Local_vm7.png)
     - Press enter, type y and press enter again
-    - ![Screenshot of VM](./Manage_Azure_Local_vm2.png)
+      - ![Screenshot of VM](./Manage_Azure_Local_vm2.png)
     - Type y and press enter again
-    - ![Screenshot of VM](./Manage_Azure_Local_vm3.png)
+      - ![Screenshot of VM](./Manage_Azure_Local_vm3.png)
     - It takes a few seonds for the endpoint to be provisioned, so if it fails, hit **arrow up** and press enter to re-run the command
     - Type **yes** to accept the SSH fingerprint and press enter
     - Enter the password you provided when you created the machine and press enter
@@ -212,9 +212,9 @@ In this task you are going to simulate a connection failure which requires conso
 
 - If you provisioned a Windows VM:
   - Right-click on the Start-menu, select run, type **ncpa.cpl** and press enter
-  - ![Screenshot of VM](./Manage_Azure_Local_vm5.png)
+    - ![Screenshot of VM](./Manage_Azure_Local_vm5.png)
   - Right-click onthe network interface and select **Disable**
-  - ![Screenshot of VM](./Manage_Azure_Local_vm6.png)
+    - ![Screenshot of VM](./Manage_Azure_Local_vm6.png)
   - You should now loose access to the RDP session
 
 - If you provisioned a Linux VM:
