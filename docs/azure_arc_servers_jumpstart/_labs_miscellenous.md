@@ -16,7 +16,7 @@ Managing certificates across multiple servers in a hybrid environment can be a c
 
 #### Task
 
-Follow the steps in the Jumpstart Drop [How to Use the Key Vault Extension to Acquire Certificates on Arc-Enabled Windows Servers](https://arcjumpstart.azure.com/azure_jumpstart_drops?drop=How%20to%20Use%20the%20Key%20Vault%20Extension%20to%20Acquire%20Certificates%20on%20Arc-Enabled%20Windows%20Servers)
+Follow the steps in the Jumpstart Drop [How to Use the Key Vault Extension to Acquire Certificates on Arc-Enabled Windows Servers](https://jumpstart.azure.com/azure_jumpstart_drops?drop=How%20to%20Use%20the%20Key%20Vault%20Extension%20to%20Acquire%20Certificates%20on%20Arc-Enabled%20Windows%20Servers)
 
 ### Module 2: Certificate-Based Onboarding for Azure Arc-Enabled Servers
 
