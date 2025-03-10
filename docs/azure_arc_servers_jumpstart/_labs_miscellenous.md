@@ -34,25 +34,7 @@ Managing certificates across multiple servers in a hybrid environment can be a c
 
 Follow the steps in the Jumpstart Drop [How to Use the Key Vault Extension to Acquire Certificates on Arc-Enabled Windows Servers](https://jumpstart.azure.com/azure_jumpstart_drops?drop=How%20to%20Use%20the%20Key%20Vault%20Extension%20to%20Acquire%20Certificates%20on%20Arc-Enabled%20Windows%20Servers)
 
-### Module 2: MicroHack Azure Arc for Servers
-
-#### Objective
-
-This MicroHack scenario walks through the use of Azure Arc with a focus on the best practices and the design principles and some interesting challenges for real world scenarios. Specifically, this builds up to include working with an existing infrastructure in your datacenter.
-
-After completing this MicroHack you will:
-
-- Know how to use Azure Arc in your environment, on-prem or Multi-cloud
-- Understand use cases and possible scenarios in your hybrid world to modernize your infrastructure estate
-- Get insights into real world challenges and scenarios
-
-#### Task
-
-Review the content in the **MicroHack Azure Arc for Servers** and consider if this is something you could leverage for an internal hackathon at your company (or in your personal lab environment after this workshop).
-
-Some of the challenges overlaps with the content in [Lab track 1 - Arc-enabled Servers](https://github.com/Azure/arc_jumpstart_levelup/blob/arc_master_class/docs/azure_arc_servers_jumpstart/_labs_arc-enabled-servers.md), so you may consider looking into the ones who do not, such as **Challenge 4 - Microsoft Defender for Cloud integration with Azure Arc** and **Challenge 5 - Best Practices assessment for Windows Server**.
-
-### Module 3: Connect to an Azure Kubernetes Services (AKS) cluster
+### Module 2: Connect to an Azure Kubernetes Services (AKS) cluster
 
 #### Objective
 
@@ -165,6 +147,24 @@ The following resources in the documentation contains further information about 
 - [AKS on Azure Local](https://learn.microsoft.com/azure/aks/aksarc/cluster-architecture)
 - [Deploy applications using GitOps with Flux v2](https://learn.microsoft.com/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2?tabs=azure-cli)
 - [Implement CI/CD with GitOps (Flux v2)](https://learn.microsoft.com/azure/azure-arc/kubernetes/tutorial-gitops-flux2-ci-cd)
+
+### Module 3: MicroHack Azure Arc for Servers (homework)
+
+#### Objective
+
+This MicroHack scenario walks through the use of Azure Arc with a focus on the best practices and the design principles and some interesting challenges for real world scenarios. Specifically, this builds up to include working with an existing infrastructure in your datacenter.
+
+After completing this MicroHack you will:
+
+- Know how to use Azure Arc in your environment, on-prem or Multi-cloud
+- Understand use cases and possible scenarios in your hybrid world to modernize your infrastructure estate
+- Get insights into real world challenges and scenarios
+
+#### Task
+
+Review the content in the **MicroHack Azure Arc for Servers** and consider if this is something you could leverage for an internal hackathon at your company (or in your personal lab environment after this workshop).
+
+Some of the challenges overlaps with the content in [Lab track 1 - Arc-enabled Servers](https://github.com/Azure/arc_jumpstart_levelup/blob/arc_master_class/docs/azure_arc_servers_jumpstart/_labs_arc-enabled-servers.md), so you may consider looking into the ones who do not, such as **Challenge 4 - Microsoft Defender for Cloud integration with Azure Arc** and **Challenge 5 - Best Practices assessment for Windows Server**.
 
 ### Module 4: Certificate-Based Onboarding for Azure Arc-Enabled Servers (homework)
 
