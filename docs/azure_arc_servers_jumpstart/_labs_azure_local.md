@@ -100,7 +100,7 @@ The objective of this module is to guide you through the process of creating Azu
      - **VM Extensions**
         - Leave the option **Enable guest management** selected
      - **VM proxy configuration**: Leave default/blank values
-     - **Administrator account**: Specify credentials you decide
+     - **Administrator account**: Specify **student** as the username and a password you decide
      - **Domain join**: Leave this option unchecked
 
      - Click **Next**.
@@ -149,7 +149,7 @@ param name = 'mgmt02-qa'
 
 param location = 'australiaeast'
 
-param adminUsername = 'labadmin'
+param adminUsername = 'student'
 
 param adminPassword = 'ArcPassword123!'
 
@@ -225,7 +225,7 @@ In this task you are going to simulate a connection failure which requires conso
 - In the Azure portal, navigate to the Azure Local system named **hciboxcluster**, expand **Settings** and select **Windows Admin Center** connect to the Azure Local cluster.
   - Go to the **Virtual machines** menu item, select your virtual machine and click **Connect**
     - ![Screenshot of VM](./Manage_Azure_Local_vm8.png)
-  - Specify the same credentials as you used to logon to the ArcBox Client VM
+  - Specify the same credentials as you used to logon to the ArcBox Client VM (student/Master..)
   - Select desired Keyboard layout, check the box **Automatically connect with the certificate presented by this machine**
     - ![Screenshot of VM](./Manage_Azure_Local_vm9.png)
   - Select **Confirm** to accept the certificate
