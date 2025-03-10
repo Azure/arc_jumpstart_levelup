@@ -28,7 +28,7 @@ Azure Arc version 1.41 introduces certificate-based authentication for connectin
 
 #### Task
 
-Review the steps in the Jumpstart Drop [Certificate-Based Onboarding for Azure Arc-Enabled Servers](https://arcjumpstart.azure.com/azure_jumpstart_drops?drop=Certificate-Based%20Onboarding%20for%20Azure%20Arc-Enabled%20Servers)
+Review the steps in the Jumpstart Drop [Certificate-Based Onboarding for Azure Arc-Enabled Servers](https://jumpstart.azure.com/azure_jumpstart_drops?drop=Certificate-Based%20Onboarding%20for%20Azure%20Arc-Enabled%20Servers)
 
 Since no Certificate Services is available in the lab environment, this exercise needs to be performed in an environment where this is available.
 
