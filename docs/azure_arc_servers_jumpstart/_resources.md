@@ -2,7 +2,7 @@
 
 ## Resources
 
-- [Presentation](https://1drv.ms/b/s!AuLRjpNjJWdOgaT5Ou0HGXETaIgxx5k?e=ii3NTz)
+- [Presentation](https://1drv.ms/b/s!AuLRjpNjJWdOgaXdMWZpZMIVLX-szJ8?e=bJT6RM)
 - [Azure Arc Webpage](https://aka.ms/arc)
 - Technical documentation
   - [https://aka.ms/AzureArcDocs](https://aka.ms/AzureArcDocs)
@@ -10,7 +10,7 @@
 - Learning Path
   - [https://aka.ms/LearnHybridArc](https://aka.ms/LearnHybridArc)
 - Microsoft Unified workshops
-  - Securing and Governing Hybrid Environments with Azure Arc
+  - Securing and Governing Hybrid Environments with Azure Arc (ask your Customer Success Account Manager for more information)
 - Arc Jumpstart
   - [https://aka.ms/AzureArcJumpstart](https://aka.ms/AzureArcJumpstart)
   - [https://aka.ms/ArcPosters​](https://aka.ms/ArcPosters)
