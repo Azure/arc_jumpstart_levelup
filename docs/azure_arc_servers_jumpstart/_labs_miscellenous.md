@@ -162,7 +162,7 @@ After completing this MicroHack you will:
 
 #### Task
 
-Review the content in the **MicroHack Azure Arc for Servers** and consider if this is something you could leverage for an internal hackathon at your company (or in your personal lab environment after this workshop).
+Review the content in the [MicroHack Azure Arc for Servers](https://github.com/microsoft/MicroHack/tree/main/03-Azure/01-03-Infrastructure/02_Hybrid_Azure_Arc_Servers) and consider if this is something you could leverage for an internal hackathon at your company (or in your personal lab environment after this workshop).
 
 Some of the challenges overlaps with the content in [Lab track 1 - Arc-enabled Servers](https://github.com/Azure/arc_jumpstart_levelup/blob/arc_master_class/docs/azure_arc_servers_jumpstart/_labs_arc-enabled-servers.md), so you may consider looking into the ones who do not, such as **Challenge 4 - Microsoft Defender for Cloud integration with Azure Arc** and **Challenge 5 - Best Practices assessment for Windows Server**.
 
