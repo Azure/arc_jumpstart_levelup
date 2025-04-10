@@ -20,7 +20,7 @@ param windowsAdminUsername string
 param windowsAdminPassword string
 
 @description('Name for your log analytics workspace')
-param logAnalyticsWorkspaceName string
+param logAnalyticsWorkspaceName string = 'ArcBox-LA'
 
 @description('Target GitHub account')
 param githubAccount string = 'Azure'
