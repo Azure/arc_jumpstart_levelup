@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.32.4.45862",
-      "templateHash": "5607243324071921081"
+      "version": "0.34.44.8038",
+      "templateHash": "2223284559391923513"
     }
   },
   "parameters": {
@@ -43,6 +43,7 @@
     },
     "logAnalyticsWorkspaceName": {
       "type": "string",
+      "defaultValue": "ArcBox-LA",
       "metadata": {
         "description": "Name for your log analytics workspace"
       }
@@ -150,8 +151,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.32.4.45862",
-              "templateHash": "14593730064188621292"
+              "version": "0.34.44.8038",
+              "templateHash": "2523580418900792359"
             }
           },
           "parameters": {
@@ -484,8 +485,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.32.4.45862",
-              "templateHash": "730530218300051233"
+              "version": "0.34.44.8038",
+              "templateHash": "4289366467962618221"
             }
           },
           "parameters": {
@@ -563,8 +564,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.32.4.45862",
-              "templateHash": "2819501567096576880"
+              "version": "0.34.44.8038",
+              "templateHash": "1173645951408597378"
             }
           },
           "parameters": {
@@ -940,8 +941,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.32.4.45862",
-              "templateHash": "6866560490045668540"
+              "version": "0.34.44.8038",
+              "templateHash": "4794161759652288867"
             }
           },
           "parameters": {
@@ -4540,8 +4541,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.32.4.45862",
-              "templateHash": "8452320223296012534"
+              "version": "0.34.44.8038",
+              "templateHash": "6460021346573378786"
             }
           },
           "parameters": {
@@ -4726,8 +4727,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.32.4.45862",
-                      "templateHash": "14993175033177860953"
+                      "version": "0.34.44.8038",
+                      "templateHash": "11210496907865239646"
                     }
                   },
                   "parameters": {
@@ -4925,8 +4926,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.32.4.45862",
-              "templateHash": "16089965460427048243"
+              "version": "0.34.44.8038",
+              "templateHash": "1070890791816710548"
             }
           },
           "parameters": {
@@ -5205,13 +5206,13 @@
                           ]
                         },
                         "fileSettings": {
-                          "fileCollectionFrequency": 2700
+                          "fileCollectionFrequency": 1800
                         },
                         "softwareSettings": {
                           "softwareCollectionFrequency": 1800
                         },
                         "inventorySettings": {
-                          "inventoryCollectionFrequency": 36000
+                          "inventoryCollectionFrequency": 18000
                         },
                         "servicesSettings": {
                           "serviceCollectionFrequency": 1800

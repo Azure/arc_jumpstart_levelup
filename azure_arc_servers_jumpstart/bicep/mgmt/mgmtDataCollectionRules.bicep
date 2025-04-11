@@ -253,13 +253,13 @@ resource dataCollectionRuleChangeTracking 'Microsoft.Insights/dataCollectionRule
               ]
             }
             fileSettings: {
-              fileCollectionFrequency: 2700
+              fileCollectionFrequency: 1800
             }
             softwareSettings: {
               softwareCollectionFrequency: 1800
             }
             inventorySettings: {
-              inventoryCollectionFrequency: 36000
+              inventoryCollectionFrequency: 18000
             }
             servicesSettings: {
               serviceCollectionFrequency: 1800

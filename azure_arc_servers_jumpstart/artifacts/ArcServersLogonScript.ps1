@@ -236,8 +236,15 @@ Remove-Item -Path "$($Env:TEMP)\authorized_keys"
 Write-Output "Transferring installation script to nested Windows VMs..."
 Copy-VMFile $Win2k25vmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
 
+# Copy Change tracking text file to 2025 and 2022 machines
+Copy-VMFile $Win2k25vmName -SourcePath "$Env:ArcBoxDir\ct.txt" -DestinationPath "$Env:ArcBoxDir\ct.txt" -CreateFullPath -FileSource Host -Force
+Copy-VMFile $Win2k22vmName -SourcePath "$Env:ArcBoxDir\ct.txt" -DestinationPath "$Env:ArcBoxDir\ct.txt" -CreateFullPath -FileSource Host -Force
+
+# Copy required SQL scripts to SQL VM
 Copy-VMFile $SQLvmName -SourcePath "$Env:ArcBoxDir\testDefenderForSQL.ps1" -DestinationPath "$Env:ArcBoxDir\testDefenderForSQL.ps1" -CreateFullPath -FileSource Host
 Copy-VMFile $SQLvmName -SourcePath "$Env:ArcBoxDir\SqlAdvancedThreatProtectionShell.psm1" -DestinationPath "$Env:ArcBoxDir\SqlAdvancedThreatProtectionShell.psm1" -CreateFullPath -FileSource Host
+
+
 
 # Update Linux VM onboarding script connect toAzure Arc, get new token as it might have been expired by the time execution reached this line.
 $accessToken = ConvertFrom-SecureString ((Get-AzAccessToken -AsSecureString).Token) -AsPlainText

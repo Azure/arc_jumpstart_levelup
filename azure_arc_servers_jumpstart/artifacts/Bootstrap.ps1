@@ -135,6 +135,7 @@ Invoke-WebRequest ($templateBaseUrl + "artifacts/dsc/common.dsc.yml") -OutFile $
 Invoke-WebRequest ($templateBaseUrl + "artifacts/WinGet.ps1") -OutFile $Env:ArcBoxDir\WinGet.ps1
 Invoke-WebRequest ($templateBaseUrl + "artifacts/squid.conf") -OutFile $Env:ArcBoxDir\squid.conf
 Invoke-WebRequest ($templateBaseUrl + "artifacts/whitelist.txt") -OutFile $Env:ArcBoxDir\whitelist.txt
+Invoke-WebRequest ($templateBaseUrl + "artifacts/ct.txt") -OutFile $Env:ArcBoxDir\ct.txt
 
 # Workbook template
 Invoke-WebRequest ($templateBaseUrl + "artifacts/mgmtMonitorWorkbookITPro.json") -OutFile $Env:ArcBoxDir\mgmtMonitorWorkbook.json
