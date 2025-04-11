@@ -237,8 +237,8 @@ Write-Output "Transferring installation script to nested Windows VMs..."
 Copy-VMFile $Win2k25vmName -SourcePath "$agentScript\installArcAgent.ps1" -DestinationPath "$Env:ArcBoxDir\installArcAgent.ps1" -CreateFullPath -FileSource Host -Force
 
 # Copy Change tracking text file to 2025 and 2022 machines
-Copy-VMFile $Win2k25vmName -SourcePath $Env:ArcBoxDir\ct.txt" -DestinationPath "$Env:ArcBoxDir\ct.txt" -CreateFullPath -FileSource Host -Force
-Copy-VMFile $Win2k22vmName -SourcePath $Env:ArcBoxDir\ct.txt" -DestinationPath "$Env:ArcBoxDir\ct.txt" -CreateFullPath -FileSource Host -Force
+Copy-VMFile $Win2k25vmName -SourcePath "$Env:ArcBoxDir\ct.txt" -DestinationPath "$Env:ArcBoxDir\ct.txt" -CreateFullPath -FileSource Host -Force
+Copy-VMFile $Win2k22vmName -SourcePath "$Env:ArcBoxDir\ct.txt" -DestinationPath "$Env:ArcBoxDir\ct.txt" -CreateFullPath -FileSource Host -Force
 
 # Copy required SQL scripts to SQL VM
 Copy-VMFile $SQLvmName -SourcePath "$Env:ArcBoxDir\testDefenderForSQL.ps1" -DestinationPath "$Env:ArcBoxDir\testDefenderForSQL.ps1" -CreateFullPath -FileSource Host
