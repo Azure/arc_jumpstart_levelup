@@ -10,7 +10,7 @@ properties:
         Name: ArcBox-Win2K25
         SwitchName: 'InternalNATSwitch'
         VhdPath: F:\Virtual Machines\ArcBox-Win2K25.vhdx
-        ProcessorCount: 1
+        ProcessorCount: 4
         StartupMemory: '8GB'
         RestartIfNeeded: true
         State: Off
