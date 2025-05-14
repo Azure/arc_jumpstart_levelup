@@ -120,12 +120,12 @@ $workspaceResourceID = (az monitor log-analytics workspace show --resource-group
 # Before deploying ArcBox SQL set resource group tag ArcSQLServerExtensionDeployment=Disabled to opt out of automatic SQL onboarding
 #az tag create --resource-id "/subscriptions/$subscriptionId/resourceGroups/$resourceGroup" --tags ArcSQLServerExtensionDeployment=Disabled
 
-$vhdImageToDownload = "ArcBox-SQL-DEV.vhdx"
+$vhdImageToDownload = "VBD-ArcBox-SQL-DEV.vhdx"
 if ($Env:sqlServerEdition -eq "Standard") {
-    $vhdImageToDownload = "ArcBox-SQL-STD.vhdx"
+    $vhdImageToDownload = "VBD-ArcBox-SQL-STD.vhdx"
 }
 elseif ($Env:sqlServerEdition -eq "Enterprise") {
-    $vhdImageToDownload = "ArcBox-SQL-ENT.vhdx"
+    $vhdImageToDownload = "VBD-ArcBox-SQL-ENT.vhdx"
 }
 
 # Create the nested VMs if not already created
@@ -134,35 +134,35 @@ Write-Header "Create Hyper-V VMs"
 # Onboard nested Windows and Linux VMs to Azure Arc
 Write-Header "Fetching Nested VMs"
 
-$SQLvmvhdPath = "$Env:ArcBoxVMDir\ArcBox-SQL.vhdx"
+$SQLvmvhdPath = "$Env:ArcBoxVMDir\VBD-ArcBox-SQL.vhdx"
 $SQLvmName = "ArcBox-SQL"
         
 $Win2k25vmName = "ArcBox-Win2K25"
-$win2k25vmvhdPath = "${Env:ArcBoxVMDir}\ArcBox-Win2K25.vhdx"
+$win2k25vmvhdPath = "${Env:ArcBoxVMDir}\VBD-ArcBox-Win2K25.vhdx"
 
 $Win2k22vmName = "ArcBox-Win2K22"
-$Win2k22vmvhdPath = "${Env:ArcBoxVMDir}\ArcBox-Win2K22.vhdx"
+$Win2k22vmvhdPath = "${Env:ArcBoxVMDir}\VBD-ArcBox-Win2K22.vhdx"
 
 $Ubuntu01vmName = "ArcBox-Ubuntu-01"
-$Ubuntu01vmvhdPath = "${Env:ArcBoxVMDir}\ArcBox-Ubuntu-01.vhdx"
+$Ubuntu01vmvhdPath = "${Env:ArcBoxVMDir}\VBD-ArcBox-Ubuntu-01.vhdx"
 
 $Ubuntu02vmName = "ArcBox-Ubuntu-02"
-$Ubuntu02vmvhdPath = "${Env:ArcBoxVMDir}\ArcBox-Ubuntu-02.vhdx"
+$Ubuntu02vmvhdPath = "${Env:ArcBoxVMDir}\VBD-ArcBox-Ubuntu-02.vhdx"
 
 $ProxyvmName = "ArcBox-Proxy"
-$ProxyvmvhdPath = "${Env:ArcBoxVMDir}\ArcBox-Proxy.vhdx"
+$ProxyvmvhdPath = "${Env:ArcBoxVMDir}\VBD-ArcBox-Proxy.vhdx"
 
 # Verify if VHD files already downloaded especially when re-running this script
 if (!(Test-Path $SQLvmvhdPath) -and !((Test-Path $win2k25vmvhdPath) -and (Test-Path $Win2k22vmvhdPath) -and (Test-Path $Ubuntu01vmvhdPath) -and (Test-Path $Ubuntu02vmvhdPath))) {
     <# Action when all if and elseif conditions are false #>
     $Env:AZCOPY_BUFFER_GB = 8
     Write-Output "Downloading nested VMs VHDX files. This can take some time, hold tight..."
-    azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "$vhdImageToDownload;ArcBox-Win2K25.vhdx;ArcBox-Win2K22.vhdx;ArcBox-Ubuntu-01.vhdx;ArcBox-Ubuntu-02.vhdx;" --recursive=true --check-length=false --log-level=ERROR
+    azcopy cp $vhdSourceFolder $Env:ArcBoxVMDir --include-pattern "$vhdImageToDownload;VBD-ArcBox-Win2K25.vhdx;VBD-ArcBox-Win2K22.vhdx;VBD-ArcBox-Ubuntu-01.vhdx;VBD-ArcBox-Ubuntu-02.vhdx;" --recursive=true --check-length=false --log-level=ERROR
     # Rename SQL VHD file
     Rename-Item -Path "$Env:ArcBoxVMDir\$vhdImageToDownload" -NewName  $SQLvmvhdPath -Force
     # Copy the ubuntu-02.vhdx to Proxy.vhdx
     Write-Host "Creating proxy VHDX file"
-    Copy-Item -Path "$Env:ArcBoxVMDir\ArcBox-Ubuntu-02.vhdx" -Destination $ProxyvmvhdPath -Force
+    Copy-Item -Path "$Env:ArcBoxVMDir\VBD-ArcBox-Ubuntu-02.vhdx" -Destination $ProxyvmvhdPath -Force
 }
 
 # Create the nested VMs if not already created
