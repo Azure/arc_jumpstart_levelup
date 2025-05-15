@@ -9,7 +9,7 @@ properties:
       settings:
         Name: ArcBox-Win2K25
         SwitchName: 'InternalNATSwitch'
-        VhdPath: F:\Virtual Machines\ArcBox-Win2K25.vhdx
+        VhdPath: F:\Virtual Machines\VBD-ArcBox-Win2K25.vhdx
         ProcessorCount: 4
         StartupMemory: '8GB'
         RestartIfNeeded: true
@@ -25,7 +25,7 @@ properties:
       settings:
         Name: ArcBox-Win2K22
         SwitchName: 'InternalNATSwitch'
-        VhdPath: F:\Virtual Machines\ArcBox-Win2K22.vhdx
+        VhdPath: F:\Virtual Machines\VBD-ArcBox-Win2K22.vhdx
         ProcessorCount: 1
         StartupMemory: '8GB'
         RestartIfNeeded: true
@@ -41,7 +41,7 @@ properties:
       settings:
         Name: ArcBox-SQL
         SwitchName: 'InternalNATSwitch'
-        VhdPath: F:\Virtual Machines\ArcBox-SQL.vhdx
+        VhdPath: F:\Virtual Machines\VBD-ArcBox-SQL.vhdx
         ProcessorCount: 2
         StartupMemory: '8GB'
         RestartIfNeeded: true
@@ -57,7 +57,7 @@ properties:
       settings:
         Name: ArcBox-Ubuntu-01
         SwitchName: 'InternalNATSwitch'
-        VhdPath: F:\Virtual Machines\ArcBox-Ubuntu-01.vhdx
+        VhdPath: F:\Virtual Machines\VBD-ArcBox-Ubuntu-01.vhdx
         ProcessorCount: 1
         StartupMemory: '4GB'
         RestartIfNeeded: true
@@ -73,7 +73,7 @@ properties:
       settings:
         Name: ArcBox-Ubuntu-02
         SwitchName: 'InternalNATSwitch'
-        VhdPath: F:\Virtual Machines\ArcBox-Ubuntu-02.vhdx
+        VhdPath: F:\Virtual Machines\VBD-ArcBox-Ubuntu-02.vhdx
         ProcessorCount: 1
         StartupMemory: '2GB'
         RestartIfNeeded: true
@@ -89,7 +89,7 @@ properties:
       settings:
         Name: ArcBox-Proxy
         SwitchName: 'InternalNATSwitch'
-        VhdPath: F:\Virtual Machines\ArcBox-Proxy.vhdx
+        VhdPath: F:\Virtual Machines\VBD-ArcBox-Proxy.vhdx
         ProcessorCount: 1
         StartupMemory: '2GB'
         RestartIfNeeded: true
