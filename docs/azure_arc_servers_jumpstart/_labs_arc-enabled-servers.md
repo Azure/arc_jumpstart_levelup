@@ -16,7 +16,7 @@ After completion of this session, you will be able to:
 
 | Module |
 |---------------|
-|[**Deploy lab-environnment**](#deployment) |
+|[**Deploy lab-environment**](#deployment) |
 |[**1 - Onboard Windows and Linux servers running using different onboarding methods**](#module-1-on-boarding-to-azure-arc-enabled-servers) |
 |[**2 - Query and inventory your Azure Arc-enabled servers using Azure Resource Graph**](#module-2-query-and-inventory-your-azure-arc-enabled-servers-using-azure-resource-graph) |
 |[**3 - SSH into your Azure Arc-enabled servers using SSH access**](#module-3-ssh-into-your-azure-arc-enabled-servers-using-ssh-access) |
