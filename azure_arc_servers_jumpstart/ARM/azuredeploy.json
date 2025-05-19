@@ -53,7 +53,7 @@
     },
     "githubBranch": {
       "type": "string",
-      "defaultValue": "nicconf",
+      "defaultValue": "arc_master_class",
       "metadata": {
         "description": "Target GitHub branch"
       }
