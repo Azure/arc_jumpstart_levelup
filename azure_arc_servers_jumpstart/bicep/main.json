@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.34.44.8038",
-      "templateHash": "2223284559391923513"
+      "templateHash": "4846752110091626349"
     }
   },
   "parameters": {
@@ -152,7 +152,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.34.44.8038",
-              "templateHash": "2523580418900792359"
+              "templateHash": "687669432676425669"
             }
           },
           "parameters": {
@@ -330,7 +330,7 @@
                 "idleTimeoutInMinutes": 4
               },
               "sku": {
-                "name": "Basic"
+                "name": "Standard"
               }
             },
             {
@@ -486,7 +486,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.34.44.8038",
-              "templateHash": "4289366467962618221"
+              "templateHash": "8218817562109447016"
             }
           },
           "parameters": {
@@ -525,7 +525,8 @@
               },
               "kind": "StorageV2",
               "properties": {
-                "supportsHttpsTrafficOnly": true
+                "supportsHttpsTrafficOnly": true,
+                "allowBlobPublicAccess": true
               }
             }
           ],
