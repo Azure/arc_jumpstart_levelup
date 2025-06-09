@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.34.44.8038",
-      "templateHash": "11173761397765479396"
+      "templateHash": "4846752110091626349"
     }
   },
   "parameters": {
@@ -152,7 +152,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.34.44.8038",
-              "templateHash": "2523580418900792359"
+              "templateHash": "687669432676425669"
             }
           },
           "parameters": {
@@ -330,7 +330,7 @@
                 "idleTimeoutInMinutes": 4
               },
               "sku": {
-                "name": "Basic"
+                "name": "Standard"
               }
             },
             {
