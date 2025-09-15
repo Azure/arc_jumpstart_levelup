@@ -268,6 +268,17 @@ Invoke-JSSudoCommand -Session $ProxySessions -Command "sudo cp /etc/squid/squid.
 Invoke-JSSudoCommand -Session $ProxySessions -Command "sudo rm /etc/squid/squid.conf"
 Get-VM *Proxy* | Copy-VMFile -SourcePath "$Env:ArcBoxDir\squid.conf" -DestinationPath "/etc/squid" -FileSource Host -Force
 Get-VM *Proxy* | Copy-VMFile -SourcePath "$Env:ArcBoxDir\whitelist.txt" -DestinationPath "/etc/squid" -FileSource Host -Force
+Remove-PSSession -Session $ProxySessions
+
+$Ubuntu1Session = New-PSSession -HostName $Ubuntu01VmIp -KeyFilePath "$Env:USERPROFILE\.ssh\id_rsa" -UserName $nestedLinuxUsername
+Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "sudo apt-get update"
+Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "sudo apt install net-tools -y"
+Remove-PSSession -Session $Ubuntu1Session
+
+$Ubuntu2Session = New-PSSession -HostName $Ubuntu02VmIp -KeyFilePath "$Env:USERPROFILE\.ssh\id_rsa" -UserName $nestedLinuxUsername
+Invoke-JSSudoCommand -Session $Ubuntu2Session -Command "sudo apt-get update"
+Invoke-JSSudoCommand -Session $Ubuntu2Session -Command "sudo apt install net-tools -y"
+Remove-PSSession -Session $Ubuntu2Session
 
 Write-Header "Onboarding Arc-enabled servers"
 
