@@ -270,6 +270,7 @@ Get-VM *Proxy* | Copy-VMFile -SourcePath "$Env:ArcBoxDir\squid.conf" -Destinatio
 Get-VM *Proxy* | Copy-VMFile -SourcePath "$Env:ArcBoxDir\whitelist.txt" -DestinationPath "/etc/squid" -FileSource Host -Force
 Remove-PSSession -Session $ProxySessions
 
+#Install net-tools for ifconfig usage and python 3.10 for hybrid worker on Ubuntu-01 and Ubuntu-02
 $Ubuntu1Session = New-PSSession -HostName $Ubuntu01VmIp -KeyFilePath "$Env:USERPROFILE\.ssh\id_rsa" -UserName $nestedLinuxUsername
 Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "sudo apt-get update"
 Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "sudo apt install net-tools -y"
