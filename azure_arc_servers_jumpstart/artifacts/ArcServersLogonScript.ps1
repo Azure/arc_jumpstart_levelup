@@ -276,6 +276,7 @@ Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "sudo apt-get update"
 Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "sudo apt install net-tools -y"
 Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "sudo apt install python3.10 -y"
 Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "echo 'alias python3=/usr/bin/python3.10' >> ~/.bash_aliases"
+Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "source ~/.bash_aliases"
 Remove-PSSession -Session $Ubuntu1Session
 Restart-VM -Name $Ubuntu01vmName
 start-Sleep -Seconds 10
@@ -285,8 +286,9 @@ Invoke-JSSudoCommand -Session $Ubuntu2Session -Command "sudo apt-get update"
 Invoke-JSSudoCommand -Session $Ubuntu2Session -Command "sudo apt install net-tools -y"
 Invoke-JSSudoCommand -Session $Ubuntu2Session -Command "sudo apt install python3.10 -y"
 Invoke-JSSudoCommand -Session $Ubuntu2Session -Command "echo 'alias python3=/usr/bin/python3.10' >> ~/.bash_aliases"
+Invoke-JSSudoCommand -Session $Ubuntu2Session -Command "source ~/.bash_aliases"
 Remove-PSSession -Session $Ubuntu2Session
-Start-VM -Name $Ubuntu02vmName
+Restart-VM -Name $Ubuntu02vmName
 Write-Header "Onboarding Arc-enabled servers"
 
 # Onboarding the nested VMs as Azure Arc-enabled servers
