@@ -273,13 +273,19 @@ Remove-PSSession -Session $ProxySessions
 $Ubuntu1Session = New-PSSession -HostName $Ubuntu01VmIp -KeyFilePath "$Env:USERPROFILE\.ssh\id_rsa" -UserName $nestedLinuxUsername
 Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "sudo apt-get update"
 Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "sudo apt install net-tools -y"
+Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "sudo apt install python3.10 -y"
+Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "echo 'alias python3=/usr/bin/python3.10' >> ~/.bash_aliases"
 Remove-PSSession -Session $Ubuntu1Session
+Restart-VM -Name $Ubuntu01vmName
+start-Sleep -Seconds 10
 
 $Ubuntu2Session = New-PSSession -HostName $Ubuntu02VmIp -KeyFilePath "$Env:USERPROFILE\.ssh\id_rsa" -UserName $nestedLinuxUsername
 Invoke-JSSudoCommand -Session $Ubuntu2Session -Command "sudo apt-get update"
 Invoke-JSSudoCommand -Session $Ubuntu2Session -Command "sudo apt install net-tools -y"
+Invoke-JSSudoCommand -Session $Ubuntu2Session -Command "sudo apt install python3.10 -y"
+Invoke-JSSudoCommand -Session $Ubuntu2Session -Command "echo 'alias python3=/usr/bin/python3.10' >> ~/.bash_aliases"
 Remove-PSSession -Session $Ubuntu2Session
-
+Start-VM -Name $Ubuntu02vmName
 Write-Header "Onboarding Arc-enabled servers"
 
 # Onboarding the nested VMs as Azure Arc-enabled servers
