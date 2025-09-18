@@ -268,7 +268,7 @@ Invoke-JSSudoCommand -Session $ProxySessions -Command "sudo cp /etc/squid/squid.
 Invoke-JSSudoCommand -Session $ProxySessions -Command "sudo rm /etc/squid/squid.conf"
 Get-VM *Proxy* | Copy-VMFile -SourcePath "$Env:ArcBoxDir\squid.conf" -DestinationPath "/etc/squid" -FileSource Host -Force
 Get-VM *Proxy* | Copy-VMFile -SourcePath "$Env:ArcBoxDir\whitelist.txt" -DestinationPath "/etc/squid" -FileSource Host -Force
-Remove-PSSession -Session $ProxySessions
+#Remove-PSSession -Session $ProxySessions
 
 #Install net-tools for ifconfig usage and python 3.10 for hybrid worker on Ubuntu-01 and Ubuntu-02
 $Ubuntu1Session = New-PSSession -HostName $Ubuntu01VmIp -KeyFilePath "$Env:USERPROFILE\.ssh\id_rsa" -UserName $nestedLinuxUsername
@@ -279,7 +279,7 @@ Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "sudo update-alternatives
 Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 120"
 # Automatically set Python 3.10 as the default
 Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "sudo update-alternatives --set python3 /usr/bin/python3.10"
-Remove-PSSession -Session $Ubuntu1Session
+#Remove-PSSession -Session $Ubuntu1Session
 
 $Ubuntu2Session = New-PSSession -HostName $Ubuntu02VmIp -KeyFilePath "$Env:USERPROFILE\.ssh\id_rsa" -UserName $nestedLinuxUsername
 Invoke-JSSudoCommand -Session $Ubuntu2Session -Command "sudo apt-get update"
@@ -289,7 +289,7 @@ Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "sudo update-alternatives
 Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 120"
 # Automatically set Python 3.10 as the default
 Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "sudo update-alternatives --set python3 /usr/bin/python3.10"
-Remove-PSSession -Session $Ubuntu2Session
+#Remove-PSSession -Session $Ubuntu2Session
 
 Write-Header "Onboarding Arc-enabled servers"
 
