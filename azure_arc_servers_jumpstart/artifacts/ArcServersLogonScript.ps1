@@ -285,10 +285,10 @@ $Ubuntu2Session = New-PSSession -HostName $Ubuntu02VmIp -KeyFilePath "$Env:USERP
 Invoke-JSSudoCommand -Session $Ubuntu2Session -Command "sudo apt-get update"
 Invoke-JSSudoCommand -Session $Ubuntu2Session -Command "sudo apt install net-tools -y"
 Invoke-JSSudoCommand -Session $Ubuntu2Session -Command "sudo apt install python3.10 -y"
-Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 110"
-Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 120"
+Invoke-JSSudoCommand -Session $Ubuntu2Session -Command "sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 110"
+Invoke-JSSudoCommand -Session $Ubuntu2Session -Command "sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 120"
 # Automatically set Python 3.10 as the default
-Invoke-JSSudoCommand -Session $Ubuntu1Session -Command "sudo update-alternatives --set python3 /usr/bin/python3.10"
+Invoke-JSSudoCommand -Session $Ubuntu2Session -Command "sudo update-alternatives --set python3 /usr/bin/python3.10"
 #Remove-PSSession -Session $Ubuntu2Session
 
 Write-Header "Onboarding Arc-enabled servers"
