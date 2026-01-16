@@ -256,14 +256,14 @@ resource dataCollectionRuleChangeTracking 'Microsoft.Insights/dataCollectionRule
               fileCollectionFrequency: 600,
               "fileinfo": [
                                 {
-                                    "name": "CT",
+                                    "name": "FileCTWin",
                                     "enabled": true,
                                     "description": "",
-                                    "path": "C:\\ArcBox\\ct.txt",
+                                    "path": "c:\ArcBox\ct.txt",
                                     "recurse": false,
                                     "uploadContent": true,
                                     "maxContentsReturnable": 5000000,
-                                    "maxOutputSize": 0,
+                                    "maxOutputSize": 5000000,
                                     "checksum": "Md5",
                                     "pathType": "File",
                                     "groupTag": "Custom"
@@ -367,4 +367,5 @@ resource ChangeTracking_variables_workspace 'Microsoft.OperationsManagement/solu
 
 output changeTrackingDCR string = dataCollectionRuleChangeTracking.id
 output vmInsightsDCR string = dataCollectionRuleChangeTrackingVMI.id
+
 
