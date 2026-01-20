@@ -253,7 +253,22 @@ resource dataCollectionRuleChangeTracking 'Microsoft.Insights/dataCollectionRule
               ]
             }
             fileSettings: {
-              fileCollectionFrequency: 1800
+              fileCollectionFrequency: 900
+               fileinfo: [
+                                {
+                                    name: 'ChangeTrackingWinPath_File'
+                                    enabled: true
+                                    description: 'Track chenges in Windows File'
+                                    path: 'c:\\ArcBox\\ct.txt'
+                                    recurse: false
+                                    uploadContent: true
+                                    maxContentsReturnable: 5000000
+                                    maxOutputSize: 5000000
+                                    checksum: 'Md5'
+                                    pathType: 'File'
+                                    groupTag: 'Custom'
+                                }
+                            ]
             }
             softwareSettings: {
               softwareCollectionFrequency: 1800
