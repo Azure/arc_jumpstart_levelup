@@ -259,7 +259,7 @@ resource dataCollectionRuleChangeTracking 'Microsoft.Insights/dataCollectionRule
                                     name: 'ChangeTrackingWinPath_File',
                                     enabled: true,
                                     description: 'Track chenges in Windows File',
-                                    path: 'c:\ArcBox\ct.txt',
+                                    path: 'c:\\ArcBox\\ct.txt',
                                     recurse: false,
                                     uploadContent: true,
                                     maxContentsReturnable: 5000000,
@@ -367,6 +367,7 @@ resource ChangeTracking_variables_workspace 'Microsoft.OperationsManagement/solu
 
 output changeTrackingDCR string = dataCollectionRuleChangeTracking.id
 output vmInsightsDCR string = dataCollectionRuleChangeTrackingVMI.id
+
 
 
 
