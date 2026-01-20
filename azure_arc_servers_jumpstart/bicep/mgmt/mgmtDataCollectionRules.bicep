@@ -254,19 +254,19 @@ resource dataCollectionRuleChangeTracking 'Microsoft.Insights/dataCollectionRule
             }
             fileSettings: {
               fileCollectionFrequency: 600,
-              "fileinfo": [
+               fileinfo: [
                                 {
-                                    "name": "FileCTWin",
-                                    "enabled": true,
-                                    "description": "",
-                                    "path": "c:\ArcBox\ct.txt",
-                                    "recurse": false,
-                                    "uploadContent": true,
-                                    "maxContentsReturnable": 5000000,
-                                    "maxOutputSize": 5000000,
-                                    "checksum": "Md5",
-                                    "pathType": "File",
-                                    "groupTag": "Custom"
+                                    name: 'ChangeTrackingWinPath_File',
+                                    enabled: true,
+                                    description: 'Track chenges in Windows File',
+                                    path: 'c:\ArcBox\ct.txt',
+                                    recurse: false,
+                                    uploadContent: true,
+                                    maxContentsReturnable: 5000000,
+                                    maxOutputSize: 5000000,
+                                    checksum: 'Md5',
+                                    pathType: 'File',
+                                    groupTag: 'Custom'
                                 }
                             ],
             }
@@ -367,5 +367,6 @@ resource ChangeTracking_variables_workspace 'Microsoft.OperationsManagement/solu
 
 output changeTrackingDCR string = dataCollectionRuleChangeTracking.id
 output vmInsightsDCR string = dataCollectionRuleChangeTrackingVMI.id
+
 
 
