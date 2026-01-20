@@ -14,7 +14,7 @@ param workspaceName string
 @description('Specifies the name of the data collection rule to create.')
 param dataCollectionRuleNameCt string = 'arcbox-ama-ct-dcr'
 
-resource dataCollectionRuleChangeTrackingVMI 'Microsoft.Insights/dataCollectionRules@2021-04-01' = {
+resource dataCollectionRuleChangeTrackingVMI 'Microsoft.Insights/dataCollectionRules@2024-03-11' = {
   name: dataCollectionRuleNameVMI
   location: workspaceLocation
   properties: {
@@ -74,7 +74,7 @@ resource dataCollectionRuleChangeTrackingVMI 'Microsoft.Insights/dataCollectionR
 
 
 
-resource dataCollectionRuleChangeTracking 'Microsoft.Insights/dataCollectionRules@2021-04-01' = {
+resource dataCollectionRuleChangeTracking 'Microsoft.Insights/dataCollectionRules@2024-03-11' = {
   name: dataCollectionRuleNameCt
   location: workspaceLocation
   properties: {
@@ -258,7 +258,7 @@ resource dataCollectionRuleChangeTracking 'Microsoft.Insights/dataCollectionRule
                                 {
                                     name: 'ChangeTrackingWinPath_File'
                                     enabled: true
-                                    description: 'Track chenges in Windows File'
+                                    description: 'Track changes in Windows File'
                                     path: 'c:\\ArcBox\\ct.txt'
                                     recurse: false
                                     uploadContent: true
