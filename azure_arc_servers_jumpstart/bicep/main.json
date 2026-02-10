@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.34.44.8038",
-      "templateHash": "4846752110091626349"
+      "templateHash": "5259777144628073993"
     }
   },
   "parameters": {
@@ -4928,7 +4928,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.34.44.8038",
-              "templateHash": "1070890791816710548"
+              "templateHash": "17978222404421061409"
             }
           },
           "parameters": {
@@ -5207,7 +5207,22 @@
                           ]
                         },
                         "fileSettings": {
-                          "fileCollectionFrequency": 1800
+                          "fileCollectionFrequency": 900,
+                          "fileinfo": [
+                            {
+                              "name": "ChangeTrackingWinPath_File",
+                              "enabled": true,
+                              "description": "Track chenges in Windows File",
+                              "path": "c:\\ArcBox\\ct.txt",
+                              "recurse": false,
+                              "uploadContent": true,
+                              "maxContentsReturnable": 5000000,
+                              "maxOutputSize": 5000000,
+                              "checksum": "Md5",
+                              "pathType": "File",
+                              "groupTag": "Custom"
+                            }
+                          ]
                         },
                         "softwareSettings": {
                           "softwareCollectionFrequency": 1800

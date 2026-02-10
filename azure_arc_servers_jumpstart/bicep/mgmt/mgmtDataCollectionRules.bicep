@@ -14,7 +14,7 @@ param workspaceName string
 @description('Specifies the name of the data collection rule to create.')
 param dataCollectionRuleNameCt string = 'arcbox-ama-ct-dcr'
 
-resource dataCollectionRuleChangeTrackingVMI 'Microsoft.Insights/dataCollectionRules@2021-04-01' = {
+resource dataCollectionRuleChangeTrackingVMI 'Microsoft.Insights/dataCollectionRules@2024-03-11' = {
   name: dataCollectionRuleNameVMI
   location: workspaceLocation
   properties: {
@@ -74,7 +74,7 @@ resource dataCollectionRuleChangeTrackingVMI 'Microsoft.Insights/dataCollectionR
 
 
 
-resource dataCollectionRuleChangeTracking 'Microsoft.Insights/dataCollectionRules@2021-04-01' = {
+resource dataCollectionRuleChangeTracking 'Microsoft.Insights/dataCollectionRules@2024-03-11' = {
   name: dataCollectionRuleNameCt
   location: workspaceLocation
   properties: {
@@ -253,22 +253,22 @@ resource dataCollectionRuleChangeTracking 'Microsoft.Insights/dataCollectionRule
               ]
             }
             fileSettings: {
-              fileCollectionFrequency: 600,
+              fileCollectionFrequency: 900
                fileinfo: [
                                 {
-                                    name: 'ChangeTrackingWinPath_File',
-                                    enabled: true,
-                                    description: 'Track chenges in Windows File',
-                                    path: 'c:\\ArcBox\\ct.txt',
-                                    recurse: false,
-                                    uploadContent: true,
-                                    maxContentsReturnable: 5000000,
-                                    maxOutputSize: 5000000,
-                                    checksum: 'Md5',
-                                    pathType: 'File',
+                                    name: 'ChangeTrackingWinPath_File'
+                                    enabled: true
+                                    description: 'Track changes in Windows File'
+                                    path: 'c:\\ArcBox\\ct.txt'
+                                    recurse: false
+                                    uploadContent: true
+                                    maxContentsReturnable: 5000000
+                                    maxOutputSize: 5000000
+                                    checksum: 'Md5'
+                                    pathType: 'File'
                                     groupTag: 'Custom'
                                 }
-                            ],
+                            ]
             }
             softwareSettings: {
               softwareCollectionFrequency: 1800
